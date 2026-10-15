@@ -1,6 +1,6 @@
 # Life Assistant — Mô tả dự án
 
-> Phiên bản: 0.2 · Ngày: 13/10/2026 · Trạng thái: Đã chốt stack, sẵn sàng làm M0
+> Phiên bản: 0.3 · Ngày: 15/10/2026 · Trạng thái: **M0 và M1 đã xong**, đang làm M2
 > Giai đoạn hiện tại: **Module 1 — Flashcard học từ vựng tiếng Anh**
 
 ---
@@ -65,7 +65,10 @@ accidental	vô tình, do tai nạn (TN: deliberate)	/ˌæksɪˈdentl/	adj	Most e
 ```
 
 Yêu cầu:
-- Hỗ trợ dấu phân cách: Tab (mặc định), dấu phẩy, hoặc tuỳ chọn. Phân cách giữa các thẻ: xuống dòng (mặc định) hoặc chấm phẩy.
+- **Phân cách cột: Tab. Phân cách thẻ: xuống dòng.** Kiểm chứng trên file thật 59 từ (`src/modules/flashcards/domain/__fixtures__/eagles.tsv`) cho thấy không có lựa chọn nào khác an toàn:
+  - Dấu `,` có mặt trong definition, trong pronunciation (`/ˈkɑːnflɪkt/ (n), /kənˈflɪkt/ (v)`) và cả trong partOfSpeech (`n, v`).
+  - Dấu `;` có trong definition của 4 dòng (`harm`, `harvest`, `poison`, `settle`), ví dụ `(n) vụ mùa; (v) thu hoạch`. Dùng `;` làm phân cách thẻ sẽ cắt nát các dòng này.
+  - Vẫn cho người dùng đổi dấu phân cách cột trong giao diện, nhưng mặc định là Tab và có cảnh báo khi số cột giữa các dòng không đều.
 - **Xem trước** trước khi lưu: hiện bảng các thẻ đã đọc được, đánh dấu dòng lỗi (thiếu cột, trùng từ).
 - **Phát hiện trùng lặp**: từ đã có trong bộ thì hỏi bỏ qua, ghi đè hay giữ cả hai.
 - Cột không bắt buộc có thể để trống.
@@ -160,8 +163,10 @@ Các cách tạo khác:
 | Dữ liệu | Cloud Firestore | Gói Spark, chế độ offline, đồng bộ thời gian thực |
 | Lịch ôn | `ts-fsrs` | Chạy phía client |
 | Thông báo | Firebase Cloud Messaging + **Cloudflare Workers Cron** | Xem mục 3.6 |
-| Hosting | **Cloudflare Pages** | Deploy từ Git, SSL miễn phí; cùng tài khoản với Workers Cron nên quản lý một chỗ |
-| Tên miền | **Chưa có** | Tạm dùng `<ten-project>.pages.dev`. Mua tên miền sau, không chặn M1–M5 |
+| Hosting | **Cloudflare Workers** (Static Assets) | Giao diện mới của Cloudflare tạo Worker chứ không phải Pages. Một Worker vừa phục vụ `dist/`, vừa proxy auth, và M4 sẽ gắn luôn Cron vào đây |
+| Tên miền | **Chưa có** | Đang dùng `life-assistant.tan14012004.workers.dev`. Mua tên miền sau, không chặn M2–M5 |
+
+**Lưu ý vận hành — đăng nhập trên iOS:** Safari chặn third-party storage, nên luồng `signInWithRedirect` qua `<project>.firebaseapp.com` im lặng thất bại trong PWA đã cài (`getRedirectResult` trả `null`, không ném lỗi). Worker phải proxy `/__/auth/*` và `VITE_FIREBASE_AUTH_DOMAIN` phải trỏ về chính domain của app. Kèm theo đó, `https://<domain>/__/auth/handler` phải được đăng ký trong **Authorized redirect URIs** của OAuth client bên Google Cloud Console. Xem `worker/index.ts`.
 
 **Định hướng mở rộng thành life assistant**
 - Đường dẫn theo module: `/flashcards`, `/planner`, `/habits`, `/blog`… (hoặc mỗi module một subdomain).
@@ -213,8 +218,8 @@ users/{uid}
 
 | Mốc | Nội dung | Kết quả |
 |---|---|---|
-| **M0 — Chuẩn bị** | Khởi tạo repo Vite + TS + Tailwind, tạo project Firebase (Spark), nối Cloudflare Pages, deploy trang "Hello" | Truy cập được `<ten-project>.pages.dev` |
-| **M1 — Nền tảng** | Đăng nhập Google, layout responsive, PWA cài lên iPhone | Đăng nhập được trên điện thoại |
+| ~~**M0 — Chuẩn bị**~~ ✅ | Repo Vite + TS + Tailwind, Firebase `life-assistant-1401` (Spark), deploy qua Cloudflare Workers | Chạy tại `life-assistant.tan14012004.workers.dev` |
+| ~~**M1 — Nền tảng**~~ ✅ | Đăng nhập Google, layout bottom-tab, PWA cài lên iPhone | Đăng nhập được trong PWA trên iPhone |
 | **M2 — Bộ thẻ** | CRUD bộ thẻ và thẻ, nhập TSV có xem trước, sắp xếp ABC, tìm kiếm | Nhập được bộ 59 từ bài đại bàng |
 | **M3 — Ôn tập** | FSRS, phiên ôn hằng ngày, 4 mức đánh giá, chế độ Anh→Việt / Việt→Anh / gõ đáp án, phát âm TTS | Ôn tập hằng ngày được |
 | **M4 — Nhắc nhở** | Web push (FCM) + Cloudflare Worker Cron, cài đặt giờ nhắc | Nhận thông báo trên iPhone |
@@ -254,3 +259,10 @@ users/{uid}
 | 8 | Tags *(mở rộng)* | | `can-on-ky` |
 
 Cột 1–6 tương thích với định dạng nhập của OpenQuiz. Cột 7–8 là phần mở rộng riêng của dự án; nếu dòng nào thiếu hai cột này thì coi như để trống.
+
+**Đối chiếu với file thật (`eagles.tsv`, 59 dòng, 15/10/2026):**
+- File do `vocab-coach` xuất ra hiện **chỉ có 6 cột**, mọi dòng đều đủ 6. Cột 7–8 chưa được dùng.
+- **Trái nghĩa nằm bên trong cột 2** dưới dạng `(TN: deliberate, intentional)`, không tách riêng.
+- `partOfSpeech` có giá trị ngoài danh sách gợi ý: `phrasal v`, `collocation`, `phr`, `n, v`, `n, adj` → để **field tự do**, không ràng buộc enum.
+- `term` có thể chứa `/` (`protected area / sanctuary`, `prevent sb/sth from V-ing`) → **không được tách term theo `/`**.
+- `pronunciation` có thể chứa nhiều IPA kèm chú thích (`/ˈkɑːnflɪkt/ (n), /kənˈflɪkt/ (v)`).
