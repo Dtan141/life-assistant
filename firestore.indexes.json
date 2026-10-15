@@ -9,14 +9,6 @@
       ]
     },
     {
-      "collectionGroup": "cards",
-      "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "deckId", "order": "ASCENDING" },
-        { "fieldPath": "termLower", "order": "ASCENDING" }
-      ]
-    },
-    {
       "collectionGroup": "reviewLogs",
       "queryScope": "COLLECTION",
       "fields": [

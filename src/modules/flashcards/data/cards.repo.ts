@@ -3,7 +3,6 @@ import {
   doc,
   getDocs,
   increment,
-  orderBy,
   query,
   updateDoc,
   where,
@@ -19,11 +18,22 @@ import { normalizeTerm } from '@/modules/flashcards/domain/tsv-parser'
 import type { ImportPlan } from '@/modules/flashcards/domain/import-plan'
 import type { Card, CardDraft } from '@/modules/flashcards/domain/card.types'
 
+/**
+ * Cards of one deck, sorted A→Z.
+ *
+ * The sort happens here rather than in the query: adding orderBy('termLower')
+ * would demand a composite index, which cannot be created while offline and
+ * costs a manual setup step for no gain. A deck holds hundreds of cards, not
+ * millions, so sorting them in memory is free.
+ *
+ * localeCompare with 'vi' so Vietnamese definitions and accented terms order
+ * the way a reader expects.
+ */
 export async function listCards(uid: string, deckId: string): Promise<Card[]> {
-  const snap = await getDocs(
-    query(cardsCol(uid), where('deckId', '==', deckId), orderBy('termLower')),
-  )
-  return snap.docs.map(cardFromDoc)
+  const snap = await getDocs(query(cardsCol(uid), where('deckId', '==', deckId)))
+  return snap.docs
+    .map(cardFromDoc)
+    .sort((a, b) => a.termLower.localeCompare(b.termLower, 'vi'))
 }
 
 /** Lowercased term -> card id, the shape the TSV parser wants for duplicate detection. */

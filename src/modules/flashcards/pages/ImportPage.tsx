@@ -53,7 +53,10 @@ export default function ImportPage() {
         setExistingTerms(terms)
       } catch (err) {
         console.error('Failed to load deck for import', err)
-        if (!cancelled) setLoadError('Không tải được bộ thẻ.')
+        // Carry the real message through: "could not load" alone leaves no way
+        // to tell a missing index from a permissions problem or a dead network.
+        const detail = err instanceof Error ? err.message : String(err)
+        if (!cancelled) setLoadError(`Không tải được bộ thẻ. ${detail}`)
       } finally {
         if (!cancelled) setLoading(false)
       }
@@ -118,7 +121,9 @@ export default function ImportPage() {
   if (loadError || !deck) {
     return (
       <div className="mx-auto max-w-lg space-y-3 px-5 pt-8">
-        <p className="text-red-600 dark:text-red-400">{loadError ?? 'Bộ thẻ không tồn tại.'}</p>
+        <p className="break-words text-red-600 dark:text-red-400">
+          {loadError ?? 'Bộ thẻ không tồn tại.'}
+        </p>
         <Link to="/flashcards" className="text-sm text-slate-500">
           ← Về danh sách bộ thẻ
         </Link>
