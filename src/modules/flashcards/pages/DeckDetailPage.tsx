@@ -104,8 +104,19 @@ export default function DeckDetailPage() {
         </a>
       )}
 
-      <div className="mt-4 flex gap-2">
+      {cards.length > 0 && (
         <Button
+          onClick={() => navigate(`/flashcards/review?deck=${deckId}`)}
+          className="mt-4 w-full"
+        >
+          Ôn bộ này
+          {counts.due + counts.learning > 0 && ` · ${counts.due + counts.learning} đến hạn`}
+        </Button>
+      )}
+
+      <div className="mt-2 flex gap-2">
+        <Button
+          variant="secondary"
           onClick={() => navigate(`/flashcards/${deckId}/import`)}
           className="flex-1"
         >

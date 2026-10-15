@@ -39,6 +39,22 @@ export function sortCards(cards: Card[]): Card[] {
   return cards.sort((a, b) => a.termLower.localeCompare(b.termLower, 'vi'))
 }
 
+/**
+ * Every card the user owns, across all decks — what a review session draws
+ * from, since the queue is not per-deck.
+ */
+export function watchAllCards(
+  uid: string,
+  onChange: (cards: Card[]) => void,
+  onError: (error: Error) => void,
+): Unsubscribe {
+  return onSnapshot(
+    cardsCol(uid),
+    (snap) => onChange(sortCards(snap.docs.map(cardFromDoc))),
+    onError,
+  )
+}
+
 /** Live, A→Z view of one deck's cards. Serves the local cache first. */
 export function watchCards(
   uid: string,
