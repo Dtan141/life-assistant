@@ -196,6 +196,8 @@ export default function DeckDetailPage() {
             key={editing.mode === 'edit' ? editing.card.id : 'new'}
             card={editing.mode === 'edit' ? editing.card : undefined}
             keepOpen={editing.mode === 'new'}
+            siblings={cards}
+            onOpenExisting={(existing) => setEditing({ mode: 'edit', card: existing })}
             onSubmit={async (draft) => {
               if (editing.mode === 'edit') {
                 await updateCard(user.uid, editing.card.id, draft)

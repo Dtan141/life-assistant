@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Button } from '@/shared/ui/Button'
 import { TextAreaField, TextField } from '@/shared/ui/Field'
 import { normalizeTerm } from '@/modules/flashcards/domain/tsv-parser'
@@ -10,6 +10,10 @@ interface Props {
   onCancel: () => void
   /** Keeps the form open and cleared after saving, for adding several in a row. */
   keepOpen?: boolean
+  /** Other cards in the deck, so a clash can be pointed out while typing. */
+  siblings?: readonly Card[]
+  /** Offered alongside the clash warning, to edit that card instead. */
+  onOpenExisting?: (card: Card) => void
 }
 
 const list = (value: string) =>
@@ -18,7 +22,14 @@ const list = (value: string) =>
     .map((item) => item.trim())
     .filter(Boolean)
 
-export function CardForm({ card, onSubmit, onCancel, keepOpen = false }: Props) {
+export function CardForm({
+  card,
+  onSubmit,
+  onCancel,
+  keepOpen = false,
+  siblings,
+  onOpenExisting,
+}: Props) {
   const [term, setTerm] = useState(card?.term ?? '')
   const [definition, setDefinition] = useState(card?.definition ?? '')
   const [pronunciation, setPronunciation] = useState(card?.pronunciation ?? '')
@@ -29,6 +40,14 @@ export function CardForm({ card, onSubmit, onCancel, keepOpen = false }: Props) 
   const [tags, setTags] = useState(card?.tags.join(', ') ?? '')
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
+
+  // A warning, not a block: the TSV import offers "keep both", so typing a
+  // second card for the same word must stay possible here too.
+  const clash = useMemo(() => {
+    const key = normalizeTerm(term)
+    if (!key || !siblings) return undefined
+    return siblings.find((other) => other.termLower === key && other.id !== card?.id)
+  }, [term, siblings, card])
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
@@ -82,6 +101,29 @@ export function CardForm({ card, onSubmit, onCancel, keepOpen = false }: Props) 
         autoFocus
         required
       />
+
+      {clash && (
+        <div className="-mt-2 rounded-xl bg-amber-50 p-3 text-sm dark:bg-amber-950">
+          <p className="text-amber-800 dark:text-amber-300">
+            Bộ này đã có <strong>{clash.term}</strong>: {clash.definition}
+          </p>
+          <div className="mt-2 flex flex-wrap gap-3">
+            {onOpenExisting && (
+              <button
+                type="button"
+                onClick={() => onOpenExisting(clash)}
+                className="text-amber-900 underline underline-offset-2 dark:text-amber-200"
+              >
+                Sửa thẻ đã có
+              </button>
+            )}
+            <span className="text-amber-700 dark:text-amber-400">
+              hoặc cứ thêm, sẽ có hai thẻ cùng từ.
+            </span>
+          </div>
+        </div>
+      )}
+
       <TextAreaField
         label="Nghĩa"
         value={definition}
