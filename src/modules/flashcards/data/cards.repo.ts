@@ -3,12 +3,13 @@ import {
   doc,
   getDocs,
   increment,
+  onSnapshot,
   query,
   updateDoc,
   where,
   writeBatch,
 } from 'firebase/firestore'
-import type { Timestamp } from 'firebase/firestore'
+import type { Timestamp, Unsubscribe } from 'firebase/firestore'
 import { db } from '@/shared/firebase/app'
 import { now } from '@/shared/firebase/convert'
 import { cardFromDoc } from '@/modules/flashcards/data/converters'
@@ -31,9 +32,25 @@ import type { Card, CardDraft } from '@/modules/flashcards/domain/card.types'
  */
 export async function listCards(uid: string, deckId: string): Promise<Card[]> {
   const snap = await getDocs(query(cardsCol(uid), where('deckId', '==', deckId)))
-  return snap.docs
-    .map(cardFromDoc)
-    .sort((a, b) => a.termLower.localeCompare(b.termLower, 'vi'))
+  return sortCards(snap.docs.map(cardFromDoc))
+}
+
+export function sortCards(cards: Card[]): Card[] {
+  return cards.sort((a, b) => a.termLower.localeCompare(b.termLower, 'vi'))
+}
+
+/** Live, A→Z view of one deck's cards. Serves the local cache first. */
+export function watchCards(
+  uid: string,
+  deckId: string,
+  onChange: (cards: Card[]) => void,
+  onError: (error: Error) => void,
+): Unsubscribe {
+  return onSnapshot(
+    query(cardsCol(uid), where('deckId', '==', deckId)),
+    (snap) => onChange(sortCards(snap.docs.map(cardFromDoc))),
+    onError,
+  )
 }
 
 /** Lowercased term -> card id, the shape the TSV parser wants for duplicate detection. */
