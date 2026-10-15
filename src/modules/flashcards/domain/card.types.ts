@@ -49,6 +49,12 @@ export interface Deck {
   description: string
   tags: string[]
   sourceUrl: string
+  /**
+   * Denormalised so the deck list does not have to read every card. The card
+   * repository keeps it current with increment() inside the same batch as the
+   * writes that change it.
+   */
+  cardCount: number
   createdAt: Date
   updatedAt: Date
   archived: boolean
