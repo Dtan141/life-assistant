@@ -1,6 +1,6 @@
 # Life Assistant — Mô tả dự án
 
-> Phiên bản: 0.3 · Ngày: 15/10/2026 · Trạng thái: **M0 và M1 đã xong**, đang làm M2
+> Phiên bản: 0.4 · Ngày: 16/10/2026 · Trạng thái: **M0–M3 đã xong**. Còn M4 (nhắc nhở) và M5 (thống kê, sao lưu)
 > Giai đoạn hiện tại: **Module 1 — Flashcard học từ vựng tiếng Anh**
 
 ---
@@ -104,6 +104,13 @@ Các cách tạo khác:
 
 **Đánh giá sau mỗi thẻ** (4 mức, theo kiểu Anki/FSRS):
 `Quên (Again)` · `Khó (Hard)` · `Được (Good)` · `Dễ (Easy)`. Mỗi nút hiển thị trước khoảng thời gian đến lần ôn kế tiếp (ví dụ "10 phút", "1 ngày", "4 ngày").
+
+**Chọn phạm vi ôn** *(bổ sung 15/10/2026 — bản 0.1 thiếu mục này)*
+- Màn hình chuẩn bị phiên cho chọn: bộ thẻ (một, nhiều hoặc tất cả), trạng thái thẻ (mới / đang học / cần ôn / đã thuộc), kiểu hỏi, và ôn theo lịch hay luyện tự do.
+- Nút bắt đầu hiện số thẻ khớp lựa chọn, **tính đúng cách phiên sẽ tính**, kể cả phần đã ôn trong ngày.
+- Hai lối tắt bỏ qua màn hình này: nút ở trang chủ và nút "Ôn bộ này" ở trang bộ thẻ.
+
+**Lưu ý hiển thị:** phần `definition` chứa cả ghi chú tiếng Anh (collocation, họ từ), nên ở chiều Việt→Anh và gõ đáp án phải **che từ cần nhớ trong chính phần nghĩa** — 38/59 thẻ của bộ mẫu lộ đáp án nếu hiện nguyên văn.
 
 **Phiên ôn hằng ngày**
 - Thứ tự: thẻ đến hạn trước, thẻ mới sau.
@@ -220,8 +227,8 @@ users/{uid}
 |---|---|---|
 | ~~**M0 — Chuẩn bị**~~ ✅ | Repo Vite + TS + Tailwind, Firebase `life-assistant-1401` (Spark), deploy qua Cloudflare Workers | Chạy tại `life-assistant.tan14012004.workers.dev` |
 | ~~**M1 — Nền tảng**~~ ✅ | Đăng nhập Google, layout bottom-tab, PWA cài lên iPhone | Đăng nhập được trong PWA trên iPhone |
-| **M2 — Bộ thẻ** | CRUD bộ thẻ và thẻ, nhập TSV có xem trước, sắp xếp ABC, tìm kiếm | Nhập được bộ 59 từ bài đại bàng |
-| **M3 — Ôn tập** | FSRS, phiên ôn hằng ngày, 4 mức đánh giá, chế độ Anh→Việt / Việt→Anh / gõ đáp án, phát âm TTS | Ôn tập hằng ngày được |
+| ~~**M2 — Bộ thẻ**~~ ✅ | CRUD bộ thẻ và thẻ, nhập TSV có xem trước, sắp xếp ABC, tìm kiếm | Đã nhập bộ 59 từ bài đại bàng |
+| ~~**M3 — Ôn tập**~~ ✅ | FSRS, phiên ôn hằng ngày, 4 mức đánh giá, 4 kiểu hỏi, phát âm TTS, màn hình chọn phạm vi ôn | Ôn tập hằng ngày được |
 | **M4 — Nhắc nhở** | Web push (FCM) + Cloudflare Worker Cron, cài đặt giờ nhắc | Nhận thông báo trên iPhone |
 | **M5 — Hoàn thiện** | Thống kê, streak, offline, xuất/nhập sao lưu | Dùng ổn định hằng ngày |
 | Sau đó | Module kế hoạch, thói quen, blog; API/MCP cho Claude | Life assistant |
