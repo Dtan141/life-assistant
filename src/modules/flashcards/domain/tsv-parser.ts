@@ -89,7 +89,7 @@ export function parseCards(raw: string, options: ParseOptions = {}): ParseResult
   const rows: ParsedRow[] = []
   const warnings: string[] = []
   const seenTerms = new Map<string, number>()
-  const columnCounts = new Set<number>()
+  let singleColumnRows = 0
   let headerDropped = false
 
   text.split('\n').forEach((line, index) => {
@@ -102,7 +102,7 @@ export function parseCards(raw: string, options: ParseOptions = {}): ParseResult
     }
 
     const cells = line.split(columnDelimiter).map((cell) => cell.trim())
-    columnCounts.add(cells.length)
+    if (cells.length === 1) singleColumnRows += 1
 
     const errors: string[] = []
     const [
@@ -175,10 +175,16 @@ export function parseCards(raw: string, options: ParseOptions = {}): ParseResult
     rows.push({ lineNo, raw: line, status: 'ok', card, errors: [] })
   })
 
-  if (columnCounts.size > 1) {
-    const counts = [...columnCounts].sort((a, b) => a - b).join(', ')
+  /**
+   * Ragged rows are normal — trailing optional columns are routinely left off —
+   * so warning about them fires on almost every real file and teaches the user
+   * to ignore warnings. What actually signals the wrong delimiter is rows that
+   * did not split at all.
+   */
+  if (rows.length >= 2 && singleColumnRows >= rows.length / 2) {
     warnings.push(
-      `Số cột không đều giữa các dòng (${counts}). Kiểm tra lại dấu phân cách.`,
+      `${singleColumnRows}/${rows.length} dòng không tách được cột nào. ` +
+        'Nhiều khả năng dấu phân cách đang chọn sai — dữ liệu từ Claude dùng Tab.',
     )
   }
 

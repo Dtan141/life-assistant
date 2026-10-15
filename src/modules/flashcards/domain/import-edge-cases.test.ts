@@ -24,8 +24,8 @@ describe('the hand-test file', () => {
     expect(result.stats).toEqual({ total: 13, ok: 8, duplicate: 2, error: 3 })
   })
 
-  it('warns that the rows disagree about column count', () => {
-    expect(result.warnings[0]).toMatch(/Số cột không đều/)
+  it('does not warn: ragged columns here are deliberate, not a wrong delimiter', () => {
+    expect(result.warnings).toEqual([])
   })
 })
 

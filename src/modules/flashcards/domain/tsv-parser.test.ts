@@ -128,9 +128,25 @@ describe('validation', () => {
     expect(rows[0].errors[0]).toMatch(/9 cột/)
   })
 
-  it('warns when rows disagree about how many columns they have', () => {
+  it('says nothing when rows merely omit trailing optional columns', () => {
+    // Normal in real files, so warning here would train the user to ignore
+    // warnings altogether.
     const { warnings } = parseCards(`${row('a', 'nghĩa a')}\n${row('b', 'nghĩa b', 'ipa')}`)
-    expect(warnings[0]).toMatch(/Số cột không đều/)
+    expect(warnings).toEqual([])
+  })
+
+  it('warns when most rows did not split, which means the wrong delimiter', () => {
+    const commaSeparated = 'a,nghĩa a\nb,nghĩa b\nc,nghĩa c'
+    const { warnings } = parseCards(commaSeparated)
+    expect(warnings[0]).toMatch(/không tách được cột nào/)
+    expect(warnings[0]).toMatch(/3\/3/)
+  })
+
+  it('says nothing when a single stray row fails to split', () => {
+    const { warnings } = parseCards(
+      `${row('a', 'nghĩa a')}\n${row('b', 'nghĩa b')}\nhỏng\n${row('d', 'nghĩa d')}`,
+    )
+    expect(warnings).toEqual([])
   })
 
   it('drops the header row when asked', () => {
