@@ -1,16 +1,20 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "life-assistant",
+  "main": "worker/index.ts",
   "compatibility_date": "2026-10-15",
 
-  // Serve the Vite build as static assets. "single-page-application" returns
-  // index.html for unknown paths, so client-side routes survive a refresh.
   "assets": {
     "directory": "./dist",
-    "not_found_handling": "single-page-application"
+    "binding": "ASSETS",
+    // "single-page-application" returns index.html for unknown paths, so
+    // client-side routes survive a refresh.
+    "not_found_handling": "single-page-application",
+    // Without this the SPA fallback would swallow /__/auth/* before the
+    // Worker ever sees it, and the auth proxy would never run.
+    "run_worker_first": ["/__/auth/*", "/__/firebase/*"]
   }
 
-  // M4 will add a scheduled Worker here for the daily review reminder:
-  //   "main": "worker/index.ts",
+  // M4 will add the daily reminder cron here:
   //   "triggers": { "crons": ["*/15 * * * *"] }
 }
