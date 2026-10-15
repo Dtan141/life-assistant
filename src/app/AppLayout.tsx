@@ -1,13 +1,36 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 
+const REVIEW_PATH = '/flashcards/review'
+
+/**
+ * `end` alone cannot express these: "Bộ thẻ" owns every /flashcards path
+ * except the review session, which has its own tab.
+ */
 const TABS = [
-  { to: '/', label: 'Hôm nay', icon: HomeIcon, end: true },
-  { to: '/flashcards', label: 'Bộ thẻ', icon: DeckIcon, end: false },
-  { to: '/flashcards/review', label: 'Ôn tập', icon: ReviewIcon, end: false },
-  { to: '/settings', label: 'Cài đặt', icon: SettingsIcon, end: false },
+  { to: '/', label: 'Hôm nay', icon: HomeIcon, match: (p: string) => p === '/' },
+  {
+    to: '/flashcards',
+    label: 'Bộ thẻ',
+    icon: DeckIcon,
+    match: (p: string) => p.startsWith('/flashcards') && !p.startsWith(REVIEW_PATH),
+  },
+  {
+    to: REVIEW_PATH,
+    label: 'Ôn tập',
+    icon: ReviewIcon,
+    match: (p: string) => p.startsWith(REVIEW_PATH),
+  },
+  {
+    to: '/settings',
+    label: 'Cài đặt',
+    icon: SettingsIcon,
+    match: (p: string) => p.startsWith('/settings'),
+  },
 ]
 
 export default function AppLayout() {
+  const { pathname } = useLocation()
+
   return (
     <div className="flex min-h-full flex-col">
       <main className="flex-1 pb-20">
@@ -19,25 +42,26 @@ export default function AppLayout() {
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
         <ul className="mx-auto flex max-w-lg">
-          {TABS.map(({ to, label, icon: Icon, end }) => (
-            <li key={to} className="flex-1">
-              <NavLink
-                to={to}
-                end={end}
-                className={({ isActive }) =>
-                  [
+          {TABS.map(({ to, label, icon: Icon, match }) => {
+            const active = match(pathname)
+            return (
+              <li key={to} className="flex-1">
+                <NavLink
+                  to={to}
+                  aria-current={active ? 'page' : undefined}
+                  className={[
                     'no-select flex flex-col items-center gap-1 py-2.5 text-xs transition',
-                    isActive
+                    active
                       ? 'text-slate-900 dark:text-slate-100'
                       : 'text-slate-400 dark:text-slate-500',
-                  ].join(' ')
-                }
-              >
-                <Icon />
-                {label}
-              </NavLink>
-            </li>
-          ))}
+                  ].join(' ')}
+                >
+                  <Icon />
+                  {label}
+                </NavLink>
+              </li>
+            )
+          })}
         </ul>
       </nav>
     </div>

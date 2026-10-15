@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useAuth } from '@/shared/auth/useAuth'
 
 export default function SignInPage() {
-  const { signIn } = useAuth()
+  const { signIn, redirectError } = useAuth()
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
 
@@ -48,6 +48,14 @@ export default function SignInPage() {
         {error && (
           <p role="alert" className="text-sm text-red-600 dark:text-red-400">
             {error}
+          </p>
+        )}
+
+        {redirectError && (
+          <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+            Quay về từ Google nhưng không đăng nhập được.
+            <br />
+            <code className="text-xs">{redirectError}</code>
           </p>
         )}
       </div>
