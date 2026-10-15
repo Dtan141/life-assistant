@@ -5,6 +5,7 @@ import HomePage from '@/app/HomePage'
 import NotFoundPage from '@/app/NotFoundPage'
 import SettingsPage from '@/app/SettingsPage'
 import DeckListPage from '@/modules/flashcards/pages/DeckListPage'
+import DeckDetailPage from '@/modules/flashcards/pages/DeckDetailPage'
 import ReviewPage from '@/modules/flashcards/pages/ReviewPage'
 
 export const router = createBrowserRouter([
@@ -19,6 +20,7 @@ export const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: 'flashcards', element: <DeckListPage /> },
       { path: 'flashcards/review', element: <ReviewPage /> },
+      { path: 'flashcards/:deckId', element: <DeckDetailPage /> },
       { path: 'settings', element: <SettingsPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],

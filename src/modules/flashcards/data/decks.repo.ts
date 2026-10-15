@@ -3,12 +3,14 @@ import {
   deleteDoc,
   getDoc,
   getDocs,
+  onSnapshot,
   orderBy,
   query,
   updateDoc,
   where,
   writeBatch,
 } from 'firebase/firestore'
+import type { Unsubscribe } from 'firebase/firestore'
 import { db } from '@/shared/firebase/app'
 import { now } from '@/shared/firebase/convert'
 import { deckFromDoc } from '@/modules/flashcards/data/converters'
@@ -30,6 +32,22 @@ export async function listDecks(
   const snap = await getDocs(query(decksCol(uid), orderBy('name')))
   const decks = snap.docs.map(deckFromDoc)
   return includeArchived ? decks : decks.filter((deck) => !deck.archived)
+}
+
+/**
+ * Live view of the deck list. onSnapshot serves the local cache first, so the
+ * list appears instantly and offline, then updates when the server answers.
+ */
+export function watchDecks(
+  uid: string,
+  onChange: (decks: Deck[]) => void,
+  onError: (error: Error) => void,
+): Unsubscribe {
+  return onSnapshot(
+    query(decksCol(uid), orderBy('name')),
+    (snap) => onChange(snap.docs.map(deckFromDoc)),
+    onError,
+  )
 }
 
 export async function getDeck(uid: string, deckId: string): Promise<Deck | null> {
