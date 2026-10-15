@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useSpeech } from '@/shared/hooks/useSpeech'
-import { CLOZE_BLANK, clozeExample } from '@/modules/flashcards/domain/cloze'
+import { CLOZE_BLANK, clozeExample, maskTerm } from '@/modules/flashcards/domain/cloze'
 import type { ReviewMode } from '@/modules/flashcards/domain/review-mode'
 import type { Card } from '@/modules/flashcards/domain/card.types'
 
@@ -24,6 +24,20 @@ export function ReviewCard({ card, mode, revealed, onReveal, children }: Props) 
   )
   const asksForTerm = mode !== 'en-vi' && !(mode === 'cloze' && !cloze)
 
+  /**
+   * Definitions carry collocations and word-family notes in English —
+   * "sự kết hợp — a combination OF A and B · combine (v)" — which hand over the
+   * answer in the modes that ask for the term. Two thirds of a real deck does
+   * this, so the prompt hides them and the reveal shows the definition intact.
+   */
+  const prompt = useMemo(
+    () =>
+      asksForTerm
+        ? maskTerm(card.definition, card.term, { loose: true }).text
+        : card.definition,
+    [asksForTerm, card.definition, card.term],
+  )
+
   return (
     <div
       onClick={revealed || children ? undefined : onReveal}
@@ -46,7 +60,7 @@ export function ReviewCard({ card, mode, revealed, onReveal, children }: Props) 
               ))}
             </p>
           ) : (
-            <p className="text-xl font-medium">{card.definition}</p>
+            <p className="text-xl font-medium">{prompt}</p>
           )}
           {card.partOfSpeech && (
             <p className="text-sm text-slate-400">{card.partOfSpeech}</p>

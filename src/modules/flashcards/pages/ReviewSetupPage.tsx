@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/shared/auth/useAuth'
 import { useSettings } from '@/shared/settings/useSettings'
 import { Button } from '@/shared/ui/Button'
 import { Spinner } from '@/shared/ui/Spinner'
@@ -10,15 +11,24 @@ import type { CardStatus } from '@/modules/flashcards/domain/card-status'
 import { MODE_HINTS, MODE_LABELS, REVIEW_MODES } from '@/modules/flashcards/domain/review-mode'
 import type { ReviewMode } from '@/modules/flashcards/domain/review-mode'
 import { buildSession } from '@/modules/flashcards/domain/session'
+import type { DailyProgress } from '@/modules/flashcards/domain/session'
+import { getDailyProgress } from '@/modules/flashcards/data/reviews.repo'
 
-const SELECTABLE: CardStatus[] = ['new', 'learning', 'due']
+/**
+ * All four, including "known": free practice over cards you already know is a
+ * legitimate thing to want, and leaving it out made the count on the button
+ * disagree with the session it started.
+ */
+const SELECTABLE: CardStatus[] = ['new', 'learning', 'due', 'known']
 
 export default function ReviewSetupPage() {
   const navigate = useNavigate()
+  const { user } = useAuth()
   const { decks, loading: decksLoading } = useDecks()
   const { cards, loading: cardsLoading } = useAllCards()
   const { settings } = useSettings()
 
+  const [progress, setProgress] = useState<DailyProgress | null>(null)
   const [deckIds, setDeckIds] = useState<Set<string>>(new Set())
   const [statuses, setStatuses] = useState<Set<CardStatus>>(new Set(SELECTABLE))
   const [mode, setMode] = useState<ReviewMode>('en-vi')
@@ -35,11 +45,30 @@ export default function ReviewSetupPage() {
     [cards, deckIds, statuses],
   )
 
-  // Without today's tally this over-counts slightly; the session screen has the
-  // real number. Close enough to decide what to tap.
+  // Counted the same way the session will count it, including what has already
+  // been done today — a button that promises a number the next screen disagrees
+  // with is worse than no number.
   const estimate = practice
     ? scope.length
-    : buildSession(scope, settings).queue.length
+    : progress
+      ? buildSession(scope, settings, progress).queue.length
+      : null
+
+  useEffect(() => {
+    if (!user) return
+    let cancelled = false
+    void getDailyProgress(user.uid)
+      .catch((err) => {
+        console.error('Failed to read daily progress', err)
+        return { newDone: 0, reviewsDone: 0 }
+      })
+      .then((result) => {
+        if (!cancelled) setProgress(result)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [user])
 
   function toggleDeck(id: string) {
     setDeckIds((prev) => {
@@ -62,7 +91,9 @@ export default function ReviewSetupPage() {
   function start() {
     const params = new URLSearchParams()
     if (deckIds.size > 0) params.set('decks', [...deckIds].join(','))
-    if (statuses.size !== SELECTABLE.length) params.set('status', [...statuses].join(','))
+    // Always sent, never inferred: omitting it when "everything" was selected
+    // let the session include statuses this screen had excluded from its count.
+    params.set('status', [...statuses].join(','))
     if (mode !== 'en-vi') params.set('card', mode)
     if (practice) params.set('mode', 'practice')
     navigate(`/flashcards/review/session?${params.toString()}`)
@@ -141,8 +172,16 @@ export default function ReviewSetupPage() {
           </Group>
 
           <div className="sticky bottom-20 pt-1">
-            <Button onClick={start} disabled={estimate === 0} className="w-full">
-              {estimate === 0 ? 'Không có thẻ nào khớp' : `Bắt đầu · ${estimate} thẻ`}
+            <Button
+              onClick={start}
+              disabled={estimate === null || estimate === 0}
+              className="w-full"
+            >
+              {estimate === null
+                ? 'Đang tính…'
+                : estimate === 0
+                  ? 'Không có thẻ nào khớp'
+                  : `Bắt đầu · ${estimate} thẻ`}
             </Button>
           </div>
         </>
