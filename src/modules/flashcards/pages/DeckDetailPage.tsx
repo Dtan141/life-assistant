@@ -16,10 +16,25 @@ import {
   countByStatus,
 } from '@/modules/flashcards/domain/card-status'
 import type { CardStatus } from '@/modules/flashcards/domain/card-status'
+import { deckToTsv } from '@/modules/flashcards/domain/backup'
+import { downloadText, stampedName } from '@/shared/lib/download'
 import type { Card, Deck } from '@/modules/flashcards/domain/card.types'
 
 type Filter = CardStatus | 'all'
 type Editing = { mode: 'new' } | { mode: 'edit'; card: Card } | null
+
+/** "Study4 — Eagles" -> "study4-eagles", so the file name survives any OS. */
+function slugify(name: string): string {
+  return (
+    name
+      .normalize('NFD')
+      .replace(/[̀-ͯ]/g, '')
+      .replace(/đ/gi, 'd')
+      .replace(/[^a-zA-Z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .toLowerCase() || 'deck'
+  )
+}
 
 export default function DeckDetailPage() {
   const { deckId = '' } = useParams()
@@ -126,6 +141,22 @@ export default function DeckDetailPage() {
           + Một thẻ
         </Button>
       </div>
+
+      {cards.length > 0 && (
+        <button
+          type="button"
+          onClick={() =>
+            downloadText(
+              stampedName(slugify(deck.name), 'tsv'),
+              deckToTsv(cards),
+              'text/tab-separated-values',
+            )
+          }
+          className="mt-2 w-full text-sm text-slate-500 underline underline-offset-2"
+        >
+          Xuất bộ này ra file TSV
+        </button>
+      )}
 
       {cards.length > 0 && (
         <>

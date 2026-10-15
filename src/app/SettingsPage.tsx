@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useAuth } from '@/shared/auth/useAuth'
 import { useSettings } from '@/shared/settings/useSettings'
 import { updateSettings } from '@/shared/settings/settings.repo'
@@ -32,6 +33,19 @@ export default function SettingsPage() {
         // effect, and picks up edits made on another device.
         <ReviewSettingsForm key={JSON.stringify(settings)} settings={settings} />
       )}
+
+      <Link
+        to="/settings/backup"
+        className="flex min-h-14 items-center justify-between rounded-2xl border border-slate-200 px-4 dark:border-slate-800"
+      >
+        <span>
+          <span className="font-medium">Sao lưu</span>
+          <span className="block text-sm text-slate-500">
+            Xuất toàn bộ dữ liệu ra file, hoặc khôi phục
+          </span>
+        </span>
+        <span className="text-slate-400">›</span>
+      </Link>
 
       <Button
         variant="secondary"
