@@ -106,7 +106,7 @@ export default function DeckDetailPage() {
 
       {cards.length > 0 && (
         <Button
-          onClick={() => navigate(`/flashcards/review?deck=${deckId}`)}
+          onClick={() => navigate(`/flashcards/review/session?deck=${deckId}`)}
           className="mt-4 w-full"
         >
           Ôn bộ này

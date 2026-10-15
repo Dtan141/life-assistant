@@ -17,7 +17,7 @@ interface Props {
 export function RatingButtons({ options, onRate, disabled }: Props) {
   return (
     <div className="grid grid-cols-4 gap-2">
-      {RATINGS.map((rating, index) => (
+      {RATINGS.map((rating) => (
         <button
           key={rating}
           type="button"
@@ -30,7 +30,6 @@ export function RatingButtons({ options, onRate, disabled }: Props) {
           <span className="text-xs tabular-nums opacity-70">
             {formatInterval(options[rating].intervalDays)}
           </span>
-          <span className="hidden text-[10px] opacity-50 sm:block">{index + 1}</span>
         </button>
       ))}
     </div>

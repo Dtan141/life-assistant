@@ -8,6 +8,7 @@ import DeckListPage from '@/modules/flashcards/pages/DeckListPage'
 import DeckDetailPage from '@/modules/flashcards/pages/DeckDetailPage'
 import ImportPage from '@/modules/flashcards/pages/ImportPage'
 import ReviewPage from '@/modules/flashcards/pages/ReviewPage'
+import ReviewSetupPage from '@/modules/flashcards/pages/ReviewSetupPage'
 
 export const router = createBrowserRouter([
   {
@@ -20,7 +21,8 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: 'flashcards', element: <DeckListPage /> },
-      { path: 'flashcards/review', element: <ReviewPage /> },
+      { path: 'flashcards/review', element: <ReviewSetupPage /> },
+      { path: 'flashcards/review/session', element: <ReviewPage /> },
       { path: 'flashcards/:deckId', element: <DeckDetailPage /> },
       { path: 'flashcards/:deckId/import', element: <ImportPage /> },
       { path: 'settings', element: <SettingsPage /> },

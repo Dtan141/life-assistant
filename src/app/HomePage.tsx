@@ -40,12 +40,20 @@ export default function HomePage() {
             </p>
 
             <Button
-              onClick={() => navigate('/flashcards/review')}
+              onClick={() => navigate('/flashcards/review/session')}
               disabled={waiting === 0}
               className="mt-4 w-full"
             >
               {waiting === 0 ? 'Không có gì để ôn' : 'Bắt đầu ôn'}
             </Button>
+
+            <button
+              type="button"
+              onClick={() => navigate('/flashcards/review')}
+              className="mt-2 w-full text-sm text-slate-500 underline underline-offset-2"
+            >
+              Chọn bộ, trạng thái và kiểu hỏi
+            </button>
           </section>
 
           <section className="grid grid-cols-4 gap-2 text-center">

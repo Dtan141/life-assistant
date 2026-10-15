@@ -6,9 +6,8 @@ import { cardDoc, reviewLogsCol } from '@/modules/flashcards/data/paths'
 import { RATING_VALUES } from '@/modules/flashcards/domain/srs'
 import type { ReviewRating } from '@/modules/flashcards/domain/srs'
 import type { DailyProgress } from '@/modules/flashcards/domain/session'
+import type { ReviewMode } from '@/modules/flashcards/domain/review-mode'
 import type { Card, CardSrs } from '@/modules/flashcards/domain/card.types'
-
-export type ReviewMode = 'en-vi' | 'vi-en' | 'typing' | 'cloze'
 
 export interface ReviewRecord {
   card: Card

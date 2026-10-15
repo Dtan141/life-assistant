@@ -11,8 +11,19 @@ import { getDailyProgress, saveReview } from '@/modules/flashcards/data/reviews.
 import { buildPracticeSession, buildSession } from '@/modules/flashcards/domain/session'
 import { RATINGS, applyRating, previewRatings } from '@/modules/flashcards/domain/srs'
 import type { ReviewRating } from '@/modules/flashcards/domain/srs'
+import { TypingAnswer } from '@/modules/flashcards/components/TypingAnswer'
+import { checkAnswer } from '@/modules/flashcards/domain/answer-check'
+import type { AnswerVerdict } from '@/modules/flashcards/domain/answer-check'
+import { isReviewMode } from '@/modules/flashcards/domain/review-mode'
+import type { ReviewMode } from '@/modules/flashcards/domain/review-mode'
+import { cardStatus } from '@/modules/flashcards/domain/card-status'
+import type { CardStatus } from '@/modules/flashcards/domain/card-status'
 import type { DailyProgress } from '@/modules/flashcards/domain/session'
 import type { Card } from '@/modules/flashcards/domain/card.types'
+
+const CARD_STATUSES: CardStatus[] = ['new', 'learning', 'due', 'known']
+const isCardStatus = (value: string): value is CardStatus =>
+  (CARD_STATUSES as string[]).includes(value)
 
 export default function ReviewPage() {
   const { user } = useAuth()
@@ -20,8 +31,24 @@ export default function ReviewPage() {
   const { cards, loading, error } = useAllCards()
   const [params] = useSearchParams()
 
-  const deckId = params.get('deck')
   const practice = params.get('mode') === 'practice'
+  const mode: ReviewMode = isReviewMode(params.get('card')) ? params.get('card') as ReviewMode : 'en-vi'
+
+  // `deck` (one, from a deck page) and `decks` (several, from the setup screen)
+  // both land here.
+  const deckFilter = useMemo(() => {
+    const many = params.get('decks')
+    const one = params.get('deck')
+    const ids = many ? many.split(',').filter(Boolean) : one ? [one] : []
+    return ids.length > 0 ? new Set(ids) : null
+  }, [params])
+
+  const statusFilter = useMemo(() => {
+    const raw = params.get('status')
+    if (!raw) return null
+    const allowed = raw.split(',').filter(isCardStatus)
+    return allowed.length > 0 ? new Set<CardStatus>(allowed) : null
+  }, [params])
 
   const [session, setSession] = useState<{ queue: Card[]; heldBack: number } | null>(null)
   const [index, setIndex] = useState(0)
@@ -29,11 +56,18 @@ export default function ReviewPage() {
   const [saving, setSaving] = useState(false)
   const [done, setDone] = useState({ reviewed: 0, again: 0 })
   const [saveError, setSaveError] = useState<string | null>(null)
+  const [typed, setTyped] = useState('')
+  const [verdict, setVerdict] = useState<AnswerVerdict | null>(null)
   const built = useRef(false)
 
   const scope = useMemo(
-    () => (deckId ? cards.filter((card) => card.deckId === deckId) : cards),
-    [cards, deckId],
+    () =>
+      cards.filter(
+        (card) =>
+          (!deckFilter || deckFilter.has(card.deckId)) &&
+          (!statusFilter || statusFilter.has(cardStatus(card))),
+      ),
+    [cards, deckFilter, statusFilter],
   )
 
   /**
@@ -83,7 +117,7 @@ export default function ReviewPage() {
       try {
         if (!practice) {
           const srs = applyRating(current.srs, rating, settings.desiredRetention)
-          await saveReview(user.uid, { card: current, rating, srs, mode: 'en-vi' })
+          await saveReview(user.uid, { card: current, rating, srs, mode })
         }
         setDone((prev) => ({
           reviewed: prev.reviewed + 1,
@@ -99,6 +133,8 @@ export default function ReviewPage() {
         })
         setIndex((prev) => (rating === 'again' ? prev : prev + 1))
         setRevealed(false)
+        setTyped('')
+        setVerdict(null)
       } catch (err) {
         console.error('Failed to save review', err)
         setSaveError('Không lưu được kết quả. Kiểm tra mạng rồi thử lại.')
@@ -106,7 +142,7 @@ export default function ReviewPage() {
         setSaving(false)
       }
     },
-    [user, current, saving, practice, settings.desiredRetention, index],
+    [user, current, saving, practice, settings.desiredRetention, index, mode],
   )
 
   // Kept in a ref so the key listener is installed once rather than on every
@@ -168,10 +204,10 @@ export default function ReviewPage() {
         )}
         <div className="flex flex-col gap-2 pt-2">
           <Link
-            to={deckId ? `/flashcards/review?deck=${deckId}&mode=practice` : '/flashcards/review?mode=practice'}
+            to="/flashcards/review"
             className="text-sm text-slate-500 underline underline-offset-2"
           >
-            Luyện tự do (không ảnh hưởng lịch ôn)
+            Ôn thêm — chọn bộ, trạng thái và kiểu hỏi
           </Link>
           <Link to="/" className="text-sm text-slate-500 underline underline-offset-2">
             Về trang chủ
@@ -203,7 +239,25 @@ export default function ReviewPage() {
         />
       </div>
 
-      <ReviewCard card={current} revealed={revealed} onReveal={() => setRevealed(true)} />
+      <ReviewCard
+        card={current}
+        mode={mode}
+        revealed={revealed}
+        onReveal={() => setRevealed(true)}
+      >
+        {mode === 'typing' && (
+          <TypingAnswer
+            value={typed}
+            verdict={verdict}
+            term={current.term}
+            onChange={setTyped}
+            onSubmit={() => {
+              setVerdict(checkAnswer(typed, current.term))
+              setRevealed(true)
+            }}
+          />
+        )}
+      </ReviewCard>
 
       {saveError && (
         <p role="alert" className="mt-3 text-sm text-red-600 dark:text-red-400">
@@ -218,6 +272,10 @@ export default function ReviewPage() {
             onRate={(rating) => void handleRate(rating)}
             disabled={saving}
           />
+        ) : mode === 'typing' ? (
+          <Button variant="secondary" onClick={() => setRevealed(true)} className="w-full">
+            Chịu, xem đáp án
+          </Button>
         ) : (
           <Button onClick={() => setRevealed(true)} className="w-full">
             Lật thẻ
