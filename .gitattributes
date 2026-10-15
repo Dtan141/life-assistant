@@ -1,0 +1,4 @@
+* text=auto
+
+# Test fixtures must keep byte-for-byte stable line endings across platforms.
+*.tsv text eol=lf
