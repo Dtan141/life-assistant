@@ -1,4 +1,4 @@
-import { deleteToken, getMessaging, getToken, isSupported } from 'firebase/messaging'
+import { getMessaging, getToken, isSupported } from 'firebase/messaging'
 import { app } from '@/shared/firebase/app'
 import { isIOS, isStandalone } from '@/shared/lib/platform'
 import { withTimeout } from '@/shared/lib/timeout'
@@ -77,30 +77,22 @@ export async function registerForPush(): Promise<string | null> {
 }
 
 /**
- * Revokes the token with FCM.
+ * Stops this device receiving reminders.
  *
- * Given its own timeout because deleteToken() can hang rather than reject when
- * the subscription is already gone — after a reinstall, or a token revoked
- * from another device. Either way the local record is what the UI reflects, so
- * a stuck SDK call must not freeze the switch.
+ * Deliberately does not call deleteToken(): that makes the SDK register its
+ * own firebase-messaging-sw.js, which this app does not ship because the push
+ * handler lives in src/sw.ts. The request 404s to index.html and fails on MIME
+ * type, so the revocation never happened anyway.
+ *
+ * Unsubscribing the browser's push subscription is what actually stops
+ * delivery, and the Firestore record — which the reminder job reads — is
+ * removed by the caller. The token left behind at Google's end becomes
+ * undeliverable, and the sender prunes it when FCM reports UNREGISTERED.
  */
-export async function unregisterFromPush(timeoutMs = 4000): Promise<void> {
-  await withTimeout(deleteToken(getMessaging(app)), timeoutMs, 'Firebase Messaging').catch(
-    (err: unknown) => {
-      // Best effort only: the Firestore record is what stops the reminders.
-      console.warn('Could not revoke push token with FCM', err)
-    },
-  )
-
-  // Leaving the browser subscription behind is what makes the next getToken()
-  // hang, so tear it down whether or not the SDK managed its half.
-  try {
-    const registration = await navigator.serviceWorker.getRegistration()
-    const existing = await registration?.pushManager.getSubscription()
-    await existing?.unsubscribe()
-  } catch (err) {
-    console.warn('Could not clear push subscription', err)
-  }
+export async function unregisterFromPush(): Promise<void> {
+  const registration = await navigator.serviceWorker.getRegistration()
+  const existing = await registration?.pushManager.getSubscription()
+  await existing?.unsubscribe()
 }
 
 const TOKEN_KEY = 'life-assistant:push-token'
