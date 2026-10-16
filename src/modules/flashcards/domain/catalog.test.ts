@@ -19,13 +19,16 @@ describe('the TOEIC catalogue file', () => {
     expect(parsed.stats.duplicate).toBe(0)
   })
 
-  it('names itself and its topics', () => {
+  it('names itself, and numbers its topics in order', () => {
     expect(parsed.name).toBe('TOEIC 600')
-    expect(parsed.decks.map((d) => d.name)).toEqual([
-      '01 — Contracts',
-      '02 — Marketing',
-      '03 — Warranties',
-    ])
+    // Asserting the shape rather than the list, so adding topics does not mean
+    // editing this test every time.
+    const numbers = parsed.decks.map((deck) => {
+      expect(deck.name, deck.name).toMatch(/^\d{2} — .+/)
+      return Number(deck.name.slice(0, 2))
+    })
+    expect(numbers).toEqual([...numbers].sort((a, b) => a - b))
+    expect(new Set(numbers).size, 'trùng số thứ tự chủ đề').toBe(numbers.length)
   })
 
   it('fills every column a card is meant to have', () => {
@@ -35,8 +38,17 @@ describe('the TOEIC catalogue file', () => {
       expect(card.pronunciation, `IPA of ${card.term}`).toMatch(/^\/.+\/$/)
       expect(card.partOfSpeech, `part of speech of ${card.term}`).not.toBe('')
       expect(card.example, `example of ${card.term}`).not.toBe('')
-      expect(card.synonyms.length, `synonyms of ${card.term}`).toBeGreaterThan(0)
     }
+  })
+
+  it('teaches something beyond a bare gloss', () => {
+    // Not "every card has synonyms": a printer has none, and inventing one
+    // would be worse than leaving it out. What every card must carry is some
+    // extra handle — synonyms, a word family, a collocation or a warning.
+    const bare = cards.filter(
+      (card) => card.synonyms.length === 0 && !/[·—]/.test(card.definition),
+    )
+    expect(bare.map((c) => c.term)).toEqual([])
   })
 
   it('uses the term in its own example, so cloze mode works', () => {
