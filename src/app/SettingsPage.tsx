@@ -67,7 +67,9 @@ function ReviewSettingsForm({ settings }: { settings: UserSettings }) {
   const { user } = useAuth()
   const [newPerDay, setNewPerDay] = useState(String(settings.newPerDay))
   const [maxReviews, setMaxReviews] = useState(String(settings.maxReviewsPerDay))
-  const [retention, setRetention] = useState(String(settings.desiredRetention))
+  // Shown as a percentage. "0.9" is how FSRS states it and means nothing to
+  // someone meeting the setting for the first time.
+  const [retention, setRetention] = useState(String(Math.round(settings.desiredRetention * 100)))
   const [saved, setSaved] = useState(false)
   const [busy, setBusy] = useState(false)
 
@@ -79,7 +81,7 @@ function ReviewSettingsForm({ settings }: { settings: UserSettings }) {
       await updateSettings(user.uid, {
         newPerDay: Math.max(0, Number(newPerDay) || 0),
         maxReviewsPerDay: Math.max(0, Number(maxReviews) || 0),
-        desiredRetention: Math.min(0.98, Math.max(0.7, Number(retention) || 0.9)),
+        desiredRetention: Math.min(0.98, Math.max(0.7, (Number(retention) || 90) / 100)),
       })
       setSaved(true)
     } catch (err) {
@@ -92,37 +94,41 @@ function ReviewSettingsForm({ settings }: { settings: UserSettings }) {
   return (
     <section className="space-y-4">
       <h2 className="font-semibold">Ôn tập</h2>
+      <p className="-mt-2 text-sm text-slate-500">
+        Mấy con số này quyết định mỗi ngày bạn phải học bao nhiêu. Chưa rõ thì cứ để
+        nguyên — mặc định hợp với phần lớn mọi người.
+      </p>
 
         <TextField
-          label="Thẻ mới mỗi ngày"
+          label="Số từ mới mỗi ngày"
           type="number"
           inputMode="numeric"
           min={0}
           value={newPerDay}
           onChange={(e) => setNewPerDay(e.target.value)}
-          hint="Số từ mới được đưa vào học mỗi ngày."
+          hint="Mỗi ngày app chỉ đưa ra tối đa chừng này từ bạn chưa từng gặp, dù thư viện có bao nhiêu từ đi nữa. Đặt thấp xuống nếu thấy quá tải."
         />
 
         <TextField
-          label="Lượt ôn tối đa mỗi ngày"
+          label="Số lượt ôn tối đa mỗi ngày"
           type="number"
           inputMode="numeric"
           min={0}
           value={maxReviews}
           onChange={(e) => setMaxReviews(e.target.value)}
-          hint="Hạn mức này tách riêng với thẻ mới, nên nợ ôn không chặn việc học từ mới."
+          hint="Giới hạn riêng cho những từ đã học. Nhờ nó, nghỉ một tuần rồi quay lại cũng không bị dồn hàng trăm thẻ vào một buổi. Không ảnh hưởng tới số từ mới ở trên."
         />
 
         <TextField
-          label="Tỉ lệ nhớ mong muốn"
+          label="Mức độ nhớ mong muốn"
           type="number"
-          inputMode="decimal"
-          step={0.01}
-          min={0.7}
-          max={0.98}
+          inputMode="numeric"
+          step={1}
+          min={70}
+          max={98}
           value={retention}
           onChange={(e) => setRetention(e.target.value)}
-          hint="0.9 là mặc định. Cao hơn thì ôn dày hơn và nhớ chắc hơn, nhưng tốn thời gian hơn."
+          hint="Tính bằng phần trăm. Đặt càng cao thì app cho bạn gặp lại từ càng sớm — nhớ chắc hơn nhưng mỗi ngày tốn thời gian hơn. 90 là mặc định."
         />
 
         <div className="flex items-center gap-3">
