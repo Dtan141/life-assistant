@@ -12,11 +12,15 @@ import { buildImportPlan } from '@/modules/flashcards/domain/import-plan'
 export const CATALOG_URL = '/catalog/toeic-600.tsv'
 
 /**
- * Raised when the shipped catalogue gains topics. Each account records the
- * version it received, so new topics can be added later without re-creating
- * decks the user already has — or resurrecting ones they deleted.
+ * Raised whenever the shipped catalogue gains topics — otherwise accounts that
+ * already recorded a version never see them.
+ *
+ * Seeding then runs again and adds only what is missing, so the topics someone
+ * already has keep their review history, and ones they deleted stay deleted.
+ *
+ * 1: topics 1-3.  2: topics 4-28.
  */
-export const CATALOG_VERSION = 1
+export const CATALOG_VERSION = 2
 
 export interface SeedOutcome {
   decks: number
