@@ -38,6 +38,15 @@ export async function registerForPush(): Promise<string | null> {
   const permission = await Notification.requestPermission()
   if (permission !== 'granted') return null
 
+  // `ready` waits forever when nothing is registered rather than rejecting, so
+  // check first and say which it is: no worker at all is a different problem
+  // from one that is slow to activate.
+  if (!(await navigator.serviceWorker.getRegistration())) {
+    throw new Error(
+      'Chưa có service worker nào được đăng ký cho trang này. Tải lại trang rồi thử lại.',
+    )
+  }
+
   const registration = await withTimeout(
     navigator.serviceWorker.ready,
     8000,

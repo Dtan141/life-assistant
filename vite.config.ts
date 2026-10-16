@@ -50,7 +50,15 @@ export default defineConfig({
         // Firebase's SDK is large and lands in the worker bundle too.
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
       },
-      devOptions: { enabled: false, type: 'module' },
+      devOptions: {
+        // Push needs a registered service worker, so `npm run dev` has to have
+        // one too — otherwise navigator.serviceWorker.ready never resolves and
+        // reminders cannot be tested without a full build.
+        enabled: true,
+        type: 'module',
+        navigateFallback: 'index.html',
+        suppressWarnings: true,
+      },
     }),
   ],
 })
