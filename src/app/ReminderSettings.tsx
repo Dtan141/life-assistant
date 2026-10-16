@@ -151,7 +151,7 @@ export function ReminderSettings({ settings }: { settings: UserSettings }) {
   }
 
   return (
-    <Section title="Nhắc nhở ôn tập">
+    <Section title="Nhắc nhở ôn tập" separated>
       {blocker === 'checking' ? (
         <p className="text-sm text-slate-500">Đang kiểm tra…</p>
       ) : blocker ? (

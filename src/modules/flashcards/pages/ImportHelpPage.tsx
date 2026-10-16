@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Button } from '@/shared/ui/Button'
 import { Note, Panel } from '@/shared/ui/Panel'
 import { Page, PageHeader, Section } from '@/shared/ui/Page'
+import { useBack } from '@/shared/ui/useBack'
 import { COLUMN_LABELS } from '@/modules/flashcards/domain/tsv-parser'
 
 const COLUMN_NOTES: string[] = [
@@ -48,6 +49,8 @@ Danh sách của tôi:`
 
 export default function ImportHelpPage() {
   const [copied, setCopied] = useState<'example' | 'prompt' | null>(null)
+  // Reachable from the deck list, an empty deck and settings alike.
+  const goBack = useBack('/flashcards')
 
   async function copy(text: string, which: 'example' | 'prompt') {
     try {
@@ -63,7 +66,7 @@ export default function ImportHelpPage() {
     <Page>
       <PageHeader
         title="Cách chuẩn bị file nhập"
-        back={{ to: '/flashcards', label: 'Bộ thẻ' }}
+        back={{ label: 'Quay lại', onBack: goBack }}
         subtitle="Mỗi dòng một thẻ, các cột cách nhau bằng phím Tab."
       />
 

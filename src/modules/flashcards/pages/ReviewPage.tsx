@@ -6,6 +6,7 @@ import { Button } from '@/shared/ui/Button'
 import { Spinner } from '@/shared/ui/Spinner'
 import { Note } from '@/shared/ui/Panel'
 import { Page } from '@/shared/ui/Page'
+import { useBack } from '@/shared/ui/useBack'
 import { RatingButtons } from '@/modules/flashcards/components/RatingButtons'
 import { ReviewCard } from '@/modules/flashcards/components/ReviewCard'
 import { useAllCards } from '@/modules/flashcards/data/useAllCards'
@@ -33,6 +34,8 @@ export default function ReviewPage() {
   const { settings, loading: settingsLoading } = useSettings()
   const { cards, loading, error } = useAllCards()
   const [params] = useSearchParams()
+  // A session can start from the home screen, a deck, or the setup screen.
+  const exitSession = useBack('/flashcards/review')
 
   const practice = params.get('mode') === 'practice'
   const mode: ReviewMode = isReviewMode(params.get('card')) ? params.get('card') as ReviewMode : 'en-vi'
@@ -246,9 +249,13 @@ export default function ReviewPage() {
           {position} / {total}
         </span>
         {practice && <span className="text-amber-700 dark:text-amber-500">Luyện tự do</span>}
-        <Link to="/flashcards" className="underline underline-offset-2">
+        <button
+          type="button"
+          onClick={exitSession}
+          className="underline underline-offset-2"
+        >
           Thoát
-        </Link>
+        </button>
       </div>
 
       <div className="mb-4 h-1 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
