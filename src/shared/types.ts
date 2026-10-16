@@ -22,7 +22,10 @@ export interface UserProfile {
 export const DEFAULT_SETTINGS: UserSettings = {
   newPerDay: 20,
   maxReviewsPerDay: 200,
-  desiredRetention: 0.9,
+  // 0.8 rather than FSRS's 0.9: fewer reviews per day for the same words,
+  // which matters more than the last few points of recall for someone fitting
+  // this around other work. No longer exposed as a setting.
+  desiredRetention: 0.8,
   reminderTime: '20:00',
   timezone: 'Asia/Ho_Chi_Minh',
 }

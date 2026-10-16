@@ -100,15 +100,13 @@ export async function setDeckInPlan(
   deckId: string,
   inPlan: boolean,
 ): Promise<void> {
-  await updateDoc(deckDoc(uid, deckId), { inPlan, updatedAt: now() })
-}
-
-export async function setDeckArchived(
-  uid: string,
-  deckId: string,
-  archived: boolean,
-): Promise<void> {
-  await updateDoc(deckDoc(uid, deckId), { archived, updatedAt: now() })
+  await updateDoc(deckDoc(uid, deckId), {
+    inPlan,
+    // Archiving was removed; a deck left over from it would otherwise stay out
+    // of the schedule with nothing on screen explaining why.
+    ...(inPlan ? { archived: false } : {}),
+    updatedAt: now(),
+  })
 }
 
 /**

@@ -5,18 +5,11 @@ import type { Deck } from '@/modules/flashcards/domain/card.types'
 interface Props {
   deck: Deck
   onEdit: () => void
-  onArchiveToggle: () => void
   onDelete: () => void
   onPlanToggle: () => void
 }
 
-export function DeckCard({
-  deck,
-  onEdit,
-  onArchiveToggle,
-  onDelete,
-  onPlanToggle,
-}: Props) {
+export function DeckCard({ deck, onEdit, onDelete, onPlanToggle }: Props) {
   return (
     <li className="overflow-hidden rounded-2xl border border-slate-200 transition dark:border-slate-800">
       <Link
@@ -55,7 +48,9 @@ export function DeckCard({
           ) : (
             <span className="text-slate-400">○ Chỉ có trong thư viện</span>
           )}
-          {deck.archived && <span className="text-slate-400">Đã lưu trữ</span>}
+          {deck.archived && (
+            <span className="text-slate-400">Đã lưu trữ (cài đặt cũ)</span>
+          )}
         </p>
       </Link>
 
@@ -69,11 +64,6 @@ export function DeckCard({
         <div className="flex-1">
           <QuietButton onClick={onEdit} full>
             Sửa
-          </QuietButton>
-        </div>
-        <div className="flex-1">
-          <QuietButton onClick={onArchiveToggle} full>
-            {deck.archived ? 'Bỏ lưu trữ' : 'Lưu trữ'}
           </QuietButton>
         </div>
         <div className="flex-1">

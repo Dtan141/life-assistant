@@ -14,7 +14,6 @@ import { useDecks } from '@/modules/flashcards/data/useDecks'
 import {
   createDeck,
   deleteDeckWithCards,
-  setDeckArchived,
   setDeckInPlan,
   updateDeck,
 } from '@/modules/flashcards/data/decks.repo'
@@ -25,16 +24,14 @@ type Editing = { mode: 'create' } | { mode: 'edit'; deck: Deck } | null
 export default function DeckListPage() {
   const { user } = useAuth()
   const { decks, loading, error } = useDecks()
-  const [showArchived, setShowArchived] = useState(false)
   const [editing, setEditing] = useState<Editing>(null)
   const [deleting, setDeleting] = useState<Deck | null>(null)
   const [busy, setBusy] = useState(false)
   const [reimporting, setReimporting] = useState(false)
 
-  const visible = useMemo(
-    () => (showArchived ? decks : decks.filter((deck) => !deck.archived)),
-    [decks, showArchived],
-  )
+  // Nothing is hidden now that archiving is gone: a deck is either in the plan
+  // or only in the library, and both are visible.
+  const visible = decks
 
   /**
    * Standalone decks first, then each collection as one collapsed row. A
@@ -54,16 +51,12 @@ export default function DeckListPage() {
     }
     return { loose, collections: [...collections.entries()] }
   }, [visible])
-  const archivedCount = decks.length - decks.filter((deck) => !deck.archived).length
 
   if (!user) return null
 
   function deckActions(deck: Deck) {
     return {
       onEdit: () => setEditing({ mode: 'edit', deck }),
-      onArchiveToggle: () => {
-        if (user) void setDeckArchived(user.uid, deck.id, !deck.archived)
-      },
       onDelete: () => setDeleting(deck),
       onPlanToggle: () => {
         if (user) void setDeckInPlan(user.uid, deck.id, !deck.inPlan)
@@ -152,16 +145,6 @@ export default function DeckListPage() {
             {reimporting ? 'Đang nhập…' : 'Nhập lại bộ sưu tập TOEIC 600'}
           </Button>
         </div>
-      )}
-
-      {archivedCount > 0 && (
-        <Button
-          variant="ghost"
-          onClick={() => setShowArchived((prev) => !prev)}
-          className="mt-4 w-full"
-        >
-          {showArchived ? 'Ẩn bộ đã lưu trữ' : `Hiện ${archivedCount} bộ đã lưu trữ`}
-        </Button>
       )}
 
       <Sheet

@@ -67,9 +67,6 @@ function ReviewSettingsForm({ settings }: { settings: UserSettings }) {
   const { user } = useAuth()
   const [newPerDay, setNewPerDay] = useState(String(settings.newPerDay))
   const [maxReviews, setMaxReviews] = useState(String(settings.maxReviewsPerDay))
-  // Shown as a percentage. "0.9" is how FSRS states it and means nothing to
-  // someone meeting the setting for the first time.
-  const [retention, setRetention] = useState(String(Math.round(settings.desiredRetention * 100)))
   const [saved, setSaved] = useState(false)
   const [busy, setBusy] = useState(false)
 
@@ -81,7 +78,6 @@ function ReviewSettingsForm({ settings }: { settings: UserSettings }) {
       await updateSettings(user.uid, {
         newPerDay: Math.max(0, Number(newPerDay) || 0),
         maxReviewsPerDay: Math.max(0, Number(maxReviews) || 0),
-        desiredRetention: Math.min(0.98, Math.max(0.7, (Number(retention) || 90) / 100)),
       })
       setSaved(true)
     } catch (err) {
@@ -93,11 +89,7 @@ function ReviewSettingsForm({ settings }: { settings: UserSettings }) {
 
   return (
     <section className="space-y-4">
-      <h2 className="font-semibold">Ôn tập</h2>
-      <p className="-mt-2 text-sm text-slate-500">
-        Mấy con số này quyết định mỗi ngày bạn phải học bao nhiêu. Chưa rõ thì cứ để
-        nguyên — mặc định hợp với phần lớn mọi người.
-      </p>
+      <h2 className="font-semibold">Cài đặt chung</h2>
 
         <TextField
           label="Số từ mới mỗi ngày"
@@ -106,7 +98,7 @@ function ReviewSettingsForm({ settings }: { settings: UserSettings }) {
           min={0}
           value={newPerDay}
           onChange={(e) => setNewPerDay(e.target.value)}
-          hint="Mỗi ngày app chỉ đưa ra tối đa chừng này từ bạn chưa từng gặp, dù thư viện có bao nhiêu từ đi nữa. Đặt thấp xuống nếu thấy quá tải."
+          hint="Mỗi ngày lấy tối đa chừng này từ chưa học, từ các bộ trong kế hoạch học."
         />
 
         <TextField
@@ -116,19 +108,7 @@ function ReviewSettingsForm({ settings }: { settings: UserSettings }) {
           min={0}
           value={maxReviews}
           onChange={(e) => setMaxReviews(e.target.value)}
-          hint="Giới hạn riêng cho những từ đã học. Nhờ nó, nghỉ một tuần rồi quay lại cũng không bị dồn hàng trăm thẻ vào một buổi. Không ảnh hưởng tới số từ mới ở trên."
-        />
-
-        <TextField
-          label="Mức độ nhớ mong muốn"
-          type="number"
-          inputMode="numeric"
-          step={1}
-          min={70}
-          max={98}
-          value={retention}
-          onChange={(e) => setRetention(e.target.value)}
-          hint="Tính bằng phần trăm. Đặt càng cao thì app cho bạn gặp lại từ càng sớm — nhớ chắc hơn nhưng mỗi ngày tốn thời gian hơn. 90 là mặc định."
+          hint="Giới hạn lượt ôn các từ đã học, tránh dồn quá nhiều sau nhiều ngày nghỉ."
         />
 
         <div className="flex items-center gap-3">

@@ -36,7 +36,6 @@ export function ReminderSettings({ settings }: { settings: UserSettings }) {
   const [reminderTime, setReminderTime] = useState(settings.reminderTime)
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
-  const [testing, setTesting] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -103,48 +102,6 @@ export function ReminderSettings({ settings }: { settings: UserSettings }) {
     }
   }
 
-  /**
-   * Asks the reminder job to run for this account right now.
-   *
-   * Without it the only way to know whether the service account, Firestore,
-   * FCM and the phone all line up is to wait until evening and see.
-   */
-  async function sendTest() {
-    if (!user) return
-    setTesting(true)
-    setMessage(null)
-    try {
-      const response = await fetch('/__/reminders/test', {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${await user.getIdToken()}` },
-      })
-
-      const body = await response.text()
-      if (!response.ok) {
-        // The endpoint lives in the Worker, which `npm run dev` does not run;
-        // there, the request falls through to index.html.
-        setMessage(
-          body.startsWith('<')
-            ? 'Nút này chỉ chạy trên bản deploy, không chạy ở localhost.'
-            : `Gửi thử thất bại. ${body}`,
-        )
-        return
-      }
-
-      const summary = JSON.parse(body) as { delivered: number; pruned: number }
-      setMessage(
-        summary.delivered > 0
-          ? `Đã gửi tới ${summary.delivered} thiết bị. Thông báo sẽ tới trong vài giây.`
-          : 'Không gửi được tới thiết bị nào. Kiểm tra lại nút bật ở trên.',
-      )
-    } catch (err) {
-      console.error('Test reminder failed', err)
-      setMessage(`Gửi thử thất bại. ${err instanceof Error ? err.message : String(err)}`)
-    } finally {
-      setTesting(false)
-    }
-  }
-
   async function saveTime(value: string) {
     setReminderTime(value)
     if (user) await updateSettings(user.uid, { reminderTime: value })
@@ -159,9 +116,7 @@ export function ReminderSettings({ settings }: { settings: UserSettings }) {
       ) : (
         <div className="space-y-4">
           <p className="text-sm text-slate-500">
-            Đến giờ bạn chọn, nếu còn thẻ chưa ôn thì máy sẽ báo. Không còn thẻ nào thì
-            app im lặng. Phải bật riêng trên <strong>từng thiết bị</strong> — bật ở
-            iPhone không tự bật ở máy tính.
+            Bật để nhận thông báo nhắc ôn. Phải bật riêng trên từng thiết bị.
           </p>
 
           <Button
@@ -182,19 +137,8 @@ export function ReminderSettings({ settings }: { settings: UserSettings }) {
             type="time"
             value={reminderTime}
             onChange={(e) => void saveTime(e.target.value)}
-            hint="Tự lưu ngay khi bạn đổi, không cần bấm gì. Thông báo có thể tới muộn vài phút so với giờ này."
+            hint="Thông báo có thể tới muộn vài phút so với giờ này."
           />
-
-          {enabled && (
-            <Button
-              variant="secondary"
-              onClick={() => void sendTest()}
-              disabled={testing}
-              className="w-full"
-            >
-              {testing ? 'Đang gửi…' : 'Gửi thử một thông báo ngay'}
-            </Button>
-          )}
 
           {message && (
             <Note
