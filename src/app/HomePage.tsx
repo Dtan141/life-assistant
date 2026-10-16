@@ -1,5 +1,5 @@
-import { useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useMemo, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/shared/auth/useAuth'
 import { useSettings } from '@/shared/settings/useSettings'
 import { Button } from '@/shared/ui/Button'
@@ -7,6 +7,12 @@ import { Spinner } from '@/shared/ui/Spinner'
 import { useAllCards } from '@/modules/flashcards/data/useAllCards'
 import { countByStatus } from '@/modules/flashcards/domain/card-status'
 import { countDue } from '@/modules/flashcards/domain/session'
+import { computeStreak } from '@/modules/flashcards/domain/stats'
+import { listRecentLogs } from '@/modules/flashcards/data/reviews.repo'
+import type { ReviewLogEntry } from '@/modules/flashcards/domain/backup'
+
+/** Enough history to tell the current streak without reading the whole log. */
+const STREAK_WINDOW_DAYS = 90
 
 export default function HomePage() {
   const { user } = useAuth()
@@ -14,6 +20,25 @@ export default function HomePage() {
   const { cards, loading } = useAllCards()
   const navigate = useNavigate()
 
+  const [logs, setLogs] = useState<ReviewLogEntry[]>([])
+
+  useEffect(() => {
+    if (!user) return
+    let cancelled = false
+    const since = new Date()
+    since.setDate(since.getDate() - STREAK_WINDOW_DAYS)
+    void listRecentLogs(user.uid, since)
+      .then((result) => {
+        if (!cancelled) setLogs(result)
+      })
+      // The streak is decoration; failing to read it must not break the page.
+      .catch((err) => console.error('Failed to load streak', err))
+    return () => {
+      cancelled = true
+    }
+  }, [user])
+
+  const streak = useMemo(() => computeStreak(logs), [logs])
   const firstName = user?.displayName?.split(' ').pop() ?? ''
   const due = useMemo(() => countDue(cards), [cards])
   const counts = useMemo(() => countByStatus(cards), [cards])
@@ -62,6 +87,24 @@ export default function HomePage() {
             <Tile value={counts.due} label="Cần ôn" />
             <Tile value={counts.known} label="Đã thuộc" />
           </section>
+
+          <Link
+            to="/stats"
+            className="flex min-h-14 items-center justify-between rounded-2xl border border-slate-200 px-4 dark:border-slate-800"
+          >
+            <span>
+              <span className="font-medium">Thống kê</span>
+              {streak.current > 0 && (
+                <span className="ml-2 text-sm text-emerald-600 dark:text-emerald-400">
+                  🔥 {streak.current} ngày liên tiếp
+                </span>
+              )}
+              <span className="block text-sm text-slate-500">
+                Lịch đến hạn, tỉ lệ nhớ, thẻ hay quên
+              </span>
+            </span>
+            <span className="text-slate-400">›</span>
+          </Link>
 
           {cards.length === 0 && (
             <p className="text-center text-sm text-slate-500">

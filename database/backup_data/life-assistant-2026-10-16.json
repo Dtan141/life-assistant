@@ -1,0 +1,1871 @@
+{
+  "format": "life-assistant-backup",
+  "version": 1,
+  "exportedAt": "2026-10-16T00:13:19.365Z",
+  "settings": {
+    "newPerDay": 20,
+    "maxReviewsPerDay": 200,
+    "desiredRetention": 0.9,
+    "reminderTime": "20:00",
+    "timezone": "Asia/Saigon"
+  },
+  "decks": [
+    {
+      "id": "7AHkHwuYbx3K5isNC2sQ",
+      "name": "TEST_CASE",
+      "description": "",
+      "tags": [],
+      "sourceUrl": "",
+      "cardCount": 0,
+      "createdAt": "2026-10-15T16:53:51.776Z",
+      "updatedAt": "2026-10-15T16:53:51.776Z",
+      "archived": false
+    },
+    {
+      "id": "TjEU0dm3DSziObV2FqpN",
+      "name": "Study4-Lis-Eagles",
+      "description": "",
+      "tags": [],
+      "sourceUrl": "",
+      "cardCount": 62,
+      "createdAt": "2026-10-15T15:26:20.261Z",
+      "updatedAt": "2026-10-15T15:57:28.272Z",
+      "archived": false
+    }
+  ],
+  "cards": [
+    {
+      "id": "24aCAse8nQP4sNA9njzp",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "conflict",
+      "termLower": "conflict",
+      "definition": "xung đột, mâu thuẫn — have conflicts over/about sth (TN: harmony, agreement)",
+      "pronunciation": "/ˈkɑːnflɪkt/ (n), /kənˈflɪkt/ (v)",
+      "partOfSpeech": "n, v",
+      "example": "Farmers often come into conflict with conservationists over the eagles.",
+      "synonyms": [
+        "dispute",
+        "clash",
+        "friction"
+      ],
+      "antonyms": [
+        "harmony",
+        "agreement"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T16:15:46.655Z",
+      "srs": {
+        "due": "2026-10-23T16:15:46.655Z",
+        "stability": 8.2956,
+        "difficulty": 1,
+        "reps": 1,
+        "lapses": 0,
+        "state": "review",
+        "lastReview": "2026-10-15T16:15:46.655Z"
+      }
+    },
+    {
+      "id": "4jkTQjq0CgKJUWyOw3rB",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "method",
+      "termLower": "method",
+      "definition": "phương pháp · methodical (adj), methodology (n)",
+      "pronunciation": "/ˈmeθəd/",
+      "partOfSpeech": "n",
+      "example": "No single method works in every village.",
+      "synonyms": [
+        "way",
+        "technique",
+        "approach"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "6pzh0KNv5geuY2tpysR8",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "threat",
+      "termLower": "threat",
+      "definition": "mối đe dọa — a threat TO sth, under threat from · threaten (v)",
+      "pronunciation": "/θret/",
+      "partOfSpeech": "n",
+      "example": "Illegal poisoning is a serious threat to eagles.",
+      "synonyms": [
+        "danger",
+        "risk",
+        "menace"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "7GoNFV5WJ6rDADfkKvVp",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "small-scale",
+      "termLower": "small-scale",
+      "definition": "quy mô nhỏ (TN: large-scale)",
+      "pronunciation": "/ˌsmɔːl ˈskeɪl/",
+      "partOfSpeech": "adj",
+      "example": "Small-scale farmers lose the most when eagles take their chickens.",
+      "synonyms": [
+        "modest",
+        "limited"
+      ],
+      "antonyms": [
+        "large-scale"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "8ozbyXbJ7vP2GrorZTKk",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "predator",
+      "termLower": "predator",
+      "definition": "kẻ săn mồi (TN: prey) · predatory (adj), predation (n)",
+      "pronunciation": "/ˈpredətər/",
+      "partOfSpeech": "n",
+      "example": "Eagles are top predators with few natural enemies.",
+      "synonyms": [
+        "hunter"
+      ],
+      "antonyms": [
+        "prey"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "9uPw3Eait3LlaIJdXdHE",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "wildlife",
+      "termLower": "wildlife",
+      "definition": "động vật hoang dã (không đếm được) (TN: livestock)",
+      "pronunciation": "/ˈwaɪldlaɪf/",
+      "partOfSpeech": "n",
+      "example": "The new road is a danger to local wildlife.",
+      "synonyms": [
+        "fauna",
+        "wild animals"
+      ],
+      "antonyms": [
+        "livestock"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "BPpRlZA83d0dia5gDU7H",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "bird of prey",
+      "termLower": "bird of prey",
+      "definition": "chim săn mồi — số nhiều: birds of prey (TN: prey = con mồi)",
+      "pronunciation": "/ˌbɜːrd əv ˈpreɪ/",
+      "partOfSpeech": "n",
+      "example": "Eagles are birds of prey that feed on small mammals.",
+      "synonyms": [
+        "raptor"
+      ],
+      "antonyms": [
+        "prey"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T16:13:34.459Z",
+      "srs": {
+        "due": "2026-10-23T16:13:34.459Z",
+        "stability": 8.2956,
+        "difficulty": 1,
+        "reps": 1,
+        "lapses": 0,
+        "state": "review",
+        "lastReview": "2026-10-15T16:13:34.459Z"
+      }
+    },
+    {
+      "id": "DJSqNFYTmw5Tjt9iFzXB",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "key role",
+      "termLower": "key role",
+      "definition": "vai trò then chốt — X PLAYS a key role IN V-ing",
+      "pronunciation": "/kiː roʊl/",
+      "partOfSpeech": "phr",
+      "example": "Eagles play a key role in controlling rats.",
+      "synonyms": [
+        "crucial role",
+        "vital role"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "E0o5UxWfceVOP5qPcTLc",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "relatively",
+      "termLower": "relatively",
+      "definition": "tương đối — đi với tính từ mức độ: relatively rare/cheap/accurate",
+      "pronunciation": "/ˈrelətɪvli/",
+      "partOfSpeech": "adv",
+      "example": "Eagle attacks on people are relatively rare.",
+      "synonyms": [
+        "comparatively",
+        "fairly",
+        "quite"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "EASuN5otjK3brzkH89PU",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "conservation",
+      "termLower": "conservation",
+      "definition": "sự bảo tồn · conserve (v), conservationist (n)",
+      "pronunciation": "/ˌkɑːnsərˈveɪʃn/",
+      "partOfSpeech": "n",
+      "example": "Conservation efforts have doubled the eagle population.",
+      "synonyms": [
+        "preservation",
+        "protection"
+      ],
+      "antonyms": [
+        "destruction",
+        "waste"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [
+        "can-on-ky"
+      ],
+      "createdAt": "2026-10-15T15:55:23.128Z",
+      "updatedAt": "2026-10-15T16:15:18.016Z",
+      "srs": {
+        "due": "2026-10-23T16:15:18.015Z",
+        "stability": 8.2956,
+        "difficulty": 1,
+        "reps": 1,
+        "lapses": 0,
+        "state": "review",
+        "lastReview": "2026-10-15T16:15:18.015Z"
+      }
+    },
+    {
+      "id": "G8s9wUGmWaSPiV0L8JqH",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "metal",
+      "termLower": "metal",
+      "definition": "kim loại — made OF metal · metallic (adj)",
+      "pronunciation": "/ˈmetl/",
+      "partOfSpeech": "n, adj",
+      "example": "The roof is made of metal.",
+      "synonyms": [
+        "iron",
+        "steel"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "H9JdINo6UlgGnmCHR7Ks",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "vulnerable",
+      "termLower": "vulnerable",
+      "definition": "dễ bị tổn thương — vulnerable TO sth · vulnerability (n) (TN: safe, protected)",
+      "pronunciation": "/ˈvʌlnərəbl/",
+      "partOfSpeech": "adj",
+      "example": "Young chickens are particularly vulnerable to eagle attacks.",
+      "synonyms": [
+        "exposed",
+        "defenceless",
+        "at risk"
+      ],
+      "antonyms": [
+        "safe",
+        "protected"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "HoOTktsoLJNEA6kW4wuD",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "harvest",
+      "termLower": "harvest",
+      "definition": "(n) vụ mùa; (v) thu hoạch (TN v: sow, plant)",
+      "pronunciation": "/ˈhɑːrvɪst/",
+      "partOfSpeech": "n, v",
+      "example": "Farmers harvest rice twice a year.",
+      "synonyms": [
+        "gather",
+        "reap",
+        "yield"
+      ],
+      "antonyms": [
+        "sow",
+        "plant"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "I6f2qS7oHec6Yp7oS510",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "possibility",
+      "termLower": "possibility",
+      "definition": "khả năng, phương án — possibility OF V-ing (TN: impossibility)",
+      "pronunciation": "/ˌpɑːsəˈbɪləti/",
+      "partOfSpeech": "n",
+      "example": "They are considering the possibility of moving the power lines.",
+      "synonyms": [
+        "option",
+        "chance",
+        "likelihood"
+      ],
+      "antonyms": [
+        "impossibility"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "IReb2VdL82guSakYzj3k",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "settle",
+      "termLower": "settle",
+      "definition": "(1) định cư, ở lại; (2) (chim) đậu xuống · settlement (n)",
+      "pronunciation": "/ˈsetl/",
+      "partOfSpeech": "v",
+      "example": "The birds settled on the roof.",
+      "synonyms": [
+        "reside",
+        "land",
+        "alight",
+        "perch"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "JJyQMpSDkWdJnFYTG8wP",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "regard",
+      "termLower": "regard",
+      "definition": "coi, xem là — regard sb/sth AS … (consider không cần as)",
+      "pronunciation": "/rɪˈɡɑːrd/",
+      "partOfSpeech": "v",
+      "example": "Many farmers regard eagles as pests.",
+      "synonyms": [
+        "consider",
+        "view",
+        "see"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "K38XK7PAdJVjXAZEePb0",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "income",
+      "termLower": "income",
+      "definition": "thu nhập — a source of income (TN: expenses, expenditure)",
+      "pronunciation": "/ˈɪnkʌm/",
+      "partOfSpeech": "n",
+      "example": "Chickens are the main source of income for many families.",
+      "synonyms": [
+        "earnings",
+        "wages",
+        "revenue"
+      ],
+      "antonyms": [
+        "expenses",
+        "expenditure"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "K8hcOtR3giG5tGEsO13h",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "revenue",
+      "termLower": "revenue",
+      "definition": "doanh thu, nguồn thu — generate revenue (TN: expenditure, costs)",
+      "pronunciation": "/ˈrevənuː/",
+      "partOfSpeech": "n",
+      "example": "Bird-watching tours generate revenue for local people.",
+      "synonyms": [
+        "income",
+        "earnings",
+        "turnover"
+      ],
+      "antonyms": [
+        "expenditure",
+        "costs"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "LtbK0gsaQvLrBrOzBbYq",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "scare away",
+      "termLower": "scare away",
+      "definition": "làm sợ bỏ đi, xua đuổi (= frighten off) (TN: attract, lure)",
+      "pronunciation": "/sker əˈweɪ/",
+      "partOfSpeech": "phrasal v",
+      "example": "Farmers bang pots to scare away eagles.",
+      "synonyms": [
+        "frighten off",
+        "deter",
+        "chase away"
+      ],
+      "antonyms": [
+        "attract",
+        "lure"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "MhpnyqYoa1BQ7rnQSKwS",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "rear",
+      "termLower": "rear",
+      "definition": "nuôi, chăn nuôi (trang trọng)",
+      "pronunciation": "/rɪr/",
+      "partOfSpeech": "v",
+      "example": "Many villagers rear chickens to earn extra money.",
+      "synonyms": [
+        "raise",
+        "breed",
+        "bring up"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "NSfsW61fNvtJlRHJ9ro8",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "ecological",
+      "termLower": "ecological",
+      "definition": "thuộc về sinh thái · ecology (n), ecologist (n), ecosystem (n)",
+      "pronunciation": "/ˌiːkəˈlɑːdʒɪkl/",
+      "partOfSpeech": "adj",
+      "example": "Eagles help to maintain the ecological balance of the area.",
+      "synonyms": [
+        "environmental"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T16:15:30.234Z",
+      "srs": {
+        "due": "2026-10-23T16:15:30.234Z",
+        "stability": 8.2956,
+        "difficulty": 1,
+        "reps": 1,
+        "lapses": 0,
+        "state": "review",
+        "lastReview": "2026-10-15T16:15:30.234Z"
+      }
+    },
+    {
+      "id": "NTBtmA4nxzuXXCHJmTGm",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "boundary",
+      "termLower": "boundary",
+      "definition": "ranh giới (TN: centre, interior)",
+      "pronunciation": "/ˈbaʊndri/",
+      "partOfSpeech": "n",
+      "example": "The eagles often hunt outside the boundary of the sanctuary.",
+      "synonyms": [
+        "border",
+        "limit",
+        "edge"
+      ],
+      "antonyms": [
+        "centre",
+        "interior"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T16:14:47.709Z",
+      "srs": {
+        "due": "2026-10-23T16:14:47.709Z",
+        "stability": 8.2956,
+        "difficulty": 1,
+        "reps": 1,
+        "lapses": 0,
+        "state": "review",
+        "lastReview": "2026-10-15T16:14:47.709Z"
+      }
+    },
+    {
+      "id": "Q14BkGMX2p5Vjqxoq7WS",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "breed",
+      "termLower": "breed",
+      "definition": "sinh sản, gây giống — quá khứ: bred · breeding (n), breeder (n)",
+      "pronunciation": "/briːd/",
+      "partOfSpeech": "v",
+      "example": "Eagles breed in the sanctuary every spring.",
+      "synonyms": [
+        "reproduce",
+        "mate"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T16:15:03.811Z",
+      "srs": {
+        "due": "2026-10-23T16:15:03.811Z",
+        "stability": 8.2956,
+        "difficulty": 1,
+        "reps": 1,
+        "lapses": 0,
+        "state": "review",
+        "lastReview": "2026-10-15T16:15:03.811Z"
+      }
+    },
+    {
+      "id": "QGxdal09N2hXSJOPOGm5",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "protected area / sanctuary",
+      "termLower": "protected area / sanctuary",
+      "definition": "khu bảo tồn (hunting is banned — KHÔNG phải mandatory)",
+      "pronunciation": "/prəˈtektɪd ˈeriə/, /ˈsæŋktʃueri/",
+      "partOfSpeech": "n",
+      "example": "Hunting is banned in protected areas.",
+      "synonyms": [
+        "reserve",
+        "nature reserve",
+        "refuge"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "QyxrKBeLXgKvD01uAPB4",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "alight",
+      "termLower": "alight",
+      "definition": "đáp xuống, đậu xuống (chim, côn trùng) (TN: take off)",
+      "pronunciation": "/əˈlaɪt/",
+      "partOfSpeech": "v",
+      "example": "The eagle alighted on a high-voltage wire.",
+      "synonyms": [
+        "land",
+        "perch",
+        "settle"
+      ],
+      "antonyms": [
+        "take off"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T16:31:21.483Z",
+      "srs": {
+        "due": "2026-10-19T16:31:21.483Z",
+        "stability": 3.94605407,
+        "difficulty": 1,
+        "reps": 2,
+        "lapses": 0,
+        "state": "review",
+        "lastReview": "2026-10-15T16:31:21.483Z"
+      }
+    },
+    {
+      "id": "RXSJIV0IfrMcr65wKBYI",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "occur",
+      "termLower": "occur",
+      "definition": "xảy ra — quá khứ: occurred · occurrence (n)",
+      "pronunciation": "/əˈkɜːr/",
+      "partOfSpeech": "v",
+      "example": "Most collisions occur near busy roads.",
+      "synonyms": [
+        "happen",
+        "take place",
+        "arise"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "RfSHdvzv6FJFpV2O02h0",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "remain",
+      "termLower": "remain",
+      "definition": "vẫn còn, vẫn là — remain + adj/n (TN: change, disappear)",
+      "pronunciation": "/rɪˈmeɪn/",
+      "partOfSpeech": "v",
+      "example": "Power lines remain the biggest danger to eagles.",
+      "synonyms": [
+        "stay",
+        "continue",
+        "persist"
+      ],
+      "antonyms": [
+        "change",
+        "disappear"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "S2Whkzy8QPYCwN2NFKg7",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "fast-moving traffic",
+      "termLower": "fast-moving traffic",
+      "definition": "xe cộ chạy tốc độ cao (TN: slow-moving traffic)",
+      "pronunciation": "/ˌfæst ˈmuːvɪŋ ˈtræfɪk/",
+      "partOfSpeech": "phr",
+      "example": "Eagles feeding by the road are often hit by fast-moving traffic.",
+      "synonyms": [
+        "high-speed traffic"
+      ],
+      "antonyms": [
+        "slow-moving traffic"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T16:15:33.567Z",
+      "srs": {
+        "due": "2026-10-23T16:15:33.567Z",
+        "stability": 8.2956,
+        "difficulty": 1,
+        "reps": 1,
+        "lapses": 0,
+        "state": "review",
+        "lastReview": "2026-10-15T16:15:33.567Z"
+      }
+    },
+    {
+      "id": "SozmXYFEJMNtIDlzQaz9",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "considerable",
+      "termLower": "considerable",
+      "definition": "đáng kể — khác considerate (chu đáo) (TN: negligible, minor)",
+      "pronunciation": "/kənˈsɪdərəbl/",
+      "partOfSpeech": "adj",
+      "example": "Eagles cause considerable losses to chicken farmers.",
+      "synonyms": [
+        "significant",
+        "substantial",
+        "sizeable"
+      ],
+      "antonyms": [
+        "negligible",
+        "minor"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T16:15:20.212Z",
+      "srs": {
+        "due": "2026-10-23T16:15:20.212Z",
+        "stability": 8.2956,
+        "difficulty": 1,
+        "reps": 1,
+        "lapses": 0,
+        "state": "review",
+        "lastReview": "2026-10-15T16:15:20.212Z"
+      }
+    },
+    {
+      "id": "TYic24LQZPHyZq1vvrv9",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "illustrate sth by V-ing",
+      "termLower": "illustrate sth by v-ing",
+      "definition": "làm rõ điều gì bằng cách… · illustration (n)",
+      "pronunciation": "/ˈɪləstreɪt/",
+      "partOfSpeech": "phr",
+      "example": "The speaker illustrated the problem by telling a true story.",
+      "synonyms": [
+        "demonstrate",
+        "show",
+        "explain"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "UOOKasy88LdZ4fq0gezQ",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "crops",
+      "termLower": "crops",
+      "definition": "hoa màu, cây trồng — crop yields (năng suất)",
+      "pronunciation": "/krɑːps/",
+      "partOfSpeech": "n",
+      "example": "Rats can destroy a large amount of crops.",
+      "synonyms": [
+        "harvest",
+        "produce"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T16:15:26.690Z",
+      "srs": {
+        "due": "2026-10-23T16:15:26.690Z",
+        "stability": 8.2956,
+        "difficulty": 1,
+        "reps": 1,
+        "lapses": 0,
+        "state": "review",
+        "lastReview": "2026-10-15T16:15:26.690Z"
+      }
+    },
+    {
+      "id": "V4AIPSTsjB2ArASjwh03",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "tourism",
+      "termLower": "tourism",
+      "definition": "du lịch · tourist (n) — eco-tourism, tourist attractions",
+      "pronunciation": "/ˈtʊrɪzəm/",
+      "partOfSpeech": "n",
+      "example": "Eco-tourism brings jobs to the villages near the sanctuary.",
+      "synonyms": [
+        "the travel industry"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "Y7tOfnaQvoaTJBwAa0Sw",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "electrocuted",
+      "termLower": "electrocuted",
+      "definition": "bị điện giật (chết) · electrocute (v), electrocution (n) — die from electrocution",
+      "pronunciation": "/ɪˈlektrəkjuːtɪd/",
+      "partOfSpeech": "adj",
+      "example": "Two eagles were electrocuted last month.",
+      "synonyms": [
+        "killed by electric shock"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T16:15:32.083Z",
+      "srs": {
+        "due": "2026-10-23T16:15:32.083Z",
+        "stability": 8.2956,
+        "difficulty": 1,
+        "reps": 1,
+        "lapses": 0,
+        "state": "review",
+        "lastReview": "2026-10-15T16:15:32.083Z"
+      }
+    },
+    {
+      "id": "YkPwQ5exbziH1UPdaLBT",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "free from sth",
+      "termLower": "free from sth",
+      "definition": "không có, không bị (điều tiêu cực) (TN: full of, covered with)",
+      "pronunciation": "/friː frəm/",
+      "partOfSpeech": "collocation",
+      "example": "Keep the area around the chicken coop free from vegetation.",
+      "synonyms": [
+        "clear of",
+        "without",
+        "devoid of"
+      ],
+      "antonyms": [
+        "full of",
+        "covered with"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T16:15:39.944Z",
+      "srs": {
+        "due": "2026-10-23T16:15:39.944Z",
+        "stability": 8.2956,
+        "difficulty": 1,
+        "reps": 1,
+        "lapses": 0,
+        "state": "review",
+        "lastReview": "2026-10-15T16:15:39.944Z"
+      }
+    },
+    {
+      "id": "ZhrHY0DTMwtGL9wurUHO",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "bird sanctuary",
+      "termLower": "bird sanctuary",
+      "definition": "khu bảo tồn chim",
+      "pronunciation": "/bɜːrd ˈsæŋktʃueri/",
+      "partOfSpeech": "n",
+      "example": "Thousands of storks spend the winter in the bird sanctuary.",
+      "synonyms": [
+        "bird reserve"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T16:13:37.658Z",
+      "srs": {
+        "due": "2026-10-23T16:13:37.658Z",
+        "stability": 8.2956,
+        "difficulty": 1,
+        "reps": 1,
+        "lapses": 0,
+        "state": "review",
+        "lastReview": "2026-10-15T16:13:37.658Z"
+      }
+    },
+    {
+      "id": "bAKDp5KCxC3hyeGE0iAm",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "pose a threat",
+      "termLower": "pose a threat",
+      "definition": "gây ra mối đe dọa — pose a threat TO sth (chủ ngữ số ít → poses)",
+      "pronunciation": "/poʊz ə θret/",
+      "partOfSpeech": "phr",
+      "example": "Plastic waste poses a serious threat to sea birds.",
+      "synonyms": [
+        "threaten",
+        "endanger",
+        "present a danger"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "cVZkPxWHMx6HXtA67uIe",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "fatal",
+      "termLower": "fatal",
+      "definition": "gây chết người — fatal TO sb · fatality (n), fatally (adv) (TN: harmless)",
+      "pronunciation": "/ˈfeɪtl/",
+      "partOfSpeech": "adj",
+      "example": "That injury could be fatal.",
+      "synonyms": [
+        "deadly",
+        "lethal"
+      ],
+      "antonyms": [
+        "harmless"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T16:15:36.711Z",
+      "srs": {
+        "due": "2026-10-23T16:15:36.711Z",
+        "stability": 8.2956,
+        "difficulty": 1,
+        "reps": 1,
+        "lapses": 0,
+        "state": "review",
+        "lastReview": "2026-10-15T16:15:36.711Z"
+      }
+    },
+    {
+      "id": "dvka9wxZkYHZR8FMtdL1",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "high-voltage power line",
+      "termLower": "high-voltage power line",
+      "definition": "đường dây điện cao áp",
+      "pronunciation": "/ˌhaɪ ˈvoʊltɪdʒ ˈpaʊər laɪn/",
+      "partOfSpeech": "n",
+      "example": "Many birds die after landing on high-voltage power lines.",
+      "synonyms": [
+        "power cable",
+        "transmission line"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "eW1lGJdO01iCPB6kxSnv",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "listed birds",
+      "termLower": "listed birds",
+      "definition": "các loài chim trong danh sách bảo vệ — be among the listed birds",
+      "pronunciation": "/ˈlɪstɪd bɜːrdz/",
+      "partOfSpeech": "phr",
+      "example": "It is illegal to hunt listed birds.",
+      "synonyms": [
+        "protected species",
+        "endangered birds"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "fkJtQPPc7ULReGSueDT2",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "watch over",
+      "termLower": "watch over",
+      "definition": "trông nom, canh chừng (TN: neglect)",
+      "pronunciation": "/wɑːtʃ ˈoʊvər/",
+      "partOfSpeech": "phrasal v",
+      "example": "An older child is often asked to watch over the chickens.",
+      "synonyms": [
+        "guard",
+        "look after",
+        "keep an eye on"
+      ],
+      "antonyms": [
+        "neglect"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "gBWu16xtJbo9vf2TSu7x",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "predatory habit",
+      "termLower": "predatory habit",
+      "definition": "tập tính săn mồi",
+      "pronunciation": "/ˈpredətɔːri ˈhæbɪt/",
+      "partOfSpeech": "collocation",
+      "example": "The predatory habits of eagles worry farmers.",
+      "synonyms": [
+        "predatory behaviour",
+        "hunting instinct"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "hmbH7CX0IcrkYrmegu6N",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "poison",
+      "termLower": "poison",
+      "definition": "chất độc; đầu độc · poisonous (adj), poisoning (n) — lead poisoning (TN: antidote)",
+      "pronunciation": "/ˈpɔɪzn/",
+      "partOfSpeech": "n, v",
+      "example": "Some farmers put down poison to kill eagles.",
+      "synonyms": [
+        "toxin",
+        "contaminate"
+      ],
+      "antonyms": [
+        "antidote"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "ioiQZMrLnSUip91fZk5u",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "combination",
+      "termLower": "combination",
+      "definition": "sự kết hợp — a combination OF A and B (chủ ngữ số ít → is) · combine (v)",
+      "pronunciation": "/ˌkɑːmbɪˈneɪʃn/",
+      "partOfSpeech": "n",
+      "example": "A combination of nets and noise works best.",
+      "synonyms": [
+        "mix",
+        "mixture",
+        "blend"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T16:15:09.406Z",
+      "srs": {
+        "due": "2026-10-23T16:15:09.405Z",
+        "stability": 8.2956,
+        "difficulty": 1,
+        "reps": 1,
+        "lapses": 0,
+        "state": "review",
+        "lastReview": "2026-10-15T16:15:09.405Z"
+      }
+    },
+    {
+      "id": "mUTnYKiry57Nxcbq6U5o",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "harm",
+      "termLower": "harm",
+      "definition": "gây hại; sự tổn hại · harmful (có hại) ↔ harmless (vô hại) (TN: protect, benefit)",
+      "pronunciation": "/hɑːrm/",
+      "partOfSpeech": "v, n",
+      "example": "The device scares the birds without harming them.",
+      "synonyms": [
+        "hurt",
+        "damage",
+        "injure"
+      ],
+      "antonyms": [
+        "protect",
+        "benefit"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "mf4voePWeSParWdD6mMX",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "practical solution",
+      "termLower": "practical solution",
+      "definition": "giải pháp thực tế — a practical solution TO + n (TN: impractical solution)",
+      "pronunciation": "/ˈpræktɪkl səˈluːʃn/",
+      "partOfSpeech": "phr",
+      "example": "Nets over the chicken runs are a cheap, practical solution.",
+      "synonyms": [
+        "workable solution",
+        "feasible solution"
+      ],
+      "antonyms": [
+        "impractical solution"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "nOfZrfMcuMbNMhdvg4QR",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "illegal",
+      "termLower": "illegal",
+      "definition": "bất hợp pháp · illegally (adv) (TN: legal, lawful)",
+      "pronunciation": "/ɪˈliːɡl/",
+      "partOfSpeech": "adj",
+      "example": "It is illegal to poison wild birds.",
+      "synonyms": [
+        "unlawful",
+        "illicit",
+        "banned"
+      ],
+      "antonyms": [
+        "legal",
+        "lawful"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "oVvStk6kA2fpjFU8UFCe",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "nest",
+      "termLower": "nest",
+      "definition": "tổ chim; làm tổ — build a nest, nesting season",
+      "pronunciation": "/nest/",
+      "partOfSpeech": "n, v",
+      "example": "The pair built a nest at the top of the tree.",
+      "synonyms": [
+        "roost"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:54:51.323Z",
+      "updatedAt": "2026-10-15T15:54:51.323Z",
+      "srs": null
+    },
+    {
+      "id": "p6BgwTrIk8unKltyiy0k",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "accidental",
+      "termLower": "accidental",
+      "definition": "vô tình, do tai nạn (TN: deliberate, intentional)",
+      "pronunciation": "/ˌæksɪˈdentl/",
+      "partOfSpeech": "adj",
+      "example": "Most eagle deaths are accidental.",
+      "synonyms": [
+        "unintentional",
+        "chance"
+      ],
+      "antonyms": [
+        "deliberate",
+        "intentional"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T16:12:59.643Z",
+      "srs": {
+        "due": "2026-10-23T16:12:59.642Z",
+        "stability": 8.2956,
+        "difficulty": 1,
+        "reps": 1,
+        "lapses": 0,
+        "state": "review",
+        "lastReview": "2026-10-15T16:12:59.642Z"
+      }
+    },
+    {
+      "id": "qhDqpgGddSbFGZbQMAzv",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "major",
+      "termLower": "major",
+      "definition": "lớn, quan trọng, nghiêm trọng — play a major role (TN: minor)",
+      "pronunciation": "/ˈmeɪdʒər/",
+      "partOfSpeech": "adj",
+      "example": "Power lines are a major cause of eagle deaths.",
+      "synonyms": [
+        "significant",
+        "serious",
+        "main"
+      ],
+      "antonyms": [
+        "minor"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "r3TqC1Bwd2kGfHkHWVdj",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "protect sb/sth from",
+      "termLower": "protect sb/sth from",
+      "definition": "bảo vệ khỏi · protection (n), protective (adj) (TN: endanger, expose)",
+      "pronunciation": "/prəˈtekt/",
+      "partOfSpeech": "v",
+      "example": "Nets can protect chickens from eagles.",
+      "synonyms": [
+        "shield",
+        "guard",
+        "safeguard"
+      ],
+      "antonyms": [
+        "endanger",
+        "expose"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "s20wnq0aKc7aG2jXqwmS",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "vegetation",
+      "termLower": "vegetation",
+      "definition": "thảm thực vật, cây cối — thick vegetation",
+      "pronunciation": "/ˌvedʒəˈteɪʃn/",
+      "partOfSpeech": "n",
+      "example": "Thick vegetation gives rats a place to hide.",
+      "synonyms": [
+        "plants",
+        "greenery",
+        "flora"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "tE0DayEIhy16RpbXacA0",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "rodent",
+      "termLower": "rodent",
+      "definition": "loài gặm nhấm — rodent control, rodent population",
+      "pronunciation": "/ˈroʊdnt/",
+      "partOfSpeech": "n",
+      "example": "Eagles keep the rodent population under control.",
+      "synonyms": [
+        "vermin"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "uNZbz6U11f70zKkIiB2X",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "seize",
+      "termLower": "seize",
+      "definition": "chộp, tóm lấy — seize sth in its claws, seize the day (TN: release)",
+      "pronunciation": "/siːz/",
+      "partOfSpeech": "v",
+      "example": "The eagle seized a chicken and flew off.",
+      "synonyms": [
+        "grab",
+        "grasp",
+        "snatch"
+      ],
+      "antonyms": [
+        "release"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "ueb6wdyTY03CBH1MZGD6",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "in terms of",
+      "termLower": "in terms of",
+      "definition": "xét về mặt (nhớ có -s) — in terms of cost, in economic terms",
+      "pronunciation": "/ɪn tɜːrmz əv/",
+      "partOfSpeech": "phr",
+      "example": "In terms of cost, this method is much cheaper.",
+      "synonyms": [
+        "regarding",
+        "with respect to"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "ulcgvnGPQ1oWP132nB2x",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "counterproductive",
+      "termLower": "counterproductive",
+      "definition": "phản tác dụng (TN: effective, productive)",
+      "pronunciation": "/ˌkaʊntərprəˈdʌktɪv/",
+      "partOfSpeech": "adj",
+      "example": "Killing eagles is counterproductive because the number of rats then rises.",
+      "synonyms": [
+        "self-defeating"
+      ],
+      "antonyms": [
+        "effective",
+        "productive"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T16:15:22.143Z",
+      "srs": {
+        "due": "2026-10-23T16:15:22.143Z",
+        "stability": 8.2956,
+        "difficulty": 1,
+        "reps": 1,
+        "lapses": 0,
+        "state": "review",
+        "lastReview": "2026-10-15T16:15:22.143Z"
+      }
+    },
+    {
+      "id": "vBytHHQFF4p7eVlRwFrM",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "look at",
+      "termLower": "look at",
+      "definition": "xem xét, nghiên cứu (một vấn đề) (TN: ignore, overlook)",
+      "pronunciation": "/lʊk æt/",
+      "partOfSpeech": "phrasal v",
+      "example": "Scientists are looking at ways to make power lines safer.",
+      "synonyms": [
+        "examine",
+        "consider",
+        "study"
+      ],
+      "antonyms": [
+        "ignore",
+        "overlook"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "vuqbAXn7WhOE4uNhmilp",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "cover",
+      "termLower": "cover",
+      "definition": "chỗ ẩn nấp, che chắn — take cover, run for cover, provide cover",
+      "pronunciation": "/ˈkʌvər/",
+      "partOfSpeech": "n",
+      "example": "The chickens ran for cover when the eagle appeared.",
+      "synonyms": [
+        "shelter",
+        "hiding place",
+        "refuge"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T16:15:24.353Z",
+      "srs": {
+        "due": "2026-10-23T16:15:24.353Z",
+        "stability": 8.2956,
+        "difficulty": 1,
+        "reps": 1,
+        "lapses": 0,
+        "state": "review",
+        "lastReview": "2026-10-15T16:15:24.353Z"
+      }
+    },
+    {
+      "id": "xQqHZMlIe52VImbRmzrS",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "habitat",
+      "termLower": "habitat",
+      "definition": "môi trường sống - natural habitat, habitat loss",
+      "pronunciation": "/ˈhæbɪtæt/",
+      "partOfSpeech": "n",
+      "example": "clearing the forest destroys the habitat of many birds",
+      "synonyms": [
+        "environment",
+        "home",
+        "territory"
+      ],
+      "antonyms": [],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [
+        "can-on-ky"
+      ],
+      "createdAt": "2026-10-15T15:54:20.040Z",
+      "updatedAt": "2026-10-15T15:54:20.040Z",
+      "srs": null
+    },
+    {
+      "id": "yW0LzQQqZQqcyPmu4wag",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "long-term",
+      "termLower": "long-term",
+      "definition": "dài hạn — long-term solution TO sth, in the long term (TN: short-term)",
+      "pronunciation": "/ˌlɔːŋ ˈtɜːrm/",
+      "partOfSpeech": "adj",
+      "example": "Burying the power lines is a long-term solution.",
+      "synonyms": [
+        "lasting",
+        "permanent",
+        "enduring"
+      ],
+      "antonyms": [
+        "short-term"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "z8LtQkaW9Q2fwYCdCzcg",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "fatality",
+      "termLower": "fatality",
+      "definition": "ca tử vong — road fatalities, COVID-19 fatalities (TN: survivor)",
+      "pronunciation": "/fəˈtæləti/",
+      "partOfSpeech": "n",
+      "example": "Eagle fatalities have fallen since the wires were covered.",
+      "synonyms": [
+        "death",
+        "casualty"
+      ],
+      "antonyms": [
+        "survivor"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T16:15:38.362Z",
+      "srs": {
+        "due": "2026-10-23T16:15:38.362Z",
+        "stability": 8.2956,
+        "difficulty": 1,
+        "reps": 1,
+        "lapses": 0,
+        "state": "review",
+        "lastReview": "2026-10-15T16:15:38.362Z"
+      }
+    },
+    {
+      "id": "zPw12NuLaNXDnC0IBTxQ",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "prevent sb/sth from V-ing",
+      "termLower": "prevent sb/sth from v-ing",
+      "definition": "ngăn không cho (không dùng avoid sb from) · prevention (n) (TN: allow, enable)",
+      "pronunciation": "/prɪˈvent/",
+      "partOfSpeech": "v",
+      "example": "Covering the wires prevents birds from being electrocuted.",
+      "synonyms": [
+        "stop",
+        "deter"
+      ],
+      "antonyms": [
+        "allow",
+        "enable"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T15:45:37.132Z",
+      "srs": null
+    },
+    {
+      "id": "zxRjvaNHSOvoiVldMvXI",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "term": "drive away",
+      "termLower": "drive away",
+      "definition": "xua đuổi, khiến rời đi (nhấn vào kết quả rời đi) (TN: attract)",
+      "pronunciation": "/draɪv əˈweɪ/",
+      "partOfSpeech": "phrasal v",
+      "example": "Shiny metal strips can drive the birds away.",
+      "synonyms": [
+        "chase away",
+        "drive off",
+        "repel"
+      ],
+      "antonyms": [
+        "attract"
+      ],
+      "wordFamily": "",
+      "myExample": "",
+      "tags": [],
+      "createdAt": "2026-10-15T15:45:37.132Z",
+      "updatedAt": "2026-10-15T16:15:28.485Z",
+      "srs": {
+        "due": "2026-10-23T16:15:28.485Z",
+        "stability": 8.2956,
+        "difficulty": 1,
+        "reps": 1,
+        "lapses": 0,
+        "state": "review",
+        "lastReview": "2026-10-15T16:15:28.485Z"
+      }
+    }
+  ],
+  "reviewLogs": [
+    {
+      "id": "0N79AMOP53ymDJZTS6B6",
+      "cardId": "UOOKasy88LdZ4fq0gezQ",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 4,
+      "reviewedAt": "2026-10-15T16:15:26.690Z",
+      "elapsedDays": 0,
+      "scheduledDays": 8,
+      "mode": "en-vi",
+      "wasNew": true
+    },
+    {
+      "id": "13OBp3cnYKg2hz8Ej7G5",
+      "cardId": "ioiQZMrLnSUip91fZk5u",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 4,
+      "reviewedAt": "2026-10-15T16:15:09.406Z",
+      "elapsedDays": 0,
+      "scheduledDays": 7.999999988425926,
+      "mode": "en-vi",
+      "wasNew": true
+    },
+    {
+      "id": "1X3vDYwGASZjooE2XMNP",
+      "cardId": "z8LtQkaW9Q2fwYCdCzcg",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 4,
+      "reviewedAt": "2026-10-15T16:15:38.362Z",
+      "elapsedDays": 0,
+      "scheduledDays": 8,
+      "mode": "en-vi",
+      "wasNew": true
+    },
+    {
+      "id": "3xoKGw3Jcu9RmyAmPRKi",
+      "cardId": "p6BgwTrIk8unKltyiy0k",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 4,
+      "reviewedAt": "2026-10-15T16:12:59.643Z",
+      "elapsedDays": 0,
+      "scheduledDays": 7.999999988425926,
+      "mode": "en-vi",
+      "wasNew": true
+    },
+    {
+      "id": "4RxDvT5CU5g3HKDR4vcb",
+      "cardId": "YkPwQ5exbziH1UPdaLBT",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 4,
+      "reviewedAt": "2026-10-15T16:15:39.944Z",
+      "elapsedDays": 0,
+      "scheduledDays": 8,
+      "mode": "en-vi",
+      "wasNew": true
+    },
+    {
+      "id": "6kG4Rscoqv81msesdkiq",
+      "cardId": "BPpRlZA83d0dia5gDU7H",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 4,
+      "reviewedAt": "2026-10-15T16:13:34.459Z",
+      "elapsedDays": 0,
+      "scheduledDays": 8,
+      "mode": "en-vi",
+      "wasNew": true
+    },
+    {
+      "id": "91xN0puzOIbzKmCXeFAm",
+      "cardId": "Y7tOfnaQvoaTJBwAa0Sw",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 4,
+      "reviewedAt": "2026-10-15T16:15:32.083Z",
+      "elapsedDays": 0,
+      "scheduledDays": 8,
+      "mode": "en-vi",
+      "wasNew": true
+    },
+    {
+      "id": "G73uLYwzptbmsnEiXHA6",
+      "cardId": "24aCAse8nQP4sNA9njzp",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 1,
+      "reviewedAt": "2026-10-15T16:15:12.286Z",
+      "elapsedDays": 0,
+      "scheduledDays": 0.0006944444444444445,
+      "mode": "en-vi",
+      "wasNew": true
+    },
+    {
+      "id": "JpVXUJuBy6bj6yQaQUTh",
+      "cardId": "24aCAse8nQP4sNA9njzp",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 1,
+      "reviewedAt": "2026-10-15T16:15:44.290Z",
+      "elapsedDays": 0,
+      "scheduledDays": 0.0006944444444444445,
+      "mode": "en-vi",
+      "wasNew": true
+    },
+    {
+      "id": "KgQauALTBpURmNgfUFsw",
+      "cardId": "QyxrKBeLXgKvD01uAPB4",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 4,
+      "reviewedAt": "2026-10-15T16:31:21.483Z",
+      "elapsedDays": 0.012383530092592592,
+      "scheduledDays": 4,
+      "mode": "en-vi",
+      "wasNew": false
+    },
+    {
+      "id": "Q29KWZaCz9zUejXHLAgS",
+      "cardId": "Q14BkGMX2p5Vjqxoq7WS",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 4,
+      "reviewedAt": "2026-10-15T16:15:03.811Z",
+      "elapsedDays": 0,
+      "scheduledDays": 8,
+      "mode": "en-vi",
+      "wasNew": true
+    },
+    {
+      "id": "Rm1FGr3zjMmIqTSqy2Sy",
+      "cardId": "vuqbAXn7WhOE4uNhmilp",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 4,
+      "reviewedAt": "2026-10-15T16:15:24.353Z",
+      "elapsedDays": 0,
+      "scheduledDays": 8,
+      "mode": "en-vi",
+      "wasNew": true
+    },
+    {
+      "id": "UyOUkUCiYd6xP3YQ0WFU",
+      "cardId": "EASuN5otjK3brzkH89PU",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 4,
+      "reviewedAt": "2026-10-15T16:15:18.016Z",
+      "elapsedDays": 0,
+      "scheduledDays": 7.999999988425926,
+      "mode": "en-vi",
+      "wasNew": true
+    },
+    {
+      "id": "WnS4FC3eLAubsisnDuBf",
+      "cardId": "NSfsW61fNvtJlRHJ9ro8",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 4,
+      "reviewedAt": "2026-10-15T16:15:30.234Z",
+      "elapsedDays": 0,
+      "scheduledDays": 8,
+      "mode": "en-vi",
+      "wasNew": true
+    },
+    {
+      "id": "XLt4IPEkd0mQO233mNa5",
+      "cardId": "QyxrKBeLXgKvD01uAPB4",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 3,
+      "reviewedAt": "2026-10-15T16:13:31.547Z",
+      "elapsedDays": 0,
+      "scheduledDays": 0.006944432870370371,
+      "mode": "en-vi",
+      "wasNew": true
+    },
+    {
+      "id": "cEggSPjIojVhRpIEfoVT",
+      "cardId": "S2Whkzy8QPYCwN2NFKg7",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 4,
+      "reviewedAt": "2026-10-15T16:15:33.567Z",
+      "elapsedDays": 0,
+      "scheduledDays": 8,
+      "mode": "en-vi",
+      "wasNew": true
+    },
+    {
+      "id": "lFbrI3Y8Utnm5dhp7wh7",
+      "cardId": "ZhrHY0DTMwtGL9wurUHO",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 4,
+      "reviewedAt": "2026-10-15T16:13:37.658Z",
+      "elapsedDays": 0,
+      "scheduledDays": 8,
+      "mode": "en-vi",
+      "wasNew": true
+    },
+    {
+      "id": "mibvolHFU04EotB9jJWw",
+      "cardId": "NTBtmA4nxzuXXCHJmTGm",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 4,
+      "reviewedAt": "2026-10-15T16:14:47.709Z",
+      "elapsedDays": 0,
+      "scheduledDays": 8,
+      "mode": "en-vi",
+      "wasNew": true
+    },
+    {
+      "id": "n50JQh1VE4QJMIUp55jO",
+      "cardId": "cVZkPxWHMx6HXtA67uIe",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 4,
+      "reviewedAt": "2026-10-15T16:15:36.711Z",
+      "elapsedDays": 0,
+      "scheduledDays": 8,
+      "mode": "en-vi",
+      "wasNew": true
+    },
+    {
+      "id": "oPvNbyXUcAmPSx3LLWwT",
+      "cardId": "ulcgvnGPQ1oWP132nB2x",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 4,
+      "reviewedAt": "2026-10-15T16:15:22.143Z",
+      "elapsedDays": 0,
+      "scheduledDays": 8,
+      "mode": "en-vi",
+      "wasNew": true
+    },
+    {
+      "id": "s8JaZQYK2gaZLpy1uKSD",
+      "cardId": "24aCAse8nQP4sNA9njzp",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 4,
+      "reviewedAt": "2026-10-15T16:15:46.655Z",
+      "elapsedDays": 0,
+      "scheduledDays": 8,
+      "mode": "en-vi",
+      "wasNew": true
+    },
+    {
+      "id": "uE9LWUrwx5OBHAVYuewh",
+      "cardId": "zxRjvaNHSOvoiVldMvXI",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 4,
+      "reviewedAt": "2026-10-15T16:15:28.485Z",
+      "elapsedDays": 0,
+      "scheduledDays": 8,
+      "mode": "en-vi",
+      "wasNew": true
+    },
+    {
+      "id": "uTA1drY9we7nv5LuTv4B",
+      "cardId": "SozmXYFEJMNtIDlzQaz9",
+      "deckId": "TjEU0dm3DSziObV2FqpN",
+      "rating": 4,
+      "reviewedAt": "2026-10-15T16:15:20.212Z",
+      "elapsedDays": 0,
+      "scheduledDays": 8,
+      "mode": "en-vi",
+      "wasNew": true
+    }
+  ]
+}

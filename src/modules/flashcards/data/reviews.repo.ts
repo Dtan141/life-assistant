@@ -1,11 +1,13 @@
 import { doc, getDocs, query, where, writeBatch } from 'firebase/firestore'
 import { Timestamp } from 'firebase/firestore'
 import { db } from '@/shared/firebase/app'
-import { now } from '@/shared/firebase/convert'
+import { now, toDate, toNum, toStr } from '@/shared/firebase/convert'
+import type { ReviewLogEntry } from '@/modules/flashcards/domain/backup'
 import { cardDoc, reviewLogsCol } from '@/modules/flashcards/data/paths'
 import { RATING_VALUES } from '@/modules/flashcards/domain/srs'
 import type { ReviewRating } from '@/modules/flashcards/domain/srs'
 import type { DailyProgress } from '@/modules/flashcards/domain/session'
+import { startOfDay } from '@/modules/flashcards/domain/day'
 import type { ReviewMode } from '@/modules/flashcards/domain/review-mode'
 import type { Card, CardSrs } from '@/modules/flashcards/domain/card.types'
 
@@ -62,11 +64,33 @@ export async function saveReview(uid: string, record: ReviewRecord): Promise<voi
   await batch.commit()
 }
 
-/** Local midnight. The day a person means is the one on the clock in front of them. */
-export function startOfDay(at: Date = new Date()): Date {
-  const start = new Date(at)
-  start.setHours(0, 0, 0, 0)
-  return start
+/**
+ * Review logs since a cut-off, for the statistics page.
+ *
+ * Bounded by date rather than fetched whole: the log grows by a few hundred
+ * documents a week and will outlive every other collection.
+ */
+export async function listRecentLogs(
+  uid: string,
+  since: Date,
+): Promise<ReviewLogEntry[]> {
+  const snap = await getDocs(
+    query(reviewLogsCol(uid), where('reviewedAt', '>=', Timestamp.fromDate(since))),
+  )
+  return snap.docs.map((logDoc) => {
+    const data = logDoc.data()
+    return {
+      id: logDoc.id,
+      cardId: toStr(data.cardId),
+      deckId: toStr(data.deckId),
+      rating: toNum(data.rating, 0),
+      reviewedAt: toDate(data.reviewedAt, new Date(0)),
+      elapsedDays: toNum(data.elapsedDays, 0),
+      scheduledDays: toNum(data.scheduledDays, 0),
+      mode: toStr(data.mode),
+      wasNew: data.wasNew === true,
+    }
+  })
 }
 
 export async function getDailyProgress(
