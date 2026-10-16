@@ -1,0 +1,88 @@
+import { getDoc, updateDoc } from 'firebase/firestore'
+import { userDoc } from '@/shared/auth/user.repo'
+import { toNum } from '@/shared/firebase/convert'
+import { createDeck } from '@/modules/flashcards/data/decks.repo'
+import { saveImport } from '@/modules/flashcards/data/cards.repo'
+import { parseCollection } from '@/modules/flashcards/domain/collection-parser'
+import { buildImportPlan } from '@/modules/flashcards/domain/import-plan'
+
+export const CATALOG_URL = '/catalog/toeic-600.tsv'
+
+/**
+ * Raised when the shipped catalogue gains topics. Each account records the
+ * version it received, so new topics can be added later without re-creating
+ * decks the user already has — or resurrecting ones they deleted.
+ */
+export const CATALOG_VERSION = 1
+
+export interface SeedOutcome {
+  decks: number
+  cards: number
+}
+
+export async function fetchCatalog(): Promise<string> {
+  const response = await fetch(CATALOG_URL)
+  if (!response.ok) throw new Error(`Không tải được bộ thẻ mẫu (${response.status}).`)
+  return response.text()
+}
+
+/**
+ * Writes the catalogue into one account as ordinary decks the user owns.
+ *
+ * A copy rather than a shared library: the cards then behave like any other —
+ * editable, deletable, with their own review history — and nothing else in the
+ * app needs to know they came from us.
+ *
+ * Every deck lands outside the study plan. Six hundred words arriving in a
+ * queue nobody asked for would be the app deciding what someone should learn.
+ */
+export async function seedCatalog(uid: string, raw: string): Promise<SeedOutcome> {
+  const parsed = parseCollection(raw)
+  if (parsed.errors.length > 0) {
+    throw new Error(`Bộ thẻ mẫu bị lỗi định dạng: ${parsed.errors[0]}`)
+  }
+
+  const collection = parsed.name ?? 'Bộ sưu tập'
+  const outcome: SeedOutcome = { decks: 0, cards: 0 }
+
+  for (const section of parsed.decks) {
+    const plan = buildImportPlan(section.result, { strategy: 'skip' })
+    if (plan.create.length === 0) continue
+
+    const deckId = await createDeck(uid, {
+      name: section.name,
+      collection,
+      inPlan: false,
+      description: '',
+    })
+    await saveImport(uid, deckId, plan)
+
+    outcome.decks += 1
+    outcome.cards += plan.create.length
+  }
+
+  return outcome
+}
+
+/**
+ * Gives a new account the catalogue, once.
+ *
+ * The version is recorded whatever happens next, so deleting the collection
+ * keeps it deleted. Re-seeding something the user threw away would be the app
+ * arguing with them.
+ */
+export async function ensureCatalog(uid: string): Promise<SeedOutcome | null> {
+  const profile = await getDoc(userDoc(uid))
+  if (toNum(profile.data()?.catalogVersion, 0) >= CATALOG_VERSION) return null
+
+  const outcome = await seedCatalog(uid, await fetchCatalog())
+  await updateDoc(userDoc(uid), { catalogVersion: CATALOG_VERSION })
+  return outcome
+}
+
+/** Re-imports the catalogue on request, for someone who removed it and changed their mind. */
+export async function reimportCatalog(uid: string): Promise<SeedOutcome> {
+  const outcome = await seedCatalog(uid, await fetchCatalog())
+  await updateDoc(userDoc(uid), { catalogVersion: CATALOG_VERSION })
+  return outcome
+}

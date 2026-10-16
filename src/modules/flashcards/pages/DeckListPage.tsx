@@ -6,6 +6,7 @@ import { EmptyState, Note } from '@/shared/ui/Panel'
 import { Page, PageHeader } from '@/shared/ui/Page'
 import { Sheet } from '@/shared/ui/Sheet'
 import { Spinner } from '@/shared/ui/Spinner'
+import { reimportCatalog } from '@/modules/flashcards/data/catalog.repo'
 import { CollectionGroup } from '@/modules/flashcards/components/CollectionGroup'
 import { DeckCard } from '@/modules/flashcards/components/DeckCard'
 import { DeckForm } from '@/modules/flashcards/components/DeckForm'
@@ -28,6 +29,7 @@ export default function DeckListPage() {
   const [editing, setEditing] = useState<Editing>(null)
   const [deleting, setDeleting] = useState<Deck | null>(null)
   const [busy, setBusy] = useState(false)
+  const [reimporting, setReimporting] = useState(false)
 
   const visible = useMemo(
     () => (showArchived ? decks : decks.filter((deck) => !deck.archived)),
@@ -131,6 +133,25 @@ export default function DeckListPage() {
             </CollectionGroup>
           ))}
         </ul>
+      )}
+
+      {!loading && collections.length === 0 && decks.length > 0 && (
+        <div className="mt-4">
+          <Button
+            variant="secondary"
+            disabled={reimporting}
+            onClick={() => {
+              if (!user) return
+              setReimporting(true)
+              void reimportCatalog(user.uid)
+                .catch((err) => console.error('Failed to reimport catalogue', err))
+                .finally(() => setReimporting(false))
+            }}
+            className="w-full"
+          >
+            {reimporting ? 'Đang nhập…' : 'Nhập lại bộ sưu tập TOEIC 600'}
+          </Button>
+        </div>
       )}
 
       {archivedCount > 0 && (

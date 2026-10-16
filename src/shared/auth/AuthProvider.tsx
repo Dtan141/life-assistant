@@ -11,6 +11,7 @@ import {
 import type { User } from 'firebase/auth'
 import { auth } from '@/shared/firebase/app'
 import { ensureUserProfile } from '@/shared/auth/user.repo'
+import { ensureCatalog } from '@/modules/flashcards/data/catalog.repo'
 import { isIOS, isStandalone } from '@/shared/lib/platform'
 import { AuthContext } from '@/shared/auth/AuthContext'
 
@@ -37,11 +38,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       authSettled = true
       settle()
       if (next) {
-        // Fire and forget: a failure here must not block sign-in, and the
-        // profile is re-checked on every subsequent sign-in anyway.
-        void ensureUserProfile(next).catch((err) =>
-          console.error('Failed to create user profile', err),
-        )
+        // Fire and forget: a failure here must not block sign-in, and both are
+        // re-checked on every subsequent sign-in anyway.
+        void ensureUserProfile(next)
+          // Seeded after the profile exists, since it records the version it
+          // received on that same document.
+          .then(() => ensureCatalog(next.uid))
+          .catch((err) => console.error('Failed to prepare account', err))
       }
     })
 
