@@ -1,6 +1,6 @@
 # Life Assistant — Mô tả dự án
 
-> Phiên bản: 0.4 · Ngày: 16/10/2026 · Trạng thái: **M0–M3 đã xong**. Còn M4 (nhắc nhở) và M5 (thống kê, sao lưu)
+> Phiên bản: 0.5 · Ngày: 16/10/2026 · Trạng thái: **M0–M5 đã xong.** MVP hoàn chỉnh; còn chờ xác nhận cron nhắc nhở tự chạy qua một đêm
 > Giai đoạn hiện tại: **Module 1 — Flashcard học từ vựng tiếng Anh**
 
 ---
@@ -229,8 +229,8 @@ users/{uid}
 | ~~**M1 — Nền tảng**~~ ✅ | Đăng nhập Google, layout bottom-tab, PWA cài lên iPhone | Đăng nhập được trong PWA trên iPhone |
 | ~~**M2 — Bộ thẻ**~~ ✅ | CRUD bộ thẻ và thẻ, nhập TSV có xem trước, sắp xếp ABC, tìm kiếm | Đã nhập bộ 59 từ bài đại bàng |
 | ~~**M3 — Ôn tập**~~ ✅ | FSRS, phiên ôn hằng ngày, 4 mức đánh giá, 4 kiểu hỏi, phát âm TTS, màn hình chọn phạm vi ôn | Ôn tập hằng ngày được |
-| **M4 — Nhắc nhở** | Web push (FCM) + Cloudflare Worker Cron, cài đặt giờ nhắc | Nhận thông báo trên iPhone |
-| **M5 — Hoàn thiện** | Thống kê, streak, offline, xuất/nhập sao lưu | Dùng ổn định hằng ngày |
+| ~~**M4 — Nhắc nhở**~~ ✅ | Web push (FCM) + Cloudflare Worker Cron mỗi 15 phút, nút gửi thử | Đã nhận thông báo trên iPhone (16/10/2026) |
+| ~~**M5 — Hoàn thiện**~~ ✅ | Thống kê, streak, offline, xuất/nhập sao lưu, trang hướng dẫn nhập | Dùng ổn định hằng ngày |
 | Sau đó | Module kế hoạch, thói quen, blog; API/MCP cho Claude | Life assistant |
 
 ---
