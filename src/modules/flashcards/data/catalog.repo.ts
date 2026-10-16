@@ -18,9 +18,9 @@ export const CATALOG_URL = '/catalog/toeic-600.tsv'
  * Seeding then runs again and adds only what is missing, so the topics someone
  * already has keep their review history, and ones they deleted stay deleted.
  *
- * 1: topics 1-3.  2: topics 4-28.  3: topics 29-32.
+ * 1: topics 1-3.  2: topics 4-28.  3: topics 29-32.  4: topics 33-36.
  */
-export const CATALOG_VERSION = 3
+export const CATALOG_VERSION = 4
 
 export interface SeedOutcome {
   decks: number
