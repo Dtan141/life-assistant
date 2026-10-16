@@ -16,6 +16,7 @@ import {
   buildPracticeSession,
   buildSession,
   cardsInPlan,
+  nextDueAt,
 } from '@/modules/flashcards/domain/session'
 import { RATINGS, applyRating, previewRatings } from '@/modules/flashcards/domain/srs'
 import type { ReviewRating } from '@/modules/flashcards/domain/srs'
@@ -26,6 +27,7 @@ import { isReviewMode } from '@/modules/flashcards/domain/review-mode'
 import type { ReviewMode } from '@/modules/flashcards/domain/review-mode'
 import { settleOrContinue } from '@/shared/lib/pending'
 import { cardStatus } from '@/modules/flashcards/domain/card-status'
+import { startOfDay } from '@/modules/flashcards/domain/day'
 import type { CardStatus } from '@/modules/flashcards/domain/card-status'
 import type { DailyProgress } from '@/modules/flashcards/domain/session'
 import type { Card } from '@/modules/flashcards/domain/card.types'
@@ -62,7 +64,12 @@ export default function ReviewPage() {
     return allowed.length > 0 ? new Set<CardStatus>(allowed) : null
   }, [params])
 
-  const [session, setSession] = useState<{ queue: Card[]; heldBack: number } | null>(null)
+  const [session, setSession] = useState<{
+    queue: Card[]
+    heldBack: number
+    doneToday: number
+    nextDue: Date | null
+  } | null>(null)
   const [index, setIndex] = useState(0)
   const [revealed, setRevealed] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -70,7 +77,7 @@ export default function ReviewPage() {
   const [saveError, setSaveError] = useState<string | null>(null)
   const [typed, setTyped] = useState('')
   const [verdict, setVerdict] = useState<AnswerVerdict | null>(null)
-  const built = useRef(false)
+  const building = useRef(false)
 
   /**
    * Choosing decks explicitly overrides the study plan; choosing nothing falls
@@ -87,35 +94,78 @@ export default function ReviewPage() {
   }, [cards, decks, deckFilter, statusFilter])
 
   /**
+   * The cards and settings the queue will be built from.
+   *
+   * Held in a ref rather than listed as effect dependencies: both change
+   * identity whenever a Firestore snapshot lands, and the build must not be
+   * torn down and restarted every time one does.
+   */
+  const latest = useRef({ scope, settings })
+  useEffect(() => {
+    latest.current = { scope, settings }
+  })
+
+  /**
    * The queue is built once and then left alone. Rebuilding it as cards change
    * underneath — which they do, since every answer writes one — would reorder
    * the session while it is being worked through.
    *
    * Today's tally comes from the review log rather than local state, so the
    * daily limits survive a reload and follow the user between devices.
+   *
+   * `building` guards against starting twice; the absence of a session is what
+   * says a build is still needed. An earlier version used a "already built"
+   * flag together with per-run cancellation, and the two could cancel the only
+   * build that would ever happen: a snapshot arriving mid-build tore the
+   * effect down, the re-run saw the flag and returned, and the screen span
+   * forever.
    */
   useEffect(() => {
-    if (loading || settingsLoading || !user || built.current) return
-    built.current = true
-    let cancelled = false
+    if (loading || settingsLoading || !user || session !== null || building.current) {
+      return
+    }
+    building.current = true
+    let active = true
 
     void (async () => {
-      if (practice) {
-        if (!cancelled) setSession({ queue: buildPracticeSession(scope), heldBack: 0 })
-        return
+      try {
+        if (practice) {
+          if (active) {
+            setSession({
+              queue: buildPracticeSession(latest.current.scope),
+              heldBack: 0,
+              doneToday: 0,
+              nextDue: null,
+            })
+          }
+          return
+        }
+        const progress: DailyProgress = await getDailyProgress(user.uid).catch((err) => {
+          console.error('Failed to read daily progress', err)
+          return { newDone: 0, reviewsDone: 0 }
+        })
+        if (!active) return
+        const { scope: cards, settings: limits } = latest.current
+        const plan = buildSession(cards, limits, progress)
+        setSession({
+          queue: plan.queue,
+          heldBack: plan.heldBack,
+          // Kept so a finished day can report itself rather than just saying
+          // there is nothing to do.
+          doneToday: progress.newDone + progress.reviewsDone,
+          nextDue: nextDueAt(cards),
+        })
+      } finally {
+        // Released either way, so a cancelled build is retried rather than
+        // leaving the screen with nothing to show.
+        building.current = false
       }
-      const progress: DailyProgress = await getDailyProgress(user.uid).catch((err) => {
-        console.error('Failed to read daily progress', err)
-        return { newDone: 0, reviewsDone: 0 }
-      })
-      const plan = buildSession(scope, settings, progress)
-      if (!cancelled) setSession({ queue: plan.queue, heldBack: plan.heldBack })
     })()
 
     return () => {
-      cancelled = true
+      active = false
     }
-  }, [loading, settingsLoading, user, practice, scope, settings])
+  }, [loading, settingsLoading, user, practice, session])
 
   const queue = session?.queue ?? null
   const current = queue?.[index]
@@ -219,12 +269,27 @@ export default function ReviewPage() {
         <div className="space-y-4 pt-6 text-center">
         <p className="text-4xl">{done.reviewed > 0 ? '🎉' : '✓'}</p>
         <h1 className="text-2xl font-bold">
-          {done.reviewed > 0 ? 'Xong phiên hôm nay' : 'Không có thẻ nào đến hạn'}
+          {done.reviewed > 0 ? 'Xong phiên hôm nay' : 'Hôm nay không còn thẻ nào'}
         </h1>
-        {done.reviewed > 0 && (
+
+        {done.reviewed > 0 ? (
           <p className="text-slate-500">
             Đã ôn {done.reviewed} lượt
             {done.again > 0 && `, trong đó ${done.again} lượt quên`}.
+          </p>
+        ) : (
+          /* Opened after finishing, which the home screen now allows: report
+             the day rather than implying nothing happened. */
+          <p className="text-slate-500">
+            {session.doneToday > 0
+              ? `Bạn đã ôn ${session.doneToday} lượt hôm nay.`
+              : 'Chưa có thẻ nào tới hạn. Thêm bộ thẻ vào kế hoạch học để bắt đầu.'}
+          </p>
+        )}
+
+        {session.nextDue && (
+          <p className="text-sm text-slate-500">
+            Thẻ tiếp theo đến hạn {describeDue(session.nextDue)}.
           </p>
         )}
         {session.heldBack > 0 && (
@@ -320,4 +385,22 @@ export default function ReviewPage() {
       </div>
     </Page>
   )
+}
+
+/**
+ * "hôm nay lúc 21:40", "ngày mai lúc 09:00", "thứ Năm, 23/10".
+ *
+ * A bare date answers the wrong question. What someone who has just finished
+ * wants to know is how long until there is something again, and for the next
+ * day or two that is better said in words than in a date.
+ */
+function describeDue(due: Date, now: Date = new Date()): string {
+  const time = due.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })
+  const days = Math.round(
+    (startOfDay(due).getTime() - startOfDay(now).getTime()) / 86_400_000,
+  )
+  if (days <= 0) return `hôm nay lúc ${time}`
+  if (days === 1) return `ngày mai lúc ${time}`
+  if (days < 7) return `sau ${days} ngày, lúc ${time}`
+  return `vào ${due.toLocaleDateString('vi-VN')}`
 }

@@ -68,12 +68,14 @@ export default function HomePage() {
               {newAvailable > 0 && ` · ${newAvailable} thẻ mới`}
             </p>
 
+            {/* Never disabled: a finished day is worth opening too, and the
+                session screen says what it found. A dead button leaves the
+                user guessing whether anything happened. */}
             <Button
               onClick={() => navigate('/flashcards/review/session')}
-              disabled={waiting === 0}
               className="mt-4 w-full"
             >
-              {waiting === 0 ? 'Không có gì để ôn' : 'Bắt đầu ôn'}
+              {waiting === 0 ? 'Xem phiên hôm nay' : 'Bắt đầu ôn'}
             </Button>
 
             <button

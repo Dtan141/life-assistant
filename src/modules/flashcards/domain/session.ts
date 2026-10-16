@@ -97,6 +97,22 @@ export function cardsInPlan(
   return cards.filter((card) => active.has(card.deckId))
 }
 
+/**
+ * When the next card falls due, or null if none is scheduled ahead.
+ *
+ * Answers the question a finished day actually raises — not "nothing to do"
+ * but "when is there something again".
+ */
+export function nextDueAt(cards: readonly Card[], now: Date = new Date()): Date | null {
+  let soonest: Date | null = null
+  for (const card of cards) {
+    const due = card.srs?.due
+    if (!due || due <= now) continue
+    if (!soonest || due < soonest) soonest = due
+  }
+  return soonest
+}
+
 /** How many cards are waiting right now, ignoring today's limits. */
 export function countDue(cards: readonly Card[], now: Date = new Date()): number {
   return cards.filter((card) => card.srs !== null && card.srs.due <= now).length

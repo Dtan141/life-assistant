@@ -4,6 +4,7 @@ import {
   buildSession,
   cardsInPlan,
   countDue,
+  nextDueAt,
 } from '@/modules/flashcards/domain/session'
 import type { Card, CardSrs, Deck } from '@/modules/flashcards/domain/card.types'
 
@@ -208,5 +209,26 @@ describe('cardsInPlan', () => {
     const decks = [deck('one'), deck('two')]
     const cards = [cardIn('a', 'one'), cardIn('b', 'two')]
     expect(cardsInPlan(cards, decks)).toHaveLength(2)
+  })
+})
+
+describe('nextDueAt', () => {
+  it('finds the soonest card still ahead', () => {
+    const cards = [card('a', srs(5)), card('b', srs(2)), card('c', srs(9))]
+    expect(nextDueAt(cards, NOW)).toEqual(new Date(NOW.getTime() + 2 * DAY))
+  })
+
+  it('ignores cards already due', () => {
+    // Those belong in today's queue, not in "when is there something again".
+    const cards = [card('overdue', srs(-3)), card('later', srs(4))]
+    expect(nextDueAt(cards, NOW)).toEqual(new Date(NOW.getTime() + 4 * DAY))
+  })
+
+  it('ignores cards with no schedule', () => {
+    expect(nextDueAt([card('new')], NOW)).toBeNull()
+  })
+
+  it('returns null when nothing is scheduled ahead', () => {
+    expect(nextDueAt([card('a', srs(-1))], NOW)).toBeNull()
   })
 })
