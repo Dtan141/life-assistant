@@ -159,9 +159,9 @@ export function ReminderSettings({ settings }: { settings: UserSettings }) {
       ) : (
         <div className="space-y-4">
           <p className="text-sm text-slate-500">
-            Mỗi ngày vào giờ bạn chọn, nếu có thẻ đến hạn thì điện thoại sẽ báo. Quyền
-            thông báo là <strong>riêng từng thiết bị</strong> — bật trên iPhone không
-            tự bật trên máy tính.
+            Đến giờ bạn chọn, nếu còn thẻ chưa ôn thì máy sẽ báo. Không còn thẻ nào thì
+            app im lặng. Phải bật riêng trên <strong>từng thiết bị</strong> — bật ở
+            iPhone không tự bật ở máy tính.
           </p>
 
           <Button
@@ -182,7 +182,7 @@ export function ReminderSettings({ settings }: { settings: UserSettings }) {
             type="time"
             value={reminderTime}
             onChange={(e) => void saveTime(e.target.value)}
-            hint="Lưu ngay khi đổi. Thông báo có thể đến muộn tối đa 15 phút."
+            hint="Tự lưu ngay khi bạn đổi, không cần bấm gì. Thông báo có thể tới muộn vài phút so với giờ này."
           />
 
           {enabled && (
