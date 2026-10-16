@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useAuth } from '@/shared/auth/useAuth'
 import { Button } from '@/shared/ui/Button'
+import { Note, Panel } from '@/shared/ui/Panel'
+import { Page, PageHeader, Section } from '@/shared/ui/Page'
 import { downloadText, stampedName } from '@/shared/lib/download'
 import { collectBackup, restoreBackup } from '@/modules/flashcards/data/backup.repo'
 import type { RestoreMode, RestoreOutcome } from '@/modules/flashcards/data/backup.repo'
@@ -76,28 +77,21 @@ export default function BackupPage() {
   const orphans = pending ? findOrphanCards(pending) : []
 
   return (
-    <div className="mx-auto max-w-lg space-y-6 px-5 pt-6">
-      <div>
-        <Link to="/settings" className="text-sm text-slate-500">
-          ← Cài đặt
-        </Link>
-        <h1 className="mt-1 text-2xl font-bold">Sao lưu</h1>
-      </div>
+    <Page>
+      <PageHeader title="Sao lưu" back={{ to: '/settings', label: 'Cài đặt' }} />
 
-      <section className="space-y-3">
-        <h2 className="font-semibold">Xuất dữ liệu</h2>
-        <p className="text-sm text-slate-500">
+      <Section title="Xuất dữ liệu">
+        <p className="mb-3 text-sm text-slate-500">
           Một file JSON chứa toàn bộ bộ thẻ, thẻ, lịch sử ôn tập và cài đặt. Giữ nó ở
           đâu đó ngoài máy — đây là bản duy nhất nằm ngoài Firestore.
         </p>
         <Button onClick={() => void handleExport()} disabled={busy} className="w-full">
           {busy ? 'Đang xử lý…' : 'Tải file sao lưu'}
         </Button>
-      </section>
+      </Section>
 
-      <section className="space-y-3 border-t border-slate-200 pt-6 dark:border-slate-800">
-        <h2 className="font-semibold">Khôi phục</h2>
-        <p className="text-sm text-slate-500">
+      <Section title="Khôi phục">
+        <p className="mb-3 text-sm text-slate-500">
           Khôi phục <strong>không xoá gì cả</strong>. Thẻ hiện có chỉ bị ảnh hưởng nếu
           bạn chọn ghi đè.
         </p>
@@ -106,7 +100,7 @@ export default function BackupPage() {
           variant="secondary"
           onClick={() => fileInput.current?.click()}
           disabled={busy}
-          className="w-full"
+          className="mb-3 w-full"
         >
           Chọn file sao lưu…
         </Button>
@@ -122,7 +116,7 @@ export default function BackupPage() {
         />
 
         {pending && (
-          <div className="space-y-3 rounded-xl border border-slate-200 p-4 dark:border-slate-800">
+          <Panel className="space-y-3 p-4">
             <p className="text-sm">
               File ngày{' '}
               <strong>{pending.exportedAt.toLocaleDateString('vi-VN')}</strong>:{' '}
@@ -168,28 +162,24 @@ export default function BackupPage() {
               một bộ. <strong>Ghi đè</strong> thay nội dung và cả tiến độ ôn tập bằng bản
               trong file, dùng khi muốn quay về đúng thời điểm sao lưu.
             </p>
-          </div>
+          </Panel>
         )}
 
         {outcome && (
-          <p className="rounded-xl bg-emerald-50 p-3 text-sm text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
-            Đã khôi phục {outcome.decks} bộ thẻ, {outcome.cards} thẻ,{' '}
-            {outcome.reviewLogs} lượt ôn
-            {outcome.skipped > 0 && `, bỏ qua ${outcome.skipped} mục đã có`}.
-          </p>
+          <div className="mt-3">
+            <Note tone="success">
+              Đã khôi phục {outcome.decks} bộ thẻ, {outcome.cards} thẻ,{' '}
+              {outcome.reviewLogs} lượt ôn
+              {outcome.skipped > 0 && `, bỏ qua ${outcome.skipped} mục đã có`}.
+            </Note>
+          </div>
         )}
-      </section>
+      </Section>
 
-      {message && (
-        <p className="rounded-xl bg-emerald-50 p-3 text-sm text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
-          {message}
-        </p>
-      )}
-      {error && (
-        <p role="alert" className="rounded-xl bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
-          {error}
-        </p>
-      )}
-    </div>
+      <div className="space-y-3">
+        {message && <Note tone="success">{message}</Note>}
+        {error && <Note tone="danger">{error}</Note>}
+      </div>
+    </Page>
   )
 }

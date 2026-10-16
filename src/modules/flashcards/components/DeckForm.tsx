@@ -17,6 +17,9 @@ export function DeckForm({ deck, onSubmit, onCancel }: Props) {
   const [sourceUrl, setSourceUrl] = useState(deck?.sourceUrl ?? '')
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
+  const [showMore, setShowMore] = useState(
+    Boolean(deck?.description || deck?.tags.length || deck?.sourceUrl),
+  )
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
@@ -51,35 +54,52 @@ export function DeckForm({ deck, onSubmit, onCancel }: Props) {
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="Study4 Listening — Đại bàng"
+        hint="Chỉ cần tên là tạo được. Mọi thứ khác thêm sau cũng được."
         error={error ?? undefined}
         autoFocus
         required
       />
 
-      <TextAreaField
-        label="Mô tả"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        rows={2}
-        placeholder="Không bắt buộc"
-      />
+      {/* The other three fields are collapsed by default so the form says, at a
+          glance, that one field is all it needs. */}
+      {!showMore ? (
+        <button
+          type="button"
+          onClick={() => setShowMore(true)}
+          className="text-sm text-slate-500 underline underline-offset-2"
+        >
+          Thêm mô tả, tags, link nguồn
+        </button>
+      ) : (
+        <>
+          <TextAreaField
+            label="Mô tả"
+            optional
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={2}
+          />
 
-      <TextField
-        label="Tags"
-        value={tags}
-        onChange={(e) => setTags(e.target.value)}
-        hint="Cách nhau bởi dấu phẩy, ví dụ: study4, listening"
-      />
+          <TextField
+            label="Tags"
+            optional
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+            hint="Cách nhau bởi dấu phẩy, ví dụ: study4, listening"
+          />
 
-      <TextField
-        label="Link nguồn"
-        type="url"
-        inputMode="url"
-        value={sourceUrl}
-        onChange={(e) => setSourceUrl(e.target.value)}
-        hint="Trang Notion chứa danh sách từ gốc"
-        placeholder="https://notion.so/…"
-      />
+          <TextField
+            label="Link nguồn"
+            optional
+            type="url"
+            inputMode="url"
+            value={sourceUrl}
+            onChange={(e) => setSourceUrl(e.target.value)}
+            hint="Trang Notion chứa danh sách từ gốc"
+            placeholder="https://notion.so/…"
+          />
+        </>
+      )}
 
       <div className="flex gap-2 pt-1">
         <Button type="submit" disabled={busy} className="flex-1">

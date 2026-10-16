@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { QuietButton } from '@/shared/ui/Panel'
 import type { Deck } from '@/modules/flashcards/domain/card.types'
 
 interface Props {
@@ -10,7 +11,7 @@ interface Props {
 
 export function DeckCard({ deck, onEdit, onArchiveToggle, onDelete }: Props) {
   return (
-    <li className="rounded-2xl border border-slate-200 dark:border-slate-800">
+    <li className="overflow-hidden rounded-2xl border border-slate-200 transition dark:border-slate-800">
       <Link
         to={`/flashcards/${deck.id}`}
         className="block px-4 pt-4 pb-3 active:bg-slate-50 dark:active:bg-slate-900"
@@ -45,37 +46,22 @@ export function DeckCard({ deck, onEdit, onArchiveToggle, onDelete }: Props) {
       </Link>
 
       <div className="flex gap-1 border-t border-slate-100 px-2 py-1 dark:border-slate-800">
-        <Action onClick={onEdit}>Sửa</Action>
-        <Action onClick={onArchiveToggle}>{deck.archived ? 'Bỏ lưu trữ' : 'Lưu trữ'}</Action>
-        <Action onClick={onDelete} danger>
-          Xoá
-        </Action>
+        <div className="flex-1">
+          <QuietButton onClick={onEdit} full>
+            Sửa
+          </QuietButton>
+        </div>
+        <div className="flex-1">
+          <QuietButton onClick={onArchiveToggle} full>
+            {deck.archived ? 'Bỏ lưu trữ' : 'Lưu trữ'}
+          </QuietButton>
+        </div>
+        <div className="flex-1">
+          <QuietButton onClick={onDelete} tone="danger" full>
+            Xoá
+          </QuietButton>
+        </div>
       </div>
     </li>
-  )
-}
-
-function Action({
-  onClick,
-  danger,
-  children,
-}: {
-  onClick: () => void
-  danger?: boolean
-  children: React.ReactNode
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={[
-        'no-select min-h-10 flex-1 rounded-lg px-2 text-sm transition active:scale-[0.98]',
-        danger
-          ? 'text-red-600 active:bg-red-50 dark:text-red-400 dark:active:bg-red-950'
-          : 'text-slate-600 active:bg-slate-100 dark:text-slate-300 dark:active:bg-slate-800',
-      ].join(' ')}
-    >
-      {children}
-    </button>
   )
 }

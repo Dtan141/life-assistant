@@ -1,3 +1,4 @@
+import { QuietButton } from '@/shared/ui/Panel'
 import { STATUS_LABELS, cardStatus } from '@/modules/flashcards/domain/card-status'
 import type { Card } from '@/modules/flashcards/domain/card.types'
 
@@ -63,21 +64,11 @@ export function CardRow({ card, expanded, onToggle, onEdit, onDelete }: Props) {
           {card.wordFamily && <Detail label="Họ từ">{card.wordFamily}</Detail>}
           {card.tags.length > 0 && <Detail label="Tags">{card.tags.join(', ')}</Detail>}
 
-          <div className="flex gap-2 pt-1">
-            <button
-              type="button"
-              onClick={onEdit}
-              className="min-h-9 rounded-lg px-3 text-sm text-slate-600 active:bg-slate-100 dark:text-slate-300 dark:active:bg-slate-800"
-            >
-              Sửa
-            </button>
-            <button
-              type="button"
-              onClick={onDelete}
-              className="min-h-9 rounded-lg px-3 text-sm text-red-600 active:bg-red-50 dark:text-red-400 dark:active:bg-red-950"
-            >
+          <div className="-ml-3 flex gap-1 pt-1">
+            <QuietButton onClick={onEdit}>Sửa</QuietButton>
+            <QuietButton onClick={onDelete} tone="danger">
               Xoá
-            </button>
+            </QuietButton>
           </div>
         </div>
       )}

@@ -1,6 +1,9 @@
 import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useAuth } from '@/shared/auth/useAuth'
 import { Button } from '@/shared/ui/Button'
+import { EmptyState, Note } from '@/shared/ui/Panel'
+import { Page, PageHeader } from '@/shared/ui/Page'
 import { Sheet } from '@/shared/ui/Sheet'
 import { Spinner } from '@/shared/ui/Spinner'
 import { DeckCard } from '@/modules/flashcards/components/DeckCard'
@@ -56,27 +59,30 @@ export default function DeckListPage() {
   }
 
   return (
-    <div className="mx-auto max-w-lg px-5 pt-8">
-      <header className="mb-5 flex items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold">Bộ thẻ</h1>
-        <Button onClick={() => setEditing({ mode: 'create' })}>+ Tạo bộ thẻ</Button>
-      </header>
+    <Page>
+      <PageHeader
+        title="Bộ thẻ"
+        action={
+          <Button onClick={() => setEditing({ mode: 'create' })}>+ Tạo bộ thẻ</Button>
+        }
+      />
 
       {error && (
-        <p role="alert" className="mb-4 rounded-xl bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
-          {error}
-        </p>
+        <div className="mb-4">
+          <Note tone="danger">{error}</Note>
+        </div>
       )}
 
       {loading ? (
         <Spinner />
       ) : visible.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-300 p-8 text-center dark:border-slate-700">
-          <p className="font-medium">Chưa có bộ thẻ nào</p>
-          <p className="mt-1 text-sm text-slate-500">
-            Tạo một bộ, rồi dán danh sách từ dạng TSV vào.
-          </p>
-        </div>
+        <EmptyState title="Chưa có bộ thẻ nào">
+          Tạo một bộ, rồi dán danh sách từ vào.{' '}
+          <Link to="/flashcards/huong-dan-nhap" className="underline underline-offset-2">
+            Xem cách chuẩn bị file
+          </Link>
+          .
+        </EmptyState>
       ) : (
         <ul className="space-y-3">
           {visible.map((deck) => (
@@ -135,6 +141,6 @@ export default function DeckListPage() {
           </Button>
         </div>
       </Sheet>
-    </div>
+    </Page>
   )
 }

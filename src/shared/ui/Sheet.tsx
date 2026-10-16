@@ -46,12 +46,18 @@ export function Sheet({ open, title, onClose, children }: Props) {
         // the element itself rather than its content means "outside".
         if (event.target === ref.current) onClose()
       }}
-      className="fixed inset-x-0 bottom-0 top-auto m-0 w-full max-w-none bg-transparent p-0 backdrop:bg-slate-900/40 sm:inset-0 sm:m-auto sm:max-w-lg"
+      className="fixed inset-x-0 bottom-0 top-auto m-0 w-full max-w-none bg-transparent p-0 text-slate-900 backdrop:bg-slate-900/50 backdrop:backdrop-blur-[2px] sm:inset-0 sm:m-auto sm:max-w-lg dark:text-slate-100"
     >
       <div
         className="max-h-[90dvh] overflow-y-auto rounded-t-2xl bg-white p-5 dark:bg-slate-950 sm:rounded-2xl"
         style={{ paddingBottom: 'max(1.25rem, env(safe-area-inset-bottom))' }}
       >
+        {/* A grab handle on the phone: it reads as a sheet you can dismiss,
+            which a flat panel does not. */}
+        <div
+          aria-hidden
+          className="mx-auto mb-3 h-1 w-10 rounded-full bg-slate-300 dark:bg-slate-700 sm:hidden"
+        />
         <h2 className="mb-4 text-lg font-bold">{title}</h2>
         {children}
       </div>

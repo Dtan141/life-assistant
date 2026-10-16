@@ -4,6 +4,7 @@ import { useAuth } from '@/shared/auth/useAuth'
 import { useSettings } from '@/shared/settings/useSettings'
 import { Button } from '@/shared/ui/Button'
 import { Spinner } from '@/shared/ui/Spinner'
+import { Page, PageHeader } from '@/shared/ui/Page'
 import { useAllCards } from '@/modules/flashcards/data/useAllCards'
 import { useDecks } from '@/modules/flashcards/data/useDecks'
 import { STATUS_LABELS, cardStatus } from '@/modules/flashcards/domain/card-status'
@@ -104,8 +105,8 @@ export default function ReviewSetupPage() {
   const active = decks.filter((deck) => !deck.archived)
 
   return (
-    <div className="mx-auto max-w-lg space-y-6 px-5 pt-6 pb-4">
-      <h1 className="text-2xl font-bold">Ôn tập</h1>
+    <Page>
+      <PageHeader title="Ôn tập" />
 
       {cards.length === 0 ? (
         <p className="text-slate-500">
@@ -186,7 +187,7 @@ export default function ReviewSetupPage() {
           </div>
         </>
       )}
-    </div>
+    </Page>
   )
 }
 
@@ -200,7 +201,7 @@ function Group({
   children: React.ReactNode
 }) {
   return (
-    <section>
+    <section className="mb-6">
       <h2 className="mb-2 text-sm font-medium">
         {title}
         {note && <span className="ml-2 font-normal text-slate-400">{note}</span>}

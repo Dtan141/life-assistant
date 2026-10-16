@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useAuth } from '@/shared/auth/useAuth'
 import { Spinner } from '@/shared/ui/Spinner'
+import { Note, Panel } from '@/shared/ui/Panel'
+import { Page, PageHeader, Section } from '@/shared/ui/Page'
 import { useAllCards } from '@/modules/flashcards/data/useAllCards'
 import { listRecentLogs } from '@/modules/flashcards/data/reviews.repo'
 import { countByStatus } from '@/modules/flashcards/domain/card-status'
@@ -60,21 +61,16 @@ export default function StatsPage() {
   const peakActivity = Math.max(1, ...activity.map((d) => d.count))
 
   return (
-    <div className="mx-auto max-w-lg space-y-7 px-5 pt-6">
-      <div>
-        <Link to="/" className="text-sm text-slate-500">
-          ← Hôm nay
-        </Link>
-        <h1 className="mt-1 text-2xl font-bold">Thống kê</h1>
-      </div>
+    <Page>
+      <PageHeader title="Thống kê" back={{ to: '/', label: 'Hôm nay' }} />
 
       {error && (
-        <p role="alert" className="rounded-xl bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
-          {error}
-        </p>
+        <div className="mb-4">
+          <Note tone="danger">{error}</Note>
+        </div>
       )}
 
-      <section className="grid grid-cols-3 gap-2 text-center">
+      <section className="mb-2 grid grid-cols-3 gap-2 text-center">
         <Stat
           value={streak.current}
           label={streak.studiedToday ? 'ngày liên tiếp' : 'ngày — chưa ôn hôm nay'}
@@ -88,14 +84,13 @@ export default function StatsPage() {
       </section>
 
       {retention.rate !== null && (
-        <p className="-mt-5 text-center text-xs text-slate-500">
+        <p className="mb-6 text-center text-xs text-slate-500">
           {retention.remembered}/{retention.total} lượt ôn nhớ được. Không tính lần đầu
           gặp từ mới.
         </p>
       )}
 
-      <section className="space-y-2">
-        <h2 className="font-semibold">Thẻ đến hạn 7 ngày tới</h2>
+      <Section title="Thẻ đến hạn 7 ngày tới">
         <ul className="flex items-end gap-1.5">
           {forecast.map((day, index) => (
             <li key={day.date.toISOString()} className="flex-1 text-center">
@@ -113,10 +108,9 @@ export default function StatsPage() {
             </li>
           ))}
         </ul>
-      </section>
+      </Section>
 
-      <section className="space-y-2">
-        <h2 className="font-semibold">Lượt ôn 14 ngày qua</h2>
+      <Section title="Lượt ôn 14 ngày qua">
         <ul className="flex items-end gap-1">
           {activity.map((day) => (
             <li key={day.date.toISOString()} className="flex-1">
@@ -134,23 +128,21 @@ export default function StatsPage() {
             </li>
           ))}
         </ul>
-        <p className="text-xs text-slate-400">
+        <p className="mt-2 text-xs text-slate-400">
           Cột xám là ngày không ôn. Tổng {logs.length} lượt trong {WINDOW_DAYS} ngày qua.
         </p>
-      </section>
+      </Section>
 
-      <section className="space-y-2">
-        <h2 className="font-semibold">Thẻ theo trạng thái</h2>
+      <Section title="Thẻ theo trạng thái">
         <div className="grid grid-cols-4 gap-2 text-center">
           <Stat value={counts.new} label="Mới" small />
           <Stat value={counts.learning} label="Đang học" small />
           <Stat value={counts.due} label="Cần ôn" small />
           <Stat value={counts.known} label="Đã thuộc" small />
         </div>
-      </section>
+      </Section>
 
-      <section className="space-y-2">
-        <h2 className="font-semibold">Hay quên nhất</h2>
+      <Section title="Hay quên nhất">
         {forgotten.length === 0 ? (
           <p className="text-sm text-slate-500">
             Chưa có thẻ nào bị quên. Danh sách này xuất hiện sau khi bạn bấm “Quên” ở
@@ -158,7 +150,8 @@ export default function StatsPage() {
           </p>
         ) : (
           <>
-            <ul className="divide-y divide-slate-100 rounded-2xl border border-slate-200 dark:divide-slate-800 dark:border-slate-800">
+            <Panel className="divide-y divide-slate-100 overflow-hidden dark:divide-slate-800">
+            <ul>
               {forgotten.map((card) => (
                 <li key={card.id} className="flex items-center gap-3 px-4 py-2.5">
                   <div className="min-w-0 flex-1">
@@ -171,14 +164,15 @@ export default function StatsPage() {
                 </li>
               ))}
             </ul>
-            <p className="text-xs text-slate-500">
+            </Panel>
+            <p className="mt-2 text-xs text-slate-500">
               Gắn tag <code>can-on-ky</code> cho những thẻ này để ôn riêng, hoặc mang
               sang Claude để luyện thêm.
             </p>
           </>
         )}
-      </section>
-    </div>
+      </Section>
+    </Page>
   )
 }
 

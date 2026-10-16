@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/shared/auth/useAuth'
 import { useSettings } from '@/shared/settings/useSettings'
 import { Button } from '@/shared/ui/Button'
+import { Panel, PanelLink } from '@/shared/ui/Panel'
+import { Page, PageHeader } from '@/shared/ui/Page'
 import { Spinner } from '@/shared/ui/Spinner'
 import { useAllCards } from '@/modules/flashcards/data/useAllCards'
 import { countByStatus } from '@/modules/flashcards/domain/card-status'
@@ -46,17 +48,14 @@ export default function HomePage() {
   const waiting = due + newAvailable
 
   return (
-    <div className="mx-auto max-w-lg space-y-5 px-5 pt-8">
-      <header>
-        <h1 className="text-2xl font-bold">Chào {firstName}</h1>
-        <p className="text-slate-500 dark:text-slate-400">Hôm nay học gì nào?</p>
-      </header>
+    <Page>
+      <PageHeader title={`Chào ${firstName}`} subtitle="Hôm nay học gì nào?" />
 
       {loading ? (
         <Spinner />
       ) : (
         <>
-          <section className="rounded-2xl border border-slate-200 p-5 dark:border-slate-800">
+          <Panel className="mb-4 p-5">
             <p className="text-sm text-slate-500">Chờ ôn hôm nay</p>
             <p className="mt-1 text-4xl font-bold tabular-nums">{waiting}</p>
             <p className="mt-1 text-sm text-slate-500">
@@ -79,41 +78,36 @@ export default function HomePage() {
             >
               Chọn bộ, trạng thái và kiểu hỏi
             </button>
-          </section>
+          </Panel>
 
-          <section className="grid grid-cols-4 gap-2 text-center">
+          <section className="mb-4 grid grid-cols-4 gap-2 text-center">
             <Tile value={counts.new} label="Mới" />
             <Tile value={counts.learning} label="Đang học" />
             <Tile value={counts.due} label="Cần ôn" />
             <Tile value={counts.known} label="Đã thuộc" />
           </section>
 
-          <Link
+          <PanelLink
             to="/stats"
-            className="flex min-h-14 items-center justify-between rounded-2xl border border-slate-200 px-4 dark:border-slate-800"
-          >
-            <span>
-              <span className="font-medium">Thống kê</span>
-              {streak.current > 0 && (
+            title="Thống kê"
+            description="Lịch đến hạn, tỉ lệ nhớ, thẻ hay quên"
+            badge={
+              streak.current > 0 && (
                 <span className="ml-2 text-sm text-emerald-600 dark:text-emerald-400">
                   🔥 {streak.current} ngày liên tiếp
                 </span>
-              )}
-              <span className="block text-sm text-slate-500">
-                Lịch đến hạn, tỉ lệ nhớ, thẻ hay quên
-              </span>
-            </span>
-            <span className="text-slate-400">›</span>
-          </Link>
+              )
+            }
+          />
 
           {cards.length === 0 && (
-            <p className="text-center text-sm text-slate-500">
+            <p className="mt-4 text-center text-sm text-slate-500">
               Chưa có thẻ nào. Vào <strong>Bộ thẻ</strong> để tạo bộ đầu tiên.
             </p>
           )}
         </>
       )}
-    </div>
+    </Page>
   )
 }
 

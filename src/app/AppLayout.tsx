@@ -44,7 +44,9 @@ export default function AppLayout() {
         </p>
       )}
 
-      <main className="flex-1 pb-20">
+      {/* Keyed on the path so each navigation replays the entrance, giving a
+          sense of direction that an instant swap does not. */}
+      <main key={pathname} className="page-enter flex-1 pb-20">
         <Outlet />
       </main>
 

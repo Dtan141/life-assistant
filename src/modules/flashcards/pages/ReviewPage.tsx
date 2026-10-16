@@ -4,6 +4,8 @@ import { useAuth } from '@/shared/auth/useAuth'
 import { useSettings } from '@/shared/settings/useSettings'
 import { Button } from '@/shared/ui/Button'
 import { Spinner } from '@/shared/ui/Spinner'
+import { Note } from '@/shared/ui/Panel'
+import { Page } from '@/shared/ui/Page'
 import { RatingButtons } from '@/modules/flashcards/components/RatingButtons'
 import { ReviewCard } from '@/modules/flashcards/components/ReviewCard'
 import { useAllCards } from '@/modules/flashcards/data/useAllCards'
@@ -192,15 +194,16 @@ export default function ReviewPage() {
 
   if (error) {
     return (
-      <div className="mx-auto max-w-lg px-5 pt-8">
-        <p className="break-words text-red-600 dark:text-red-400">{error}</p>
-      </div>
+      <Page>
+        <Note tone="danger">{error}</Note>
+      </Page>
     )
   }
 
   if (!current) {
     return (
-      <div className="mx-auto max-w-lg space-y-4 px-5 pt-10 text-center">
+      <Page>
+        <div className="space-y-4 pt-6 text-center">
         <p className="text-4xl">{done.reviewed > 0 ? '🎉' : '✓'}</p>
         <h1 className="text-2xl font-bold">
           {done.reviewed > 0 ? 'Xong phiên hôm nay' : 'Không có thẻ nào đến hạn'}
@@ -228,7 +231,8 @@ export default function ReviewPage() {
             Về trang chủ
           </Link>
         </div>
-      </div>
+        </div>
+      </Page>
     )
   }
 
@@ -236,7 +240,7 @@ export default function ReviewPage() {
   const position = Math.min(index + 1, total)
 
   return (
-    <div className="mx-auto max-w-lg px-5 pt-6">
+    <Page>
       <div className="mb-4 flex items-center justify-between gap-3 text-sm text-slate-500">
         <span className="tabular-nums">
           {position} / {total}
@@ -275,9 +279,9 @@ export default function ReviewPage() {
       </ReviewCard>
 
       {saveError && (
-        <p role="alert" className="mt-3 text-sm text-red-600 dark:text-red-400">
-          {saveError}
-        </p>
+        <div className="mt-3">
+          <Note tone="danger">{saveError}</Note>
+        </div>
       )}
 
       <div className="mt-4">
@@ -297,6 +301,6 @@ export default function ReviewPage() {
           </Button>
         )}
       </div>
-    </div>
+    </Page>
   )
 }

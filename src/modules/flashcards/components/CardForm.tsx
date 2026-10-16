@@ -134,12 +134,14 @@ export function CardForm({
       <div className="grid grid-cols-2 gap-3">
         <TextField
           label="Phát âm"
+          optional
           value={pronunciation}
           onChange={(e) => setPronunciation(e.target.value)}
           placeholder="/…/"
         />
         <TextField
           label="Loại từ"
+          optional
           value={partOfSpeech}
           onChange={(e) => setPartOfSpeech(e.target.value)}
           placeholder="n, v, adj…"
@@ -147,24 +149,28 @@ export function CardForm({
       </div>
       <TextAreaField
         label="Ví dụ"
+        optional
         value={example}
         onChange={(e) => setExample(e.target.value)}
         rows={2}
       />
       <TextField
         label="Đồng nghĩa"
+        optional
         value={synonyms}
         onChange={(e) => setSynonyms(e.target.value)}
         hint="Cách nhau bởi dấu chấm phẩy"
       />
       <TextField
         label="Trái nghĩa"
+        optional
         value={antonyms}
         onChange={(e) => setAntonyms(e.target.value)}
         hint="Cách nhau bởi dấu chấm phẩy"
       />
       <TextField
         label="Tags"
+        optional
         value={tags}
         onChange={(e) => setTags(e.target.value)}
         hint="Cách nhau bởi dấu phẩy, ví dụ: can-on-ky"

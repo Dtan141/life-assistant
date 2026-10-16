@@ -5,6 +5,8 @@ import { settleOrContinue } from '@/shared/lib/pending'
 import { useOnlineStatus } from '@/shared/hooks/useOnlineStatus'
 import { Button } from '@/shared/ui/Button'
 import { Spinner } from '@/shared/ui/Spinner'
+import { Note } from '@/shared/ui/Panel'
+import { Page } from '@/shared/ui/Page'
 import { ImportPreview } from '@/modules/flashcards/components/ImportPreview'
 import { getDeck } from '@/modules/flashcards/data/decks.repo'
 import { getExistingTerms, saveImport } from '@/modules/flashcards/data/cards.repo'
@@ -133,24 +135,33 @@ export default function ImportPage() {
 
   if (loadError || !deck) {
     return (
-      <div className="mx-auto max-w-lg space-y-3 px-5 pt-8">
-        <p className="break-words text-red-600 dark:text-red-400">
-          {loadError ?? 'Bộ thẻ không tồn tại.'}
-        </p>
+      <Page>
+        <div className="mb-3">
+          <Note tone="danger">{loadError ?? 'Bộ thẻ không tồn tại.'}</Note>
+        </div>
         <Link to="/flashcards" className="text-sm text-slate-500">
           ← Về danh sách bộ thẻ
         </Link>
-      </div>
+      </Page>
     )
   }
 
   return (
-    <div className="mx-auto max-w-lg space-y-5 px-5 pt-6">
+    <Page>
+      <div className="space-y-5">
       <div>
         <Link to={`/flashcards/${deckId}`} className="text-sm text-slate-500">
           ← {deck.name}
         </Link>
-        <h1 className="mt-1 text-2xl font-bold">Nhập thẻ</h1>
+        <div className="mt-1 flex items-baseline justify-between gap-3">
+          <h1 className="text-2xl font-bold">Nhập thẻ</h1>
+          <Link
+            to="/flashcards/huong-dan-nhap"
+            className="shrink-0 text-sm text-slate-500 underline underline-offset-2"
+          >
+            Định dạng file?
+          </Link>
+        </div>
       </div>
 
       <div className="space-y-1.5">
@@ -163,7 +174,7 @@ export default function ImportPage() {
           onChange={(e) => setRaw(e.target.value)}
           rows={7}
           spellCheck={false}
-          placeholder={'accidental\tvô tình, do tai nạn\t/ˌæksɪˈdentl/\tadj\t…'}
+          placeholder={'Từ ⇥ Nghĩa ⇥ Phiên âm ⇥ Loại từ ⇥ Ví dụ ⇥ Đồng nghĩa\n\naccidental ⇥ vô tình, do tai nạn ⇥ /ˌæksɪˈdentl/ ⇥ adj'}
           className="w-full rounded-xl border border-slate-300 bg-transparent p-3 font-mono text-sm outline-none focus:border-slate-900 dark:border-slate-700 dark:focus:border-slate-300"
         />
         <div className="flex items-center gap-3">
@@ -235,12 +246,9 @@ export default function ImportPage() {
       </details>
 
       {parsed.warnings.map((warning) => (
-        <p
-          key={warning}
-          className="rounded-xl bg-amber-50 p-3 text-sm text-amber-800 dark:bg-amber-950 dark:text-amber-300"
-        >
+        <Note key={warning} tone="warning">
           {warning}
-        </p>
+        </Note>
       ))}
 
       {parsed.rows.length > 0 && (
@@ -288,11 +296,7 @@ export default function ImportPage() {
         </>
       )}
 
-      {saveError && (
-        <p role="alert" className="text-sm text-red-600 dark:text-red-400">
-          {saveError}
-        </p>
-      )}
+      {saveError && <Note tone="danger">{saveError}</Note>}
 
       <div
         className="sticky bottom-0 -mx-5 border-t border-slate-200 bg-white/95 px-5 py-3 backdrop-blur dark:border-slate-800 dark:bg-slate-950/95"
@@ -323,7 +327,8 @@ export default function ImportPage() {
           </p>
         )}
       </div>
-    </div>
+      </div>
+    </Page>
   )
 }
 

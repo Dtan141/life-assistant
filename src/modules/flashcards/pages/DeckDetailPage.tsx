@@ -3,6 +3,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '@/shared/auth/useAuth'
 import { Button } from '@/shared/ui/Button'
 import { Sheet } from '@/shared/ui/Sheet'
+import { EmptyState, Note } from '@/shared/ui/Panel'
+import { Page } from '@/shared/ui/Page'
 import { Spinner } from '@/shared/ui/Spinner'
 import { CardForm } from '@/modules/flashcards/components/CardForm'
 import { CardRow } from '@/modules/flashcards/components/CardRow'
@@ -82,12 +84,12 @@ export default function DeckDetailPage() {
 
   if (!deck) {
     return (
-      <div className="mx-auto max-w-lg space-y-3 px-5 pt-8">
-        <p className="text-slate-500">Bộ thẻ không tồn tại hoặc đã bị xoá.</p>
+      <Page>
+        <p className="mb-3 text-slate-500">Bộ thẻ không tồn tại hoặc đã bị xoá.</p>
         <Link to="/flashcards" className="text-sm text-slate-500">
           ← Về danh sách bộ thẻ
         </Link>
-      </div>
+      </Page>
     )
   }
 
@@ -100,7 +102,7 @@ export default function DeckDetailPage() {
   ]
 
   return (
-    <div className="mx-auto max-w-lg px-5 pt-6">
+    <Page>
       <Link to="/flashcards" className="text-sm text-slate-500">
         ← Bộ thẻ
       </Link>
@@ -189,21 +191,25 @@ export default function DeckDetailPage() {
       )}
 
       {error && (
-        <p role="alert" className="mt-4 break-words rounded-xl bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
-          {error}
-        </p>
+        <div className="mt-4">
+          <Note tone="danger">{error}</Note>
+        </div>
       )}
 
       <div className="mt-3">
         {loading ? (
           <Spinner />
         ) : cards.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-slate-300 p-8 text-center dark:border-slate-700">
-            <p className="font-medium">Bộ thẻ còn trống</p>
-            <p className="mt-1 text-sm text-slate-500">
-              Dán danh sách TSV vào, hoặc thêm từng thẻ một.
-            </p>
-          </div>
+          <EmptyState title="Bộ thẻ còn trống">
+            Dán danh sách từ vào, hoặc thêm từng thẻ một.{' '}
+            <Link
+              to="/flashcards/huong-dan-nhap"
+              className="underline underline-offset-2"
+            >
+              Xem cách chuẩn bị file
+            </Link>
+            .
+          </EmptyState>
         ) : visible.length === 0 ? (
           <p className="py-8 text-center text-slate-500">Không có thẻ nào khớp.</p>
         ) : (
@@ -274,6 +280,6 @@ export default function DeckDetailPage() {
           </Button>
         </div>
       </Sheet>
-    </div>
+    </Page>
   )
 }

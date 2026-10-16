@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useAuth } from '@/shared/auth/useAuth'
 import { useSettings } from '@/shared/settings/useSettings'
 import { updateSettings } from '@/shared/settings/settings.repo'
 import { Button } from '@/shared/ui/Button'
+import { Panel, PanelLink } from '@/shared/ui/Panel'
+import { Page, PageHeader } from '@/shared/ui/Page'
 import { Spinner } from '@/shared/ui/Spinner'
 import { TextField } from '@/shared/ui/Field'
 import type { UserSettings } from '@/shared/types'
@@ -13,10 +14,10 @@ export default function SettingsPage() {
   const { settings, loading } = useSettings()
 
   return (
-    <div className="mx-auto max-w-lg space-y-6 px-5 pt-8">
-      <h1 className="text-2xl font-bold">Cài đặt</h1>
+    <Page>
+      <PageHeader title="Cài đặt" />
 
-      <section className="flex items-center gap-3 rounded-2xl border border-slate-200 p-4 dark:border-slate-800">
+      <Panel className="mb-6 flex items-center gap-3 p-4">
         {user?.photoURL && (
           <img src={user.photoURL} alt="" className="size-11 rounded-full" />
         )}
@@ -24,7 +25,7 @@ export default function SettingsPage() {
           <p className="truncate font-medium">{user?.displayName}</p>
           <p className="truncate text-sm text-slate-500">{user?.email}</p>
         </div>
-      </section>
+      </Panel>
 
       {loading ? (
         <Spinner />
@@ -34,18 +35,18 @@ export default function SettingsPage() {
         <ReviewSettingsForm key={JSON.stringify(settings)} settings={settings} />
       )}
 
-      <Link
-        to="/settings/backup"
-        className="flex min-h-14 items-center justify-between rounded-2xl border border-slate-200 px-4 dark:border-slate-800"
-      >
-        <span>
-          <span className="font-medium">Sao lưu</span>
-          <span className="block text-sm text-slate-500">
-            Xuất toàn bộ dữ liệu ra file, hoặc khôi phục
-          </span>
-        </span>
-        <span className="text-slate-400">›</span>
-      </Link>
+      <div className="my-6 space-y-3">
+        <PanelLink
+          to="/settings/backup"
+          title="Sao lưu"
+          description="Xuất toàn bộ dữ liệu ra file, hoặc khôi phục"
+        />
+        <PanelLink
+          to="/flashcards/huong-dan-nhap"
+          title="Cách chuẩn bị file nhập"
+          description="Thứ tự cột, ví dụ, và lỗi hay gặp"
+        />
+      </div>
 
       <Button
         variant="secondary"
@@ -54,7 +55,7 @@ export default function SettingsPage() {
       >
         Đăng xuất
       </Button>
-    </div>
+    </Page>
   )
 }
 
