@@ -1,9 +1,12 @@
 import { getDoc, updateDoc } from 'firebase/firestore'
 import { userDoc } from '@/shared/auth/user.repo'
 import { toNum } from '@/shared/firebase/convert'
-import { createDeck } from '@/modules/flashcards/data/decks.repo'
+import { createDeck, listDecks } from '@/modules/flashcards/data/decks.repo'
 import { saveImport } from '@/modules/flashcards/data/cards.repo'
-import { parseCollection } from '@/modules/flashcards/domain/collection-parser'
+import {
+  missingSections,
+  parseCollection,
+} from '@/modules/flashcards/domain/collection-parser'
 import { buildImportPlan } from '@/modules/flashcards/domain/import-plan'
 
 export const CATALOG_URL = '/catalog/toeic-600.tsv'
@@ -18,6 +21,8 @@ export const CATALOG_VERSION = 1
 export interface SeedOutcome {
   decks: number
   cards: number
+  /** Topics the account already had, left untouched with their history. */
+  skipped: number
 }
 
 export async function fetchCatalog(): Promise<string> {
@@ -43,9 +48,28 @@ export async function seedCatalog(uid: string, raw: string): Promise<SeedOutcome
   }
 
   const collection = parsed.name ?? 'Bộ sưu tập'
-  const outcome: SeedOutcome = { decks: 0, cards: 0 }
 
-  for (const section of parsed.decks) {
+  /**
+   * Only what is missing. Seeding runs again whenever the catalogue gains
+   * topics, and re-creating the ones already present would leave two decks per
+   * topic — one carrying the review history, one empty.
+   *
+   * Archived decks count as present: putting a topic away must not cause a
+   * fresh copy of it to appear.
+   */
+  const existing = await listDecks(uid, { includeArchived: true })
+  const sections = missingSections(
+    parsed.decks,
+    existing.filter((deck) => deck.collection === collection).map((deck) => deck.name),
+  )
+
+  const outcome: SeedOutcome = {
+    decks: 0,
+    cards: 0,
+    skipped: parsed.decks.length - sections.length,
+  }
+
+  for (const section of sections) {
     const plan = buildImportPlan(section.result, { strategy: 'skip' })
     if (plan.create.length === 0) continue
 

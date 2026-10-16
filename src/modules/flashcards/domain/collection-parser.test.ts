@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { parseCollection } from '@/modules/flashcards/domain/collection-parser'
+import {
+  missingSections,
+  parseCollection,
+} from '@/modules/flashcards/domain/collection-parser'
 
 const row = (...cells: string[]) => cells.join('\t')
 
@@ -115,5 +118,41 @@ describe('malformed files', () => {
     const parsed = parseCollection([row('a', 'nghĩa a'), row('b', 'nghĩa b')].join('\n'))
     expect(parsed.stats.decks).toBe(0)
     expect(parsed.errors[0]).toMatch(/2 dòng nằm trước/)
+  })
+})
+
+describe('missingSections', () => {
+  const parsed = parseCollection(
+    [
+      '# 01 — Contracts',
+      row('agreement', 'thoả thuận'),
+      '# 02 — Marketing',
+      row('market', 'thị trường'),
+      '# 03 — Warranties',
+      row('warranty', 'bảo hành'),
+    ].join('\n'),
+  )
+
+  it('returns everything for an account with nothing', () => {
+    expect(missingSections(parsed.decks, []).map((s) => s.name)).toHaveLength(3)
+  })
+
+  it('skips topics the account already has', () => {
+    const missing = missingSections(parsed.decks, ['01 — Contracts', '03 — Warranties'])
+    expect(missing.map((s) => s.name)).toEqual(['02 — Marketing'])
+  })
+
+  it('returns nothing when the account has them all', () => {
+    const names = parsed.decks.map((s) => s.name)
+    expect(missingSections(parsed.decks, names)).toEqual([])
+  })
+
+  it('ignores case and stray spacing in the comparison', () => {
+    expect(missingSections(parsed.decks, ['01 —  CONTRACTS'])).toHaveLength(2)
+  })
+
+  it('ignores decks from other collections passed in by mistake', () => {
+    // Only names actually present should suppress a topic.
+    expect(missingSections(parsed.decks, ['Study4 — Eagles'])).toHaveLength(3)
   })
 })

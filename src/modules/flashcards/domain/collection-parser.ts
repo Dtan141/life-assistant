@@ -110,3 +110,29 @@ export function parseCollection(
 function sum(decks: readonly ParsedDeckSection[], pick: (deck: ParsedDeckSection) => number) {
   return decks.reduce((total, deck) => total + pick(deck), 0)
 }
+
+/**
+ * The sections an account is still missing.
+ *
+ * Seeding runs again whenever the shipped catalogue gains topics, and without
+ * this it would re-create every topic the account already has: the same deck
+ * twice, one holding the review history and one empty, with no way to tell
+ * which to use.
+ *
+ * Matched by name, which is the only handle a deck already carries. Renaming a
+ * seeded deck therefore makes it look missing — a fair trade against
+ * duplicating fifty decks, and against adding a field to every deck in the
+ * database to avoid it.
+ */
+export function missingSections(
+  sections: readonly ParsedDeckSection[],
+  existingNames: Iterable<string>,
+): ParsedDeckSection[] {
+  const have = new Set([...existingNames].map(normalizeDeckName))
+  return sections.filter((section) => !have.has(normalizeDeckName(section.name)))
+}
+
+/** Tolerant of stray spacing, so "01 — X" and "01 —  X" are the same topic. */
+export function normalizeDeckName(name: string): string {
+  return name.trim().replace(/\s+/g, ' ').toLowerCase()
+}
