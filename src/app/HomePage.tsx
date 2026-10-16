@@ -109,11 +109,11 @@ export default function HomePage() {
             <p className="mt-4 text-center text-sm text-slate-500">
               {allCards.length === 0 ? (
                 <>
-                  Chưa có thẻ nào. Vào <strong>Bộ thẻ</strong> để tạo bộ đầu tiên.
+                  Chưa có thẻ nào. Vào <strong>Thư viện</strong> để tạo bộ đầu tiên.
                 </>
               ) : (
                 <>
-                  Chưa bộ thẻ nào nằm trong kế hoạch học. Vào <strong>Bộ thẻ</strong> và
+                  Chưa bộ thẻ nào nằm trong kế hoạch học. Vào <strong>Thư viện</strong> và
                   bấm <strong>Thêm vào kế hoạch học</strong>.
                 </>
               )}

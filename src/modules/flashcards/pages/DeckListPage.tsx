@@ -97,7 +97,7 @@ export default function DeckListPage() {
   return (
     <Page>
       <PageHeader
-        title="Bộ thẻ"
+        title="Thư viện"
         action={
           <Button onClick={() => setEditing({ mode: 'create' })}>+ Tạo bộ thẻ</Button>
         }

@@ -4,14 +4,14 @@ import { useOnlineStatus } from '@/shared/hooks/useOnlineStatus'
 const REVIEW_PATH = '/flashcards/review'
 
 /**
- * `end` alone cannot express these: "Bộ thẻ" owns every /flashcards path
+ * `end` alone cannot express these: "Thư viện" owns every /flashcards path
  * except the review session, which has its own tab.
  */
 const TABS = [
   { to: '/', label: 'Hôm nay', icon: HomeIcon, match: (p: string) => p === '/' },
   {
     to: '/flashcards',
-    label: 'Bộ thẻ',
+    label: 'Thư viện',
     icon: DeckIcon,
     match: (p: string) => p.startsWith('/flashcards') && !p.startsWith(REVIEW_PATH),
   },
@@ -104,8 +104,10 @@ function HomeIcon() {
 function DeckIcon() {
   return (
     <svg {...iconProps}>
-      <rect x="3" y="6" width="14" height="12" rx="2" />
-      <path d="M7 3h11a3 3 0 0 1 3 3v9" />
+      {/* A shelf of books: the tab is a library, not a single deck. */}
+      <path d="M4 5h3v15H4z" />
+      <path d="M9 5h3v15H9z" />
+      <path d="m14.5 6 2.8-.7 3 14.6-2.8.6z" />
     </svg>
   )
 }
@@ -113,8 +115,11 @@ function DeckIcon() {
 function ReviewIcon() {
   return (
     <svg {...iconProps}>
-      <path d="M20 12a8 8 0 1 1-2.3-5.6" />
-      <path d="M20 4v4h-4" />
+      {/* A card with a tick: what the tab does is answer cards, not refresh
+          something — which is what the circular arrow read as. */}
+      <rect x="3" y="4" width="18" height="13" rx="2" />
+      <path d="m8 10.5 2.5 2.5L16 7.5" />
+      <path d="M7 21h10" />
     </svg>
   )
 }

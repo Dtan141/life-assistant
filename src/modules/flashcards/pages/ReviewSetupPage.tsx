@@ -5,6 +5,7 @@ import { useSettings } from '@/shared/settings/useSettings'
 import { Button } from '@/shared/ui/Button'
 import { Spinner } from '@/shared/ui/Spinner'
 import { Page, PageHeader } from '@/shared/ui/Page'
+import { DeckPicker } from '@/modules/flashcards/components/DeckPicker'
 import { useAllCards } from '@/modules/flashcards/data/useAllCards'
 import { useDecks } from '@/modules/flashcards/data/useDecks'
 import { STATUS_LABELS, cardStatus } from '@/modules/flashcards/domain/card-status'
@@ -71,15 +72,6 @@ export default function ReviewSetupPage() {
     }
   }, [user])
 
-  function toggleDeck(id: string) {
-    setDeckIds((prev) => {
-      const next = new Set(prev)
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
-      return next
-    })
-  }
-
   function toggleStatus(status: CardStatus) {
     setStatuses((prev) => {
       const next = new Set(prev)
@@ -110,25 +102,12 @@ export default function ReviewSetupPage() {
 
       {cards.length === 0 ? (
         <p className="text-slate-500">
-          Chưa có thẻ nào. Vào <strong>Bộ thẻ</strong> để tạo bộ đầu tiên.
+          Chưa có thẻ nào. Vào <strong>Thư viện</strong> để tạo bộ đầu tiên.
         </p>
       ) : (
         <>
-          <Group title="Bộ thẻ" note={deckIds.size === 0 ? 'Đang chọn tất cả' : undefined}>
-            <div className="flex flex-wrap gap-2">
-              <Chip selected={deckIds.size === 0} onClick={() => setDeckIds(new Set())}>
-                Tất cả
-              </Chip>
-              {active.map((deck) => (
-                <Chip
-                  key={deck.id}
-                  selected={deckIds.has(deck.id)}
-                  onClick={() => toggleDeck(deck.id)}
-                >
-                  {deck.name}
-                </Chip>
-              ))}
-            </div>
+          <Group title="Bộ thẻ">
+            <DeckPicker decks={active} selected={deckIds} onChange={setDeckIds} />
           </Group>
 
           <Group title="Trạng thái thẻ">

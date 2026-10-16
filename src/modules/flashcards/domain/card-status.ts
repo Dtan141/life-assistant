@@ -35,16 +35,21 @@ export function countByStatus(
  * diacritics a chore.
  */
 export function cardMatches(card: Card, queryText: string): boolean {
-  const needle = fold(queryText)
+  const needle = foldForSearch(queryText)
   if (!needle) return true
   return (
-    fold(card.term).includes(needle) ||
-    fold(card.definition).includes(needle) ||
-    fold(card.example).includes(needle)
+    foldForSearch(card.term).includes(needle) ||
+    foldForSearch(card.definition).includes(needle) ||
+    foldForSearch(card.example).includes(needle)
   )
 }
 
-function fold(value: string): string {
+/**
+ * Strips diacritics and case for comparison, so "tu vung" matches "Từ vựng".
+ * Typing Vietnamese accents on a phone keyboard is slow enough that an
+ * exact-match search would go unused.
+ */
+export function foldForSearch(value: string): string {
   return value
     .normalize('NFD')
     .replace(/[̀-ͯ]/g, '')

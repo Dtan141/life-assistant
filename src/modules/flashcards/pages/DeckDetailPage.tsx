@@ -104,7 +104,7 @@ export default function DeckDetailPage() {
   return (
     <Page>
       <Link to="/flashcards" className="text-sm text-slate-500">
-        ← Bộ thẻ
+        ← Thư viện
       </Link>
       <h1 className="mt-1 text-2xl font-bold">{deck.name}</h1>
       {deck.description && (
