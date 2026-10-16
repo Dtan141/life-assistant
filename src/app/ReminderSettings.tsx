@@ -8,9 +8,12 @@ import { updateSettings } from '@/shared/settings/settings.repo'
 import {
   findPushBlocker,
   hasPushPermission,
+  recallToken,
   registerForPush,
+  rememberToken,
   unregisterFromPush,
 } from '@/shared/push/messaging'
+import { settleOrContinue } from '@/shared/lib/pending'
 import type { PushBlocker } from '@/shared/push/messaging'
 import { deletePushToken, savePushToken } from '@/shared/push/push.repo'
 import type { UserSettings } from '@/shared/types'
@@ -27,7 +30,9 @@ export function ReminderSettings({ settings }: { settings: UserSettings }) {
   const { user } = useAuth()
   const [blocker, setBlocker] = useState<PushBlocker | 'checking'>('checking')
   const [enabled, setEnabled] = useState(hasPushPermission())
-  const [token, setToken] = useState<string | null>(null)
+  // Recalled rather than fetched: after a reload the SDK would have to
+  // re-register to tell us the token, which is the opposite of turning off.
+  const [token, setToken] = useState<string | null>(recallToken)
   const [reminderTime, setReminderTime] = useState(settings.reminderTime)
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
@@ -53,6 +58,7 @@ export function ReminderSettings({ settings }: { settings: UserSettings }) {
         return
       }
       await savePushToken(user.uid, fresh)
+      rememberToken(fresh)
       setToken(fresh)
       setEnabled(true)
       setMessage('Đã bật. Thiết bị này sẽ nhận nhắc nhở.')
@@ -69,8 +75,16 @@ export function ReminderSettings({ settings }: { settings: UserSettings }) {
     setBusy(true)
     setMessage(null)
     try {
-      if (token) await deletePushToken(user.uid, token)
+      // The Firestore record is what the reminder job reads, so removing it
+      // is what actually stops the notifications; revoking with FCM is tidying
+      // up. Neither is allowed to hang the button.
+      if (token) {
+        await settleOrContinue(deletePushToken(user.uid, token), {
+          onLateError: (err) => console.error('Token delete failed to sync', err),
+        })
+      }
       await unregisterFromPush()
+      rememberToken(null)
       setEnabled(false)
       setToken(null)
       setMessage('Đã tắt nhắc nhở trên thiết bị này.')

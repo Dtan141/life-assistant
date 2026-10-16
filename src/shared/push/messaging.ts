@@ -45,11 +45,42 @@ export async function registerForPush(): Promise<string | null> {
   return token || null
 }
 
-export async function unregisterFromPush(): Promise<void> {
-  try {
-    await deleteToken(getMessaging(app))
-  } catch (err) {
-    // The token may already be gone — from the other end, or a reinstall.
+/**
+ * Revokes the token with FCM.
+ *
+ * Given its own timeout because deleteToken() can hang rather than reject when
+ * the subscription is already gone — after a reinstall, or a token revoked
+ * from another device. Either way the local record is what the UI reflects, so
+ * a stuck SDK call must not freeze the switch.
+ */
+export async function unregisterFromPush(timeoutMs = 4000): Promise<void> {
+  const revoke = deleteToken(getMessaging(app)).catch((err: unknown) => {
     console.warn('Could not delete push token', err)
+  })
+  const timeout = new Promise<void>((resolve) => setTimeout(resolve, timeoutMs))
+  await Promise.race([revoke, timeout])
+}
+
+const TOKEN_KEY = 'life-assistant:push-token'
+
+/**
+ * Remembers which token belongs to this device, so turning reminders off after
+ * a reload still knows which record to remove. Per-device by nature, which is
+ * exactly what localStorage is for.
+ */
+export function rememberToken(token: string | null): void {
+  try {
+    if (token) localStorage.setItem(TOKEN_KEY, token)
+    else localStorage.removeItem(TOKEN_KEY)
+  } catch {
+    // Private mode, or storage disabled. The switch still works this session.
+  }
+}
+
+export function recallToken(): string | null {
+  try {
+    return localStorage.getItem(TOKEN_KEY)
+  } catch {
+    return null
   }
 }
