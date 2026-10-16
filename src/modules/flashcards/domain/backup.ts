@@ -153,6 +153,10 @@ function toDeck(raw: Record<string, unknown>): Deck {
     description: str(raw.description),
     tags: strList(raw.tags),
     sourceUrl: str(raw.sourceUrl),
+    collection: str(raw.collection),
+    // Same reasoning as the Firestore converter: a backup taken before study
+    // plans existed describes decks that were all being studied.
+    inPlan: raw.inPlan === undefined ? true : raw.inPlan === true,
     cardCount: num(raw.cardCount),
     createdAt,
     updatedAt: toDate(raw.updatedAt) ?? createdAt,

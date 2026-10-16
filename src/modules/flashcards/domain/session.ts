@@ -1,5 +1,5 @@
 import { cardStatus } from '@/modules/flashcards/domain/card-status'
-import type { Card } from '@/modules/flashcards/domain/card.types'
+import type { Card, Deck } from '@/modules/flashcards/domain/card.types'
 
 export interface DailyProgress {
   /** New cards already introduced today. */
@@ -78,6 +78,23 @@ export function buildPracticeSession(
     ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
   }
   return shuffled
+}
+
+/**
+ * The cards the daily schedule is allowed to draw from.
+ *
+ * A library is not a study plan: a deck can be present, practisable and still
+ * outside the schedule. Archived decks drop out too — putting a deck away
+ * should stop it asking for attention.
+ */
+export function cardsInPlan(
+  cards: readonly Card[],
+  decks: readonly Deck[],
+): Card[] {
+  const active = new Set(
+    decks.filter((deck) => deck.inPlan && !deck.archived).map((deck) => deck.id),
+  )
+  return cards.filter((card) => active.has(card.deckId))
 }
 
 /** How many cards are waiting right now, ignoring today's limits. */

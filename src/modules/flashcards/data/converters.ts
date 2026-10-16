@@ -63,6 +63,11 @@ export function deckFromDoc(snap: QueryDocumentSnapshot): Deck {
     description: toStr(data.description),
     tags: toStrList(data.tags),
     sourceUrl: toStr(data.sourceUrl),
+    collection: toStr(data.collection),
+    // Absent means a deck written before study plans existed, and every deck
+    // back then was being studied. Defaulting to false would quietly drop them
+    // all out of the schedule.
+    inPlan: data.inPlan === undefined ? true : data.inPlan === true,
     cardCount: Math.max(0, toNum(data.cardCount, 0)),
     createdAt,
     updatedAt: toDate(data.updatedAt, createdAt),

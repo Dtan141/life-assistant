@@ -10,8 +10,13 @@ import { useBack } from '@/shared/ui/useBack'
 import { RatingButtons } from '@/modules/flashcards/components/RatingButtons'
 import { ReviewCard } from '@/modules/flashcards/components/ReviewCard'
 import { useAllCards } from '@/modules/flashcards/data/useAllCards'
+import { useDecks } from '@/modules/flashcards/data/useDecks'
 import { getDailyProgress, saveReview } from '@/modules/flashcards/data/reviews.repo'
-import { buildPracticeSession, buildSession } from '@/modules/flashcards/domain/session'
+import {
+  buildPracticeSession,
+  buildSession,
+  cardsInPlan,
+} from '@/modules/flashcards/domain/session'
 import { RATINGS, applyRating, previewRatings } from '@/modules/flashcards/domain/srs'
 import type { ReviewRating } from '@/modules/flashcards/domain/srs'
 import { TypingAnswer } from '@/modules/flashcards/components/TypingAnswer'
@@ -33,6 +38,7 @@ export default function ReviewPage() {
   const { user } = useAuth()
   const { settings, loading: settingsLoading } = useSettings()
   const { cards, loading, error } = useAllCards()
+  const { decks } = useDecks()
   const [params] = useSearchParams()
   // A session can start from the home screen, a deck, or the setup screen.
   const exitSession = useBack('/flashcards/review')
@@ -66,15 +72,19 @@ export default function ReviewPage() {
   const [verdict, setVerdict] = useState<AnswerVerdict | null>(null)
   const built = useRef(false)
 
-  const scope = useMemo(
-    () =>
-      cards.filter(
-        (card) =>
-          (!deckFilter || deckFilter.has(card.deckId)) &&
-          (!statusFilter || statusFilter.has(cardStatus(card))),
-      ),
-    [cards, deckFilter, statusFilter],
-  )
+  /**
+   * Choosing decks explicitly overrides the study plan; choosing nothing falls
+   * back to it. So "ôn bộ này" works on a deck kept out of the schedule, while
+   * the plain "bắt đầu ôn" never reaches into the library.
+   */
+  const scope = useMemo(() => {
+    const pool = deckFilter ? cards : cardsInPlan(cards, decks)
+    return pool.filter(
+      (card) =>
+        (!deckFilter || deckFilter.has(card.deckId)) &&
+        (!statusFilter || statusFilter.has(cardStatus(card))),
+    )
+  }, [cards, decks, deckFilter, statusFilter])
 
   /**
    * The queue is built once and then left alone. Rebuilding it as cards change

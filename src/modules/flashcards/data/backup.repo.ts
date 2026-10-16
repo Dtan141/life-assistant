@@ -92,6 +92,8 @@ export async function restoreBackup(
         description: deck.description,
         tags: deck.tags,
         sourceUrl: deck.sourceUrl,
+        collection: deck.collection,
+        inPlan: deck.inPlan,
         cardCount: deck.cardCount,
         createdAt: Timestamp.fromDate(deck.createdAt),
         updatedAt: Timestamp.fromDate(deck.updatedAt),

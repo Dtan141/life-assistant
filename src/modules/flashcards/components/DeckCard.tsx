@@ -7,9 +7,16 @@ interface Props {
   onEdit: () => void
   onArchiveToggle: () => void
   onDelete: () => void
+  onPlanToggle: () => void
 }
 
-export function DeckCard({ deck, onEdit, onArchiveToggle, onDelete }: Props) {
+export function DeckCard({
+  deck,
+  onEdit,
+  onArchiveToggle,
+  onDelete,
+  onPlanToggle,
+}: Props) {
   return (
     <li className="overflow-hidden rounded-2xl border border-slate-200 transition dark:border-slate-800">
       <Link
@@ -40,10 +47,23 @@ export function DeckCard({ deck, onEdit, onArchiveToggle, onDelete }: Props) {
           </ul>
         )}
 
-        {deck.archived && (
-          <p className="mt-2 text-xs text-slate-400">Đã lưu trữ</p>
-        )}
+        <p className="mt-2 flex flex-wrap gap-x-3 text-xs">
+          {deck.inPlan ? (
+            <span className="text-emerald-700 dark:text-emerald-400">
+              ● Trong kế hoạch học
+            </span>
+          ) : (
+            <span className="text-slate-400">○ Chỉ có trong thư viện</span>
+          )}
+          {deck.archived && <span className="text-slate-400">Đã lưu trữ</span>}
+        </p>
       </Link>
+
+      <div className="border-t border-slate-100 px-2 py-1 dark:border-slate-800">
+        <QuietButton onClick={onPlanToggle} full>
+          {deck.inPlan ? 'Bỏ khỏi kế hoạch học' : '+ Thêm vào kế hoạch học'}
+        </QuietButton>
+      </div>
 
       <div className="flex gap-1 border-t border-slate-100 px-2 py-1 dark:border-slate-800">
         <div className="flex-1">

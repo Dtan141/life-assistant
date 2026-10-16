@@ -6,6 +6,7 @@ import { EmptyState, Note } from '@/shared/ui/Panel'
 import { Page, PageHeader } from '@/shared/ui/Page'
 import { Sheet } from '@/shared/ui/Sheet'
 import { Spinner } from '@/shared/ui/Spinner'
+import { CollectionGroup } from '@/modules/flashcards/components/CollectionGroup'
 import { DeckCard } from '@/modules/flashcards/components/DeckCard'
 import { DeckForm } from '@/modules/flashcards/components/DeckForm'
 import { useDecks } from '@/modules/flashcards/data/useDecks'
@@ -13,6 +14,7 @@ import {
   createDeck,
   deleteDeckWithCards,
   setDeckArchived,
+  setDeckInPlan,
   updateDeck,
 } from '@/modules/flashcards/data/decks.repo'
 import type { Deck } from '@/modules/flashcards/domain/card.types'
@@ -31,9 +33,41 @@ export default function DeckListPage() {
     () => (showArchived ? decks : decks.filter((deck) => !deck.archived)),
     [decks, showArchived],
   )
+
+  /**
+   * Standalone decks first, then each collection as one collapsed row. A
+   * collection of fifty topics would otherwise push everything else off screen.
+   */
+  const { loose, collections } = useMemo(() => {
+    const loose: Deck[] = []
+    const collections = new Map<string, Deck[]>()
+    for (const deck of visible) {
+      if (!deck.collection) {
+        loose.push(deck)
+        continue
+      }
+      const group = collections.get(deck.collection) ?? []
+      group.push(deck)
+      collections.set(deck.collection, group)
+    }
+    return { loose, collections: [...collections.entries()] }
+  }, [visible])
   const archivedCount = decks.length - decks.filter((deck) => !deck.archived).length
 
   if (!user) return null
+
+  function deckActions(deck: Deck) {
+    return {
+      onEdit: () => setEditing({ mode: 'edit', deck }),
+      onArchiveToggle: () => {
+        if (user) void setDeckArchived(user.uid, deck.id, !deck.archived)
+      },
+      onDelete: () => setDeleting(deck),
+      onPlanToggle: () => {
+        if (user) void setDeckInPlan(user.uid, deck.id, !deck.inPlan)
+      },
+    }
+  }
 
   async function handleSubmit(input: Parameters<typeof createDeck>[1]) {
     if (!user) return
@@ -85,14 +119,16 @@ export default function DeckListPage() {
         </EmptyState>
       ) : (
         <ul className="space-y-3">
-          {visible.map((deck) => (
-            <DeckCard
-              key={deck.id}
-              deck={deck}
-              onEdit={() => setEditing({ mode: 'edit', deck })}
-              onArchiveToggle={() => void setDeckArchived(user.uid, deck.id, !deck.archived)}
-              onDelete={() => setDeleting(deck)}
-            />
+          {loose.map((deck) => (
+            <DeckCard key={deck.id} deck={deck} {...deckActions(deck)} />
+          ))}
+
+          {collections.map(([name, group]) => (
+            <CollectionGroup key={name} name={name} decks={group}>
+              {group.map((deck) => (
+                <DeckCard key={deck.id} deck={deck} {...deckActions(deck)} />
+              ))}
+            </CollectionGroup>
           ))}
         </ul>
       )}

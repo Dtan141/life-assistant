@@ -19,6 +19,8 @@ const deck: Deck = {
   description: 'Bài nghe đại bàng',
   tags: ['study4'],
   sourceUrl: 'https://notion.so/x',
+  collection: 'TOEIC 600',
+  inPlan: true,
   cardCount: 1,
   createdAt: NOW,
   updatedAt: NOW,

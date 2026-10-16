@@ -23,6 +23,13 @@ export interface DeckInput {
   description?: string
   tags?: string[]
   sourceUrl?: string
+  collection?: string
+  /**
+   * Defaults to true: a deck someone created by hand was created to be
+   * studied. Seeded catalog decks pass false, so a library of 600 words does
+   * not become 600 cards queued for tonight.
+   */
+  inPlan?: boolean
 }
 
 export async function listDecks(
@@ -62,6 +69,8 @@ export async function createDeck(uid: string, input: DeckInput): Promise<string>
     description: input.description?.trim() ?? '',
     tags: input.tags ?? [],
     sourceUrl: input.sourceUrl?.trim() ?? '',
+    collection: input.collection?.trim() ?? '',
+    inPlan: input.inPlan ?? true,
     cardCount: 0,
     createdAt: timestamp,
     updatedAt: timestamp,
@@ -80,7 +89,18 @@ export async function updateDeck(
   if (patch.description !== undefined) data.description = patch.description.trim()
   if (patch.tags !== undefined) data.tags = patch.tags
   if (patch.sourceUrl !== undefined) data.sourceUrl = patch.sourceUrl.trim()
+  if (patch.collection !== undefined) data.collection = patch.collection.trim()
+  if (patch.inPlan !== undefined) data.inPlan = patch.inPlan
   await updateDoc(deckDoc(uid, deckId), data)
+}
+
+/** Adds a deck to the daily schedule, or takes it out again. */
+export async function setDeckInPlan(
+  uid: string,
+  deckId: string,
+  inPlan: boolean,
+): Promise<void> {
+  await updateDoc(deckDoc(uid, deckId), { inPlan, updatedAt: now() })
 }
 
 export async function setDeckArchived(

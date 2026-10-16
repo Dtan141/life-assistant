@@ -72,7 +72,9 @@ export async function runReminders(
     const tokens = await firestore.listPushTokens(uid)
     if (tokens.length === 0) continue
 
-    const dueCount = await firestore.countDueCards(uid, at)
+    const planned = await firestore.listPlannedDeckIds(uid)
+    const dueCount =
+      planned.size === 0 ? 0 : await firestore.countDueCards(uid, at, planned)
     // Nothing waiting is not worth interrupting someone for. A test send says
     // so instead of going quiet, so the button still proves the path works.
     if (dueCount === 0 && !forceUid) continue

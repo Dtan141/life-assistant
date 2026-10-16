@@ -50,6 +50,20 @@ export interface Deck {
   tags: string[]
   sourceUrl: string
   /**
+   * Groups sub-decks under one heading, e.g. "TOEIC 600". Empty for a deck
+   * that stands on its own.
+   */
+  collection: string
+  /**
+   * Whether this deck takes part in the daily schedule — the review session,
+   * the counts on the home screen, and the evening reminder.
+   *
+   * A library is not a study plan. Having 600 TOEIC words available must not
+   * mean being asked to learn all of them, so a deck can sit in the library
+   * and be practised freely while staying out of the schedule.
+   */
+  inPlan: boolean
+  /**
    * Denormalised so the deck list does not have to read every card. The card
    * repository keeps it current with increment() inside the same batch as the
    * writes that change it.

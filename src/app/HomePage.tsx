@@ -7,8 +7,9 @@ import { Panel, PanelLink } from '@/shared/ui/Panel'
 import { Page, PageHeader } from '@/shared/ui/Page'
 import { Spinner } from '@/shared/ui/Spinner'
 import { useAllCards } from '@/modules/flashcards/data/useAllCards'
+import { useDecks } from '@/modules/flashcards/data/useDecks'
 import { countByStatus } from '@/modules/flashcards/domain/card-status'
-import { countDue } from '@/modules/flashcards/domain/session'
+import { cardsInPlan, countDue } from '@/modules/flashcards/domain/session'
 import { computeStreak } from '@/modules/flashcards/domain/stats'
 import { listRecentLogs } from '@/modules/flashcards/data/reviews.repo'
 import type { ReviewLogEntry } from '@/modules/flashcards/domain/backup'
@@ -19,7 +20,11 @@ const STREAK_WINDOW_DAYS = 90
 export default function HomePage() {
   const { user } = useAuth()
   const { settings } = useSettings()
-  const { cards, loading } = useAllCards()
+  const { cards: allCards, loading } = useAllCards()
+  const { decks } = useDecks()
+  // The home screen reports the plan, not the library: a shelf of 600 TOEIC
+  // words should not read as 600 things waiting to be done.
+  const cards = useMemo(() => cardsInPlan(allCards, decks), [allCards, decks])
   const navigate = useNavigate()
 
   const [logs, setLogs] = useState<ReviewLogEntry[]>([])
@@ -102,7 +107,16 @@ export default function HomePage() {
 
           {cards.length === 0 && (
             <p className="mt-4 text-center text-sm text-slate-500">
-              Chưa có thẻ nào. Vào <strong>Bộ thẻ</strong> để tạo bộ đầu tiên.
+              {allCards.length === 0 ? (
+                <>
+                  Chưa có thẻ nào. Vào <strong>Bộ thẻ</strong> để tạo bộ đầu tiên.
+                </>
+              ) : (
+                <>
+                  Chưa bộ thẻ nào nằm trong kế hoạch học. Vào <strong>Bộ thẻ</strong> và
+                  bấm <strong>Thêm vào kế hoạch học</strong>.
+                </>
+              )}
             </p>
           )}
         </>

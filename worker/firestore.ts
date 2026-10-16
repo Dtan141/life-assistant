@@ -73,23 +73,40 @@ export class Firestore {
     return out
   }
 
+  /** The decks this user is actually studying, excluding archived ones. */
+  async listPlannedDeckIds(uid: string): Promise<Set<string>> {
+    const page = await this.call<{ documents?: FsDocument[] }>(
+      `${this.root}/users/${uid}/decks?pageSize=300`,
+    )
+    const planned = new Set<string>()
+    for (const deck of page.documents ?? []) {
+      // Absent inPlan means a deck written before study plans existed, which
+      // was being studied. Matches the client converter.
+      const inPlan = deck.fields?.inPlan?.booleanValue
+      const archived = deck.fields?.archived?.booleanValue === true
+      if (inPlan !== false && !archived) planned.add(docId(deck))
+    }
+    return planned
+  }
+
   /**
-   * Counts cards due at or before `at`.
+   * Counts cards due at or before `at` that belong to a deck being studied.
    *
-   * An aggregation query rather than fetching the cards: the Worker needs one
-   * number, and a deck of thousands would otherwise be pulled across the
-   * network every quarter of an hour.
+   * Firestore cannot join, and filtering on deckId as well as the due date
+   * would need a composite index — which cannot be created while offline and
+   * costs a manual setup step. So the due cards are fetched with only their
+   * deckId projected and matched here. One read per due card, once a day, is
+   * nothing against a 50,000 daily allowance.
    */
-  async countDueCards(uid: string, at: Date): Promise<number> {
-    const result = await this.call<
-      { result?: { aggregateFields?: { count?: { integerValue?: string } } } }[]
-    >(`${this.root}/users/${uid}:runAggregationQuery`, {
-      method: 'POST',
-      body: JSON.stringify({
-        structuredAggregationQuery: {
-          aggregations: [{ alias: 'count', count: {} }],
+  async countDueCards(uid: string, at: Date, planned: ReadonlySet<string>): Promise<number> {
+    const result = await this.call<{ document?: FsDocument }[]>(
+      `${this.root}/users/${uid}:runQuery`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
           structuredQuery: {
             from: [{ collectionId: 'cards' }],
+            select: { fields: [{ fieldPath: 'deckId' }] },
             where: {
               fieldFilter: {
                 field: { fieldPath: 'srs.due' },
@@ -98,12 +115,14 @@ export class Firestore {
               },
             },
           },
-        },
-      }),
-    })
+        }),
+      },
+    )
 
-    const count = result.find((entry) => entry.result?.aggregateFields?.count)
-    return Number(count?.result?.aggregateFields?.count?.integerValue ?? 0)
+    return result.filter((entry) => {
+      const deckId = readString(entry.document?.fields, 'deckId')
+      return deckId !== '' && planned.has(deckId)
+    }).length
   }
 
   async listPushTokens(uid: string): Promise<string[]> {

@@ -11,7 +11,7 @@ import { STATUS_LABELS, cardStatus } from '@/modules/flashcards/domain/card-stat
 import type { CardStatus } from '@/modules/flashcards/domain/card-status'
 import { MODE_HINTS, MODE_LABELS, REVIEW_MODES } from '@/modules/flashcards/domain/review-mode'
 import type { ReviewMode } from '@/modules/flashcards/domain/review-mode'
-import { buildSession } from '@/modules/flashcards/domain/session'
+import { buildSession, cardsInPlan } from '@/modules/flashcards/domain/session'
 import type { DailyProgress } from '@/modules/flashcards/domain/session'
 import { getDailyProgress } from '@/modules/flashcards/data/reviews.repo'
 
@@ -36,15 +36,15 @@ export default function ReviewSetupPage() {
   const [practice, setPractice] = useState(false)
 
   // An empty deck selection means "all", so a fresh visit needs no tapping.
-  const scope = useMemo(
-    () =>
-      cards.filter(
-        (card) =>
-          (deckIds.size === 0 || deckIds.has(card.deckId)) &&
-          statuses.has(cardStatus(card)),
-      ),
-    [cards, deckIds, statuses],
-  )
+  const scope = useMemo(() => {
+    // "Tất cả" means everything in the study plan. Ticking decks by hand reaches
+    // past it, which is how a library deck gets practised on demand.
+    const pool = deckIds.size === 0 ? cardsInPlan(cards, decks) : cards
+    return pool.filter(
+      (card) =>
+        (deckIds.size === 0 || deckIds.has(card.deckId)) && statuses.has(cardStatus(card)),
+    )
+  }, [cards, decks, deckIds, statuses])
 
   // Counted the same way the session will count it, including what has already
   // been done today — a button that promises a number the next screen disagrees

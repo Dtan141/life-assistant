@@ -2,9 +2,10 @@ import { describe, expect, it } from 'vitest'
 import {
   buildPracticeSession,
   buildSession,
+  cardsInPlan,
   countDue,
 } from '@/modules/flashcards/domain/session'
-import type { Card, CardSrs } from '@/modules/flashcards/domain/card.types'
+import type { Card, CardSrs, Deck } from '@/modules/flashcards/domain/card.types'
 
 const NOW = new Date('2026-10-15T20:00:00Z')
 const DAY = 86_400_000
@@ -162,5 +163,50 @@ describe('buildPracticeSession', () => {
     // A fixed generator makes the permutation deterministic to assert on.
     // Fisher-Yates with j always 0: [a,b,c] -> swap 2,0 -> [c,b,a] -> swap 1,0.
     expect(buildPracticeSession(cards, () => 0).map((c) => c.id)).toEqual(['b', 'c', 'a'])
+  })
+})
+
+describe('cardsInPlan', () => {
+  function deck(id: string, overrides: Partial<Deck> = {}): Deck {
+    return {
+      id,
+      name: id,
+      description: '',
+      tags: [],
+      sourceUrl: '',
+      collection: '',
+      inPlan: true,
+      cardCount: 0,
+      createdAt: NOW,
+      updatedAt: NOW,
+      archived: false,
+      ...overrides,
+    }
+  }
+
+  function cardIn(id: string, deckId: string): Card {
+    return { ...card(id), deckId }
+  }
+
+  it('keeps only cards from decks in the plan', () => {
+    const cards = [cardIn('a', 'studying'), cardIn('b', 'library')]
+    const decks = [deck('studying'), deck('library', { inPlan: false })]
+    expect(cardsInPlan(cards, decks).map((c) => c.id)).toEqual(['a'])
+  })
+
+  it('drops archived decks even when they are in the plan', () => {
+    // Putting a deck away should stop it asking for attention.
+    const decks = [deck('old', { archived: true })]
+    expect(cardsInPlan([cardIn('a', 'old')], decks)).toEqual([])
+  })
+
+  it('drops cards whose deck no longer exists', () => {
+    expect(cardsInPlan([cardIn('a', 'deleted')], [])).toEqual([])
+  })
+
+  it('keeps everything when every deck is in the plan', () => {
+    const decks = [deck('one'), deck('two')]
+    const cards = [cardIn('a', 'one'), cardIn('b', 'two')]
+    expect(cardsInPlan(cards, decks)).toHaveLength(2)
   })
 })
