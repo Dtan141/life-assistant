@@ -10,11 +10,13 @@
     // "single-page-application" returns index.html for unknown paths, so
     // client-side routes survive a refresh.
     "not_found_handling": "single-page-application",
-    // Without this the SPA fallback would swallow /__/auth/* before the
-    // Worker ever sees it, and the auth proxy would never run.
-    "run_worker_first": ["/__/auth/*", "/__/firebase/*"]
-  }
+    // Without this the SPA fallback would swallow these before the Worker ever
+    // sees them, and neither the auth proxy nor the test endpoint would run.
+    "run_worker_first": ["/__/auth/*", "/__/firebase/*", "/__/reminders/*"]
+  },
 
-  // M4 will add the daily reminder cron here:
-  //   "triggers": { "crons": ["*/15 * * * *"] }
+  // Every quarter hour. The Worker decides whose clock has reached their
+  // reminder time; running more often would spend requests to gain minutes
+  // nobody notices.
+  "triggers": { "crons": ["*/15 * * * *"] }
 }

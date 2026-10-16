@@ -36,6 +36,7 @@ export function ReminderSettings({ settings }: { settings: UserSettings }) {
   const [reminderTime, setReminderTime] = useState(settings.reminderTime)
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
+  const [testing, setTesting] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -102,6 +103,48 @@ export function ReminderSettings({ settings }: { settings: UserSettings }) {
     }
   }
 
+  /**
+   * Asks the reminder job to run for this account right now.
+   *
+   * Without it the only way to know whether the service account, Firestore,
+   * FCM and the phone all line up is to wait until evening and see.
+   */
+  async function sendTest() {
+    if (!user) return
+    setTesting(true)
+    setMessage(null)
+    try {
+      const response = await fetch('/__/reminders/test', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${await user.getIdToken()}` },
+      })
+
+      const body = await response.text()
+      if (!response.ok) {
+        // The endpoint lives in the Worker, which `npm run dev` does not run;
+        // there, the request falls through to index.html.
+        setMessage(
+          body.startsWith('<')
+            ? 'Nút này chỉ chạy trên bản deploy, không chạy ở localhost.'
+            : `Gửi thử thất bại. ${body}`,
+        )
+        return
+      }
+
+      const summary = JSON.parse(body) as { delivered: number; pruned: number }
+      setMessage(
+        summary.delivered > 0
+          ? `Đã gửi tới ${summary.delivered} thiết bị. Thông báo sẽ tới trong vài giây.`
+          : 'Không gửi được tới thiết bị nào. Kiểm tra lại nút bật ở trên.',
+      )
+    } catch (err) {
+      console.error('Test reminder failed', err)
+      setMessage(`Gửi thử thất bại. ${err instanceof Error ? err.message : String(err)}`)
+    } finally {
+      setTesting(false)
+    }
+  }
+
   async function saveTime(value: string) {
     setReminderTime(value)
     if (user) await updateSettings(user.uid, { reminderTime: value })
@@ -142,8 +185,27 @@ export function ReminderSettings({ settings }: { settings: UserSettings }) {
             hint="Lưu ngay khi đổi. Thông báo có thể đến muộn tối đa 15 phút."
           />
 
+          {enabled && (
+            <Button
+              variant="secondary"
+              onClick={() => void sendTest()}
+              disabled={testing}
+              className="w-full"
+            >
+              {testing ? 'Đang gửi…' : 'Gửi thử một thông báo ngay'}
+            </Button>
+          )}
+
           {message && (
-            <Note tone={message.startsWith('Không') ? 'danger' : 'info'}>{message}</Note>
+            <Note
+              tone={
+                message.startsWith('Không') || message.startsWith('Gửi thử thất bại')
+                  ? 'danger'
+                  : 'info'
+              }
+            >
+              {message}
+            </Note>
           )}
         </div>
       )}
