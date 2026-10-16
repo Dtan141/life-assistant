@@ -6,6 +6,7 @@ import { Button } from '@/shared/ui/Button'
 import { Panel, PanelLink } from '@/shared/ui/Panel'
 import { Page, PageHeader } from '@/shared/ui/Page'
 import { Spinner } from '@/shared/ui/Spinner'
+import { ReminderSettings } from '@/app/ReminderSettings'
 import { TextField } from '@/shared/ui/Field'
 import type { UserSettings } from '@/shared/types'
 
@@ -32,7 +33,10 @@ export default function SettingsPage() {
       ) : (
         // Remounting on change seeds the inputs from stored values without an
         // effect, and picks up edits made on another device.
-        <ReviewSettingsForm key={JSON.stringify(settings)} settings={settings} />
+        <>
+          <ReviewSettingsForm key={JSON.stringify(settings)} settings={settings} />
+          <ReminderSettings key={`r-${settings.reminderTime}`} settings={settings} />
+        </>
       )}
 
       <div className="my-6 space-y-3">
@@ -64,7 +68,6 @@ function ReviewSettingsForm({ settings }: { settings: UserSettings }) {
   const [newPerDay, setNewPerDay] = useState(String(settings.newPerDay))
   const [maxReviews, setMaxReviews] = useState(String(settings.maxReviewsPerDay))
   const [retention, setRetention] = useState(String(settings.desiredRetention))
-  const [reminderTime, setReminderTime] = useState(settings.reminderTime)
   const [saved, setSaved] = useState(false)
   const [busy, setBusy] = useState(false)
 
@@ -77,7 +80,6 @@ function ReviewSettingsForm({ settings }: { settings: UserSettings }) {
         newPerDay: Math.max(0, Number(newPerDay) || 0),
         maxReviewsPerDay: Math.max(0, Number(maxReviews) || 0),
         desiredRetention: Math.min(0.98, Math.max(0.7, Number(retention) || 0.9)),
-        reminderTime,
       })
       setSaved(true)
     } catch (err) {
@@ -121,14 +123,6 @@ function ReviewSettingsForm({ settings }: { settings: UserSettings }) {
           value={retention}
           onChange={(e) => setRetention(e.target.value)}
           hint="0.9 là mặc định. Cao hơn thì ôn dày hơn và nhớ chắc hơn, nhưng tốn thời gian hơn."
-        />
-
-        <TextField
-          label="Giờ nhắc hằng ngày"
-          type="time"
-          value={reminderTime}
-          onChange={(e) => setReminderTime(e.target.value)}
-          hint="Thông báo đẩy sẽ hoạt động ở M4."
         />
 
         <div className="flex items-center gap-3">

@@ -17,6 +17,11 @@ export default defineConfig({
       // 'prompt' instead of 'autoUpdate': a service worker must never reload
       // the page in the middle of a review session.
       registerType: 'prompt',
+      // Our own worker, because it has to handle push notifications as well as
+      // caching, and two competing workers break push on iOS.
+      strategies: 'injectManifest',
+      srcDir: 'src',
+      filename: 'sw.ts',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
       manifest: {
         name: 'Life Assistant',
@@ -40,12 +45,12 @@ export default defineConfig({
           },
         ],
       },
-      workbox: {
+      injectManifest: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
-        // Firestore and Google APIs handle their own offline persistence.
-        navigateFallbackDenylist: [/^\/__/],
+        // Firebase's SDK is large and lands in the worker bundle too.
+        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
       },
-      devOptions: { enabled: false },
+      devOptions: { enabled: false, type: 'module' },
     }),
   ],
 })
