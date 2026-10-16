@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '@/shared/auth/useAuth'
+import { settleOrContinue } from '@/shared/lib/pending'
+import { useOnlineStatus } from '@/shared/hooks/useOnlineStatus'
 import { Button } from '@/shared/ui/Button'
 import { Spinner } from '@/shared/ui/Spinner'
 import { ImportPreview } from '@/modules/flashcards/components/ImportPreview'
@@ -21,6 +23,7 @@ const DELIMITERS = [
 export default function ImportPage() {
   const { deckId = '' } = useParams()
   const { user } = useAuth()
+  const online = useOnlineStatus()
   const navigate = useNavigate()
   const fileInput = useRef<HTMLInputElement>(null)
 
@@ -107,11 +110,21 @@ export default function ImportPage() {
     setSaving(true)
     setSaveError(null)
     try {
-      await saveImport(user.uid, deckId, plan)
+      // Firestore acknowledges a write only when the server does, so waiting
+      // for it would hang the screen offline. The cards are already in the
+      // local cache by the time this returns.
+      const outcome = await settleOrContinue(saveImport(user.uid, deckId, plan), {
+        onLateError: (err) => console.error('Import failed to sync', err),
+      })
+      if (outcome === 'failed') {
+        setSaveError('Lưu không thành công. Thử lại.')
+        setSaving(false)
+        return
+      }
       navigate(`/flashcards/${deckId}`, { replace: true })
     } catch (err) {
       console.error('Failed to save import', err)
-      setSaveError('Lưu không thành công. Kiểm tra mạng rồi thử lại.')
+      setSaveError('Lưu không thành công. Thử lại.')
       setSaving(false)
     }
   }
@@ -296,6 +309,11 @@ export default function ImportPage() {
               ? 'Chưa có thẻ nào để nhập'
               : `Nhập ${willWrite} thẻ`}
         </Button>
+        {willWrite > 0 && !online && (
+          <p className="mt-1.5 text-center text-xs text-amber-700 dark:text-amber-500">
+            Đang offline — thẻ sẽ lưu vào máy và tự đồng bộ khi có mạng.
+          </p>
+        )}
         {willWrite > 0 && (
           <p className="mt-1.5 text-center text-xs text-slate-500">
             {plan.create.length} thẻ mới

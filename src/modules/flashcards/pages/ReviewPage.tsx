@@ -16,6 +16,7 @@ import { checkAnswer } from '@/modules/flashcards/domain/answer-check'
 import type { AnswerVerdict } from '@/modules/flashcards/domain/answer-check'
 import { isReviewMode } from '@/modules/flashcards/domain/review-mode'
 import type { ReviewMode } from '@/modules/flashcards/domain/review-mode'
+import { settleOrContinue } from '@/shared/lib/pending'
 import { cardStatus } from '@/modules/flashcards/domain/card-status'
 import type { CardStatus } from '@/modules/flashcards/domain/card-status'
 import type { DailyProgress } from '@/modules/flashcards/domain/session'
@@ -117,7 +118,21 @@ export default function ReviewPage() {
       try {
         if (!practice) {
           const srs = applyRating(current.srs, rating, settings.desiredRetention)
-          await saveReview(user.uid, { card: current, rating, srs, mode })
+          // Carries on once the answer is in the local cache rather than
+          // waiting for the server, so a review session survives losing signal.
+          const outcome = await settleOrContinue(
+            saveReview(user.uid, { card: current, rating, srs, mode }),
+            {
+              onLateError: (err) => {
+                console.error('Review failed to sync', err)
+                setSaveError('Có lượt ôn chưa đồng bộ được lên máy chủ.')
+              },
+            },
+          )
+          if (outcome === 'failed') {
+            setSaving(false)
+            return
+          }
         }
         setDone((prev) => ({
           reviewed: prev.reviewed + 1,

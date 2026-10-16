@@ -15,6 +15,11 @@ dist-ssr
 # Env — .env.local holds the Firebase web config
 .env*.local
 
+# Exported backups: personal data, and the point of them is to live off-repo
+database/
+*.backup.json
+life-assistant-*.json
+
 # Secrets: service account key for the reminder Worker (M4). Never commit.
 *service-account*.json
 .dev.vars

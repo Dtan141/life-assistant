@@ -1,4 +1,5 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
+import { useOnlineStatus } from '@/shared/hooks/useOnlineStatus'
 
 const REVIEW_PATH = '/flashcards/review'
 
@@ -30,9 +31,19 @@ const TABS = [
 
 export default function AppLayout() {
   const { pathname } = useLocation()
+  const online = useOnlineStatus()
 
   return (
     <div className="flex min-h-full flex-col">
+      {!online && (
+        <p
+          role="status"
+          className="bg-amber-100 px-4 py-1.5 text-center text-xs text-amber-900 dark:bg-amber-950 dark:text-amber-300"
+        >
+          Đang offline — vẫn ôn được, dữ liệu tự đồng bộ khi có mạng lại.
+        </p>
+      )}
+
       <main className="flex-1 pb-20">
         <Outlet />
       </main>
