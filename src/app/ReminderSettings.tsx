@@ -64,7 +64,11 @@ export function ReminderSettings({ settings }: { settings: UserSettings }) {
       setMessage('Đã bật. Thiết bị này sẽ nhận nhắc nhở.')
     } catch (err) {
       console.error('Failed to enable push', err)
-      setMessage('Không bật được thông báo. Thử lại sau.')
+      // Carries the reason: a timeout and a blocked request need different
+      // responses, and "thử lại sau" tells the user neither.
+      setMessage(
+        `Không bật được thông báo. ${err instanceof Error ? err.message : String(err)}`,
+      )
     } finally {
       setBusy(false)
     }
@@ -90,7 +94,9 @@ export function ReminderSettings({ settings }: { settings: UserSettings }) {
       setMessage('Đã tắt nhắc nhở trên thiết bị này.')
     } catch (err) {
       console.error('Failed to disable push', err)
-      setMessage('Không tắt được. Thử lại sau.')
+      setMessage(
+        `Không tắt được. ${err instanceof Error ? err.message : String(err)}`,
+      )
     } finally {
       setBusy(false)
     }
@@ -136,7 +142,9 @@ export function ReminderSettings({ settings }: { settings: UserSettings }) {
             hint="Lưu ngay khi đổi. Thông báo có thể đến muộn tối đa 15 phút."
           />
 
-          {message && <Note tone="info">{message}</Note>}
+          {message && (
+            <Note tone={message.startsWith('Không') ? 'danger' : 'info'}>{message}</Note>
+          )}
         </div>
       )}
     </Section>

@@ -1,6 +1,7 @@
 import { deleteToken, getMessaging, getToken, isSupported } from 'firebase/messaging'
 import { app } from '@/shared/firebase/app'
 import { isIOS, isStandalone } from '@/shared/lib/platform'
+import { withTimeout } from '@/shared/lib/timeout'
 
 export type PushBlocker =
   | 'ios-needs-install'
@@ -37,12 +38,33 @@ export async function registerForPush(): Promise<string | null> {
   const permission = await Notification.requestPermission()
   if (permission !== 'granted') return null
 
-  const registration = await navigator.serviceWorker.ready
-  const token = await getToken(getMessaging(app), {
-    vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
-    serviceWorkerRegistration: registration,
-  })
-  return token || null
+  const registration = await withTimeout(
+    navigator.serviceWorker.ready,
+    8000,
+    'Service worker',
+  )
+
+  const ask = () =>
+    withTimeout(
+      getToken(getMessaging(app), {
+        vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
+        serviceWorkerRegistration: registration,
+      }),
+      15000,
+      'Firebase Messaging',
+    )
+
+  try {
+    return (await ask()) || null
+  } catch (err) {
+    console.warn('First getToken attempt failed, clearing subscription', err)
+    // Turning reminders off and on again leaves a half-torn-down push
+    // subscription that getToken will wait on forever. Clear it and ask once
+    // more; a second failure is a real one.
+    const existing = await registration.pushManager.getSubscription()
+    await existing?.unsubscribe().catch(() => undefined)
+    return (await ask()) || null
+  }
 }
 
 /**
@@ -54,11 +76,22 @@ export async function registerForPush(): Promise<string | null> {
  * a stuck SDK call must not freeze the switch.
  */
 export async function unregisterFromPush(timeoutMs = 4000): Promise<void> {
-  const revoke = deleteToken(getMessaging(app)).catch((err: unknown) => {
-    console.warn('Could not delete push token', err)
-  })
-  const timeout = new Promise<void>((resolve) => setTimeout(resolve, timeoutMs))
-  await Promise.race([revoke, timeout])
+  await withTimeout(deleteToken(getMessaging(app)), timeoutMs, 'Firebase Messaging').catch(
+    (err: unknown) => {
+      // Best effort only: the Firestore record is what stops the reminders.
+      console.warn('Could not revoke push token with FCM', err)
+    },
+  )
+
+  // Leaving the browser subscription behind is what makes the next getToken()
+  // hang, so tear it down whether or not the SDK managed its half.
+  try {
+    const registration = await navigator.serviceWorker.getRegistration()
+    const existing = await registration?.pushManager.getSubscription()
+    await existing?.unsubscribe()
+  } catch (err) {
+    console.warn('Could not clear push subscription', err)
+  }
 }
 
 const TOKEN_KEY = 'life-assistant:push-token'
